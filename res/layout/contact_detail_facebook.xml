@@ -32,7 +32,6 @@
             android:layout_width="50sp"
             android:layout_height="fill_parent"
             android:contentDescription="TODO"
-            android:src="@drawable/facebook_chat_icon"
             android:layout_toLeftOf="@+id/post_icon"/>
 
     <ImageView
@@ -43,7 +42,6 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="12dip"
             android:contentDescription="TODO"
-            android:src="@drawable/facebook_post_icon"
             android:layout_alignParentRight="true"
             />
 </RelativeLayout>

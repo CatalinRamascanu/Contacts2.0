@@ -59,20 +59,35 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         ImageView chat = (ImageView) convertView.findViewById(R.id.chat_icon);
         aux++;
         if (aux == 1){
+            logo.setImageResource(R.drawable.vodafone_icon);
+            mail.setImageResource(0);
+            chat.setImageResource(0);
+        }
+        if (aux == 2){
+            logo.setImageResource(R.drawable.cosmote_icon);
+            mail.setImageResource(0);
+            chat.setImageResource(0);
+        }
+        if (aux == 3){
+            logo.setImageResource(R.drawable.orange_icon);
+            mail.setImageResource(0);
+            chat.setImageResource(0);
+        }
+        if (aux == 4){
             logo.setImageResource(R.drawable.facebook_icon);
             chat.setImageResource(R.drawable.facebook_chat_icon);
             mail.setImageResource(R.drawable.facebook_post_icon);
         }
-        if (aux == 3){
+        if (aux == 5){
+            logo.setImageResource(R.drawable.google_icon);
+            chat.setImageResource(R.drawable.google_chat_icon);
+            mail.setImageResource(R.drawable.google_mail_icon);
+        }
+        if (aux == 6){
             logo.setImageResource(R.drawable.yahoo_icon);
             chat.setImageResource(R.drawable.yahoo_chat_icon);
             mail.setImageResource(R.drawable.yahoo_mail_icon);
             aux = 0;
-        }
-        if (aux == 2){
-            logo.setImageResource(R.drawable.google_icon);
-            chat.setImageResource(R.drawable.google_chat_icon);
-            mail.setImageResource(R.drawable.google_mail_icon);
         }
 
         convertView.setOnClickListener(new OnClickListener() {
