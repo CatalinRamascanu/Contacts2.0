@@ -24,15 +24,14 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         createData();
         ExpandableListView listView = (ExpandableListView) findViewById(R.id.listView);
-        MyExpandableListAdapter adapter = new MyExpandableListAdapter(this,
-                groups);
+        MyExpandableListAdapter adapter = new MyExpandableListAdapter(this,listView,groups);
         listView.setAdapter(adapter);
     }
 
     public void createData() {
         for (int j = 0; j < 15; j++) {
             Group group = new Group("Test " + j);
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 3; i++) {
                 group.children.add("Sub Item" + i);
             }
             groups.append(j, group);

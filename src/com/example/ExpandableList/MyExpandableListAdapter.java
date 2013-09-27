@@ -7,6 +7,7 @@ package com.example.ExpandableList;
  * Time: 12:36 PM
  * To change this template use File | Settings | File Templates.
  */
+import android.widget.*;
 import com.example.ExpandableList.R;
 import android.app.Activity;
 import android.util.SparseArray;
@@ -14,19 +15,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.CheckedTextView;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class MyExpandableListAdapter extends BaseExpandableListAdapter {
-
+    private int aux;
     private final SparseArray<Group> groups;
+    private int lastExpandedGroupPosition;
+    private ExpandableListView listView;
     public LayoutInflater inflater;
     public Activity activity;
 
-    public MyExpandableListAdapter(Activity act, SparseArray<Group> groups) {
+    public MyExpandableListAdapter(Activity act,ExpandableListView listView ,SparseArray<Group> groups) {
+        aux = 0;
         activity = act;
+        this.listView = listView;
         this.groups = groups;
         inflater = act.getLayoutInflater();
     }
@@ -47,10 +50,31 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         final String children = (String) getChild(groupPosition, childPosition);
         TextView text = null;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.listrow_details, null);
+            convertView = inflater.inflate(R.layout.contact_detail_facebook, null);
         }
-        text = (TextView) convertView.findViewById(R.id.textView1);
+        text = (TextView) convertView.findViewById(R.id.status);
         text.setText(children);
+        ImageView logo = (ImageView) convertView.findViewById(R.id.logo_icon);
+        ImageView mail = (ImageView) convertView.findViewById(R.id.post_icon);
+        ImageView chat = (ImageView) convertView.findViewById(R.id.chat_icon);
+        aux++;
+        if (aux == 1){
+            logo.setImageResource(R.drawable.facebook_icon);
+            chat.setImageResource(R.drawable.facebook_chat_icon);
+            mail.setImageResource(R.drawable.facebook_post_icon);
+        }
+        if (aux == 3){
+            logo.setImageResource(R.drawable.yahoo_icon);
+            chat.setImageResource(R.drawable.yahoo_chat_icon);
+            mail.setImageResource(R.drawable.yahoo_mail_icon);
+            aux = 0;
+        }
+        if (aux == 2){
+            logo.setImageResource(R.drawable.google_icon);
+            chat.setImageResource(R.drawable.google_chat_icon);
+            mail.setImageResource(R.drawable.google_mail_icon);
+        }
+
         convertView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +107,12 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public void onGroupExpanded(int groupPosition) {
+        if(groupPosition != lastExpandedGroupPosition){
+            listView.collapseGroup(lastExpandedGroupPosition);
+        }
+
         super.onGroupExpanded(groupPosition);
+        lastExpandedGroupPosition = groupPosition;
     }
 
     @Override
