@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
     public void createData() {
         for (int j = 0; j < 15; j++) {
             Group group = new Group("Test " + j);
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < 2; i++) {
                 group.children.add("Sub Item" + i);
             }
             groups.append(j, group);

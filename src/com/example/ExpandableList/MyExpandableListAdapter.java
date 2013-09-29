@@ -8,15 +8,12 @@ package com.example.ExpandableList;
  * To change this template use File | Settings | File Templates.
  */
 import android.widget.*;
-import com.example.ExpandableList.R;
 import android.app.Activity;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-
-import java.util.ArrayList;
 
 public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     private int aux;
@@ -49,46 +46,36 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
                              boolean isLastChild, View convertView, ViewGroup parent) {
         final String children = (String) getChild(groupPosition, childPosition);
         TextView text = null;
+        System.out.println("ChildPosition:" + childPosition);
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.contact_detail_facebook, null);
+            if (childPosition == 0){
+              convertView = inflater.inflate(R.layout.contact_detail_phone,null);
+              return convertView;
+            }
+            if (childPosition == 1){
+                convertView = inflater.inflate(R.layout.contact_detail_social, null);
+            }
         }
-        text = (TextView) convertView.findViewById(R.id.status);
-        text.setText(children);
-        ImageView logo = (ImageView) convertView.findViewById(R.id.logo_icon);
-        ImageView mail = (ImageView) convertView.findViewById(R.id.post_icon);
-        ImageView chat = (ImageView) convertView.findViewById(R.id.chat_icon);
-        aux++;
-        if (aux == 1){
-            logo.setImageResource(R.drawable.vodafone_icon);
-            mail.setImageResource(0);
-            chat.setImageResource(0);
+        if (childPosition == 0){
+            return convertView;
         }
-        if (aux == 2){
-            logo.setImageResource(R.drawable.cosmote_icon);
-            mail.setImageResource(0);
-            chat.setImageResource(0);
-        }
-        if (aux == 3){
-            logo.setImageResource(R.drawable.orange_icon);
-            mail.setImageResource(0);
-            chat.setImageResource(0);
-        }
-        if (aux == 4){
-            logo.setImageResource(R.drawable.facebook_icon);
-            chat.setImageResource(R.drawable.facebook_chat_icon);
-            mail.setImageResource(R.drawable.facebook_post_icon);
-        }
-        if (aux == 5){
+        if (childPosition == 1){
+            ImageView logo = (ImageView) convertView.findViewById(R.id.logo_icon);
             logo.setImageResource(R.drawable.google_icon);
-            chat.setImageResource(R.drawable.google_chat_icon);
-            mail.setImageResource(R.drawable.google_mail_icon);
+
+            text = (TextView) convertView.findViewById(R.id.status);
+            text.setText("Online");
+            ImageView statusIcon = (ImageView) convertView.findViewById(R.id.status_icon);
+            statusIcon.setImageResource(R.drawable.online_icon);
+
+            ImageButton chatButton = (ImageButton) convertView.findViewById(R.id.chat_icon);
+            chatButton.setImageResource(R.drawable.google_chat_icon);
+
+            ImageButton mailButton = (ImageButton) convertView.findViewById(R.id.mail_icon);
+            mailButton.setImageResource(R.drawable.google_mail_icon);
+            return convertView;
         }
-        if (aux == 6){
-            logo.setImageResource(R.drawable.yahoo_icon);
-            chat.setImageResource(R.drawable.yahoo_chat_icon);
-            mail.setImageResource(R.drawable.yahoo_mail_icon);
-            aux = 0;
-        }
+
 
         convertView.setOnClickListener(new OnClickListener() {
             @Override
@@ -139,11 +126,15 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.listrow_group, null);
+            convertView = inflater.inflate(R.layout.contact_element, null);
         }
         Group group = (Group) getGroup(groupPosition);
-        ((CheckedTextView) convertView).setText(group.string);
-        ((CheckedTextView) convertView).setChecked(isExpanded);
+//        ((CheckedTextView) convertView).setText(group.string);
+//        ((CheckedTextView) convertView).setChecked(isExpanded);
+//        Spinner spinner = (Spinner) convertView.findViewById(R.id.spinner);
+//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity.getBaseContext() , R.array.planets_array ,android.R.layout.simple_spinner_item);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinner.setAdapter(adapter);
         return convertView;
     }
 
