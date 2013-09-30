@@ -10,13 +10,13 @@ package com.example.ExpandableList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Group {
+public class Contact {
 
-    public String string;
+    public String name;
     public final List<String> children = new ArrayList<String>();
 
-    public Group(String string) {
-        this.string = string;
+    public Contact(String name) {
+        this.name = name;
     }
 
 }

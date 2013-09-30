@@ -5,8 +5,24 @@
               android:id="@+id/LinearLayout1"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              tools:context=".MainActivity" >
+              tools:context=".MainActivity" android:orientation="vertical">
 
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp" android:background="#0000A0" android:baselineAligned="false">
+        <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="Search"
+                android:id="@+id/editText" android:layout_weight=".50"
+                android:layout_margin="10dp" android:background="#808080"/>
+        <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:id="@+id/imageButton" android:layout_weight=".20" android:src="@drawable/add_contact_icon"
+                android:scaleType="fitCenter"/>
+    </LinearLayout>
     <ExpandableListView
             android:id="@+id/listView"
             android:layout_width="match_parent"

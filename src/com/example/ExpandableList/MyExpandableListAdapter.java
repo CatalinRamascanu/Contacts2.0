@@ -16,21 +16,79 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 public class MyExpandableListAdapter extends BaseExpandableListAdapter {
-    private int aux;
-    private final SparseArray<Group> groups;
+    private View phoneView , googleView, facebookView, yahooView;
+    private final SparseArray<Contact> originalGroups;
+    private SparseArray<Contact> groups;
     private int lastExpandedGroupPosition;
     private ExpandableListView listView;
     public LayoutInflater inflater;
     public Activity activity;
 
-    public MyExpandableListAdapter(Activity act,ExpandableListView listView ,SparseArray<Group> groups) {
-        aux = 0;
+    public MyExpandableListAdapter(Activity act,ExpandableListView listView ,SparseArray<Contact> groups) {
         activity = act;
         this.listView = listView;
         this.groups = groups;
+        originalGroups = groups;
         inflater = act.getLayoutInflater();
+        loadViews();
+        
     }
+    private void loadViews(){
+        TextView status;
+        ImageView logo,statusIcon;
+        ImageButton chatButton, mailButton;
 
+        phoneView = inflater.inflate(R.layout.contact_detail_phone, null);
+        Spinner spinner = (Spinner) phoneView.findViewById(R.id.number_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity.getBaseContext() , R.array.planets_array ,android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        facebookView = inflater.inflate(R.layout.contact_detail_social, null);
+        logo = (ImageView) facebookView.findViewById(R.id.logo_icon);
+        logo.setImageResource(R.drawable.facebook_icon);
+
+        status = (TextView) facebookView.findViewById(R.id.status);
+        status.setText("Online");
+        statusIcon = (ImageView) facebookView.findViewById(R.id.status_icon);
+        statusIcon.setImageResource(R.drawable.online_icon);
+
+        chatButton = (ImageButton) facebookView.findViewById(R.id.chat_icon);
+        chatButton.setImageResource(R.drawable.facebook_chat_icon);
+
+        mailButton = (ImageButton) facebookView.findViewById(R.id.mail_icon);
+        mailButton.setImageResource(R.drawable.facebook_post_icon);
+
+        googleView = inflater.inflate(R.layout.contact_detail_social, null);
+        logo = (ImageView) googleView.findViewById(R.id.logo_icon);
+        logo.setImageResource(R.drawable.google_icon);
+
+        status = (TextView) googleView.findViewById(R.id.status);
+        status.setText("Online");
+        statusIcon = (ImageView) googleView.findViewById(R.id.status_icon);
+        statusIcon.setImageResource(R.drawable.online_icon);
+
+        chatButton = (ImageButton) googleView.findViewById(R.id.chat_icon);
+        chatButton.setImageResource(R.drawable.google_chat_icon);
+
+        mailButton = (ImageButton) googleView.findViewById(R.id.mail_icon);
+        mailButton.setImageResource(R.drawable.google_mail_icon);
+
+        yahooView = inflater.inflate(R.layout.contact_detail_social, null);
+        logo = (ImageView) yahooView.findViewById(R.id.logo_icon);
+        logo.setImageResource(R.drawable.yahoo_icon);
+
+        status = (TextView) yahooView.findViewById(R.id.status);
+        status.setText("Online");
+        statusIcon = (ImageView) yahooView.findViewById(R.id.status_icon);
+        statusIcon.setImageResource(R.drawable.online_icon);
+
+        chatButton = (ImageButton) yahooView.findViewById(R.id.chat_icon);
+        chatButton.setImageResource(R.drawable.yahoo_chat_icon);
+
+        mailButton = (ImageButton) yahooView.findViewById(R.id.mail_icon);
+        mailButton.setImageResource(R.drawable.yahoo_mail_icon);
+    }
     @Override
     public Object getChild(int groupPosition, int childPosition) {
         return groups.get(groupPosition).children.get(childPosition);
@@ -47,35 +105,27 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         final String children = (String) getChild(groupPosition, childPosition);
         TextView text = null;
         System.out.println("ChildPosition:" + childPosition);
-        if (convertView == null) {
-            if (childPosition == 0){
-              convertView = inflater.inflate(R.layout.contact_detail_phone,null);
-              return convertView;
-            }
-            if (childPosition == 1){
-                convertView = inflater.inflate(R.layout.contact_detail_social, null);
-            }
-        }
+
         if (childPosition == 0){
+            convertView = phoneView;
+
             return convertView;
         }
         if (childPosition == 1){
-            ImageView logo = (ImageView) convertView.findViewById(R.id.logo_icon);
-            logo.setImageResource(R.drawable.google_icon);
-
-            text = (TextView) convertView.findViewById(R.id.status);
-            text.setText("Online");
-            ImageView statusIcon = (ImageView) convertView.findViewById(R.id.status_icon);
-            statusIcon.setImageResource(R.drawable.online_icon);
-
-            ImageButton chatButton = (ImageButton) convertView.findViewById(R.id.chat_icon);
-            chatButton.setImageResource(R.drawable.google_chat_icon);
-
-            ImageButton mailButton = (ImageButton) convertView.findViewById(R.id.mail_icon);
-            mailButton.setImageResource(R.drawable.google_mail_icon);
+            convertView = facebookView;
             return convertView;
         }
 
+        if (childPosition == 2){
+            convertView = googleView;
+            
+            return convertView;
+        }
+
+        if (childPosition == 3){
+            convertView = yahooView;
+            return convertView;
+        }
 
         convertView.setOnClickListener(new OnClickListener() {
             @Override
@@ -128,13 +178,9 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.contact_element, null);
         }
-        Group group = (Group) getGroup(groupPosition);
-//        ((CheckedTextView) convertView).setText(group.string);
-//        ((CheckedTextView) convertView).setChecked(isExpanded);
-//        Spinner spinner = (Spinner) convertView.findViewById(R.id.spinner);
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity.getBaseContext() , R.array.planets_array ,android.R.layout.simple_spinner_item);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner.setAdapter(adapter);
+        Contact contact = (Contact) getGroup(groupPosition);
+        TextView name = (TextView) convertView.findViewById(R.id.contact_name);
+        name.setText(contact.name);
         return convertView;
     }
 
@@ -146,5 +192,24 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return false;
+    }
+
+    public void filterData(String query){
+        SparseArray<Contact> newList = new SparseArray<Contact>();
+        query = query.toLowerCase();
+        if (query.isEmpty()){
+           groups = originalGroups;
+        }
+        else{
+            int j = 0;
+            for (int i = 0; i < originalGroups.size(); i++){
+                if (originalGroups.get(i).name.toLowerCase().contains(query)){
+                    newList.put(j++,originalGroups.get(i));
+                }
+            }
+            groups = newList;
+        }
+
+        notifyDataSetChanged();
     }
 }

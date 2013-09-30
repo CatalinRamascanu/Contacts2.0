@@ -8,11 +8,11 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:id="@+id/textView" android:layout_weight=".80" android:gravity="center_vertical"
-            android:textStyle="bold" android:singleLine="false"/>
+            android:id="@+id/contact_name" android:layout_weight=".80" android:gravity="center_vertical"
+            android:textStyle="bold" android:singleLine="false" android:layout_gravity="right"/>
     <ImageView
             android:layout_width="40dp"
             android:layout_height="60dp"
-            android:id="@+id/imageView" android:layout_weight=".20"
+            android:id="@+id/contact_photo" android:layout_weight=".20"
             android:cropToPadding="false" android:adjustViewBounds="false" android:src="@drawable/contact_photo2"/>
 </LinearLayout>
