@@ -39,10 +39,6 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         ImageButton chatButton, mailButton;
 
         phoneView = inflater.inflate(R.layout.contact_detail_phone, null);
-        Spinner spinner = (Spinner) phoneView.findViewById(R.id.number_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity.getBaseContext() , R.array.planets_array ,android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
 
         facebookView = inflater.inflate(R.layout.contact_detail_social, null);
         logo = (ImageView) facebookView.findViewById(R.id.logo_icon);
@@ -91,7 +87,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     }
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return groups.get(groupPosition).children.get(childPosition);
+        return null;
     }
 
     @Override
@@ -102,44 +98,44 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        final String children = (String) getChild(groupPosition, childPosition);
-        TextView text = null;
-        System.out.println("ChildPosition:" + childPosition);
 
         if (childPosition == 0){
             convertView = phoneView;
-
+            Spinner spinner = (Spinner) phoneView.findViewById(R.id.number_spinner);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity.getBaseContext() , R.array.planets_array ,android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
             return convertView;
         }
-        if (childPosition == 1){
-            convertView = facebookView;
-            return convertView;
-        }
-
-        if (childPosition == 2){
-            convertView = googleView;
-            
-            return convertView;
-        }
-
-        if (childPosition == 3){
-            convertView = yahooView;
-            return convertView;
-        }
-
-        convertView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(activity, children,
-                        Toast.LENGTH_SHORT).show();
+        if (childPosition > 0){
+            Contact contact = (Contact) getGroup(groupPosition);
+            if (contact.hasFacebookAccount()){
+                convertView = facebookView;
+                return convertView;
             }
-        });
+            if (contact.hasGoogleAccount()){
+                convertView = googleView;
+                return convertView;
+            }
+            if (contact.hasYahooAccount()){
+                convertView = yahooView;
+                return convertView;
+            }
+
+        }
+//        convertView.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(activity, children,
+//                        Toast.LENGTH_SHORT).show();
+//            }
+//        });
         return convertView;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return groups.get(groupPosition).children.size();
+        return groups.get(groupPosition).getNumberOfAccounts();
     }
 
     @Override
@@ -180,7 +176,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         }
         Contact contact = (Contact) getGroup(groupPosition);
         TextView name = (TextView) convertView.findViewById(R.id.contact_name);
-        name.setText(contact.name);
+        name.setText(contact.getName());
         return convertView;
     }
 
@@ -203,7 +199,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         else{
             int j = 0;
             for (int i = 0; i < originalGroups.size(); i++){
-                if (originalGroups.get(i).name.toLowerCase().contains(query)){
+                if (originalGroups.get(i).getName().toLowerCase().contains(query)){
                     newList.put(j++,originalGroups.get(i));
                 }
             }

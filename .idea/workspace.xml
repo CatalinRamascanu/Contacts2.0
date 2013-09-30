@@ -29,20 +29,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" name="Default" comment="Added Icon images for facebook,yahoo and google">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-hdpi/add_contact_icon.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/example/ExpandableList/Group.java" afterPath="$PROJECT_DIR$/src/com/example/ExpandableList/Contact.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/example/ExpandableList/Contact.java" afterPath="$PROJECT_DIR$/src/com/example/ExpandableList/Contact.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/example/ExpandableList/MainActivity.java" afterPath="$PROJECT_DIR$/src/com/example/ExpandableList/MainActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/example/ExpandableList/MyExpandableListAdapter.java" afterPath="$PROJECT_DIR$/src/com/example/ExpandableList/MyExpandableListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/activity_main.xml" afterPath="$PROJECT_DIR$/res/layout/activity_main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/contact_detail_phone.xml" afterPath="$PROJECT_DIR$/res/layout/contact_detail_phone.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/contact_element.xml" afterPath="$PROJECT_DIR$/res/layout/contact_element.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Contacts2.0.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380521984709" ignored="false" />
+    <file path="/Dummy.txt" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380544997591" ignored="false" />
     <file path="/a.xml" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380192909861" ignored="false" />
     <file path="/fragment.java" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380380357489" ignored="false" />
     <file path="/MyActivity.java" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380185246482" ignored="false" />
@@ -50,14 +44,14 @@
     <file path="/listrow_details.xml" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380265071282" ignored="false" />
     <file path="/AndroidManifest.xml" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380189229069" ignored="false" />
     <file path="/Group.java" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380189067656" ignored="false" />
-    <file path="/MyExpandableListAdapter.java" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380539535100" ignored="false" />
-    <file path="/MainActivity.java" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380538772353" ignored="false" />
+    <file path="/MyExpandableListAdapter.java" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380568833569" ignored="false" />
+    <file path="/MainActivity.java" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380568216445" ignored="false" />
     <file path="/contact_detail_facebook.xml" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380395150798" ignored="false" />
     <file path="/contact_detail_google.xml" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380274764824" ignored="false" />
     <file path="/contact_detail_yahoo.xml" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380275545679" ignored="false" />
     <file path="/activity_main.xml" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380385498070" ignored="false" />
     <file path="/searchable.xml" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380534909667" ignored="false" />
-    <file path="/Contact.java" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380538020771" ignored="false" />
+    <file path="/Contact.java" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380568783622" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,9 +115,9 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/example/ExpandableList/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="34" selection-start="1332" selection-end="1332" vertical-scroll-proportion="0.0">
+            <state line="72" column="8" selection-start="2417" selection-end="2417" vertical-scroll-proportion="0.0">
               <folding>
-                <element signature="e#584#593#0" expanded="true" />
+                <element signature="e#589#598#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -132,7 +126,7 @@
       <file leaf-file-name="Contact.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/example/ExpandableList/Contact.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="4" selection-start="300" selection-end="300" vertical-scroll-proportion="0.0">
+            <state line="103" column="29" selection-start="2490" selection-end="2490" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -141,14 +135,11 @@
       <file leaf-file-name="MyExpandableListAdapter.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/example/ExpandableList/MyExpandableListAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="202" column="92" selection-start="7013" selection-end="7013" vertical-scroll-proportion="0.96414346">
+            <state line="106" column="40" selection-start="4363" selection-end="4363" vertical-scroll-proportion="0.15529412">
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#loadViews#0;class#MyExpandableListAdapter#0" expanded="false" />
-                <element signature="method#getChildView#0;class#MyExpandableListAdapter#0" expanded="false" />
-                <element signature="e#5008#5222#0" expanded="true" />
-                <element signature="e#5211#5212#0" expanded="true" />
-                <element signature="e#6874#6883#0" expanded="true" />
+                <element signature="e#6857#6866#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -168,11 +159,11 @@
       </file>
       <file leaf-file-name="contact_detail_phone.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/res/layout/contact_detail_phone.xml">
-          <provider editor-type-id="android-designer">
+          <provider selected="true" editor-type-id="android-designer">
             <state />
           </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.0">
+          <provider editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -241,18 +232,18 @@
         <option value="$PROJECT_DIR$/res/layout/activity_main.xml" />
         <option value="$PROJECT_DIR$/res/xml/searchable.xml" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/src/com/example/ExpandableList/Contact.java" />
         <option value="$PROJECT_DIR$/res/layout/contact_element.xml" />
-        <option value="$PROJECT_DIR$/src/com/example/ExpandableList/MainActivity.java" />
+        <option value="$PROJECT_DIR$/src/com/example/ExpandableList/Contact.java" />
         <option value="$PROJECT_DIR$/src/com/example/ExpandableList/MyExpandableListAdapter.java" />
+        <option value="$PROJECT_DIR$/src/com/example/ExpandableList/MainActivity.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-1" />
-    <option name="y" value="31" />
-    <option name="width" value="1282" />
-    <option name="height" value="968" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1616" />
+    <option name="height" value="876" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -280,7 +271,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -410,6 +400,7 @@
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -427,8 +418,8 @@
     <property name="restartRequiresConfirmation" value="true" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -468,19 +459,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -506,6 +484,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -620,14 +611,11 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="31" width="1282" height="968" extended-state="6" />
+    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31928688" sideWeight="0.6727941" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3119935" sideWeight="0.6727941" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3272059" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32545203" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32792208" sideWeight="0.6728307" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -640,9 +628,12 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24967825" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24797407" sideWeight="0.6727941" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3247549" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2117117" sideWeight="0.674548" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3240612" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31928688" sideWeight="0.6727941" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3119935" sideWeight="0.6727941" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32792208" sideWeight="0.6728307" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -716,6 +707,13 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="62" selection-start="615" selection-end="615" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/activity_listviewexampleactivity.xml">
       <provider editor-type-id="android-designer">
         <state />
@@ -786,10 +784,10 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/contact_detail_phone.xml">
-      <provider editor-type-id="android-designer">
+      <provider selected="true" editor-type-id="android-designer">
         <state />
       </provider>
-      <provider selected="true" editor-type-id="text-editor">
+      <provider editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
@@ -812,13 +810,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/example/ExpandableList/Contact.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="4" selection-start="300" selection-end="300" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/contact_element.xml">
       <provider selected="true" editor-type-id="android-designer">
         <state />
@@ -829,25 +820,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/example/ExpandableList/Contact.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="103" column="29" selection-start="2490" selection-end="2490" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/example/ExpandableList/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="34" selection-start="1332" selection-end="1332" vertical-scroll-proportion="0.0">
+        <state line="72" column="8" selection-start="2417" selection-end="2417" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="e#584#593#0" expanded="true" />
+            <element signature="e#589#598#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/example/ExpandableList/MyExpandableListAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="202" column="92" selection-start="7013" selection-end="7013" vertical-scroll-proportion="0.96414346">
+        <state line="106" column="40" selection-start="4363" selection-end="4363" vertical-scroll-proportion="0.15529412">
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#loadViews#0;class#MyExpandableListAdapter#0" expanded="false" />
-            <element signature="method#getChildView#0;class#MyExpandableListAdapter#0" expanded="false" />
-            <element signature="e#5008#5222#0" expanded="true" />
-            <element signature="e#5211#5212#0" expanded="true" />
-            <element signature="e#6874#6883#0" expanded="true" />
+            <element signature="e#6857#6866#0" expanded="true" />
           </folding>
         </state>
       </provider>

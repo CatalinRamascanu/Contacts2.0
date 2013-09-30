@@ -18,7 +18,7 @@ import android.widget.ExpandableListView;
 
 public class MainActivity extends Activity {
     // More efficient than HashMap for mapping integers to objects
-    SparseArray<Contact> groups = new SparseArray<Contact>();
+    SparseArray<Contact> contactList = new SparseArray<Contact>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         createData();
         ExpandableListView listView = (ExpandableListView) findViewById(R.id.listView);
-        final MyExpandableListAdapter adapter = new MyExpandableListAdapter(this,listView,groups);
+        final MyExpandableListAdapter adapter = new MyExpandableListAdapter(this,listView, contactList);
         listView.setAdapter(adapter);
         EditText inputSearch = (EditText) findViewById(R.id.editText);
         inputSearch.addTextChangedListener(new TextWatcher() {
@@ -53,22 +53,34 @@ public class MainActivity extends Activity {
     }
 
     public void createData() {
+        int nrOfContacts = 0;
         Contact contact;
+
         contact = new Contact("Gheorghe Ion ");
-        for (int i = 0; i < 4; i++) {
-            contact.children.add("Sub Item" + i);
-        }
-        groups.append(0, contact);
+        contact.addPhoneNumber("0735425123");
+        contact.addPhoneNumber("0215425123");
+        contact.addPhoneNumber("075552584");
+        contact.setFacebookAccount("test");
+        contactList.append(nrOfContacts++, contact);
+
         contact = new Contact("George Popescu");
-        for (int i = 0; i < 4; i++) {
-            contact.children.add("Sub Item" + i);
-        }
+        contact.addPhoneNumber("0761235123");
+        contact.setFacebookAccount("test");
+        contact.setYahooAccount("test");
+        contact.setGoogleAccount("test");
+        contactList.append(nrOfContacts++, contact);
+
         contact = new Contact("Alexandra Poenaru");
-        groups.append(1, contact);
-        for (int i = 0; i < 4; i++) {
-            contact.children.add("Sub Item" + i);
-        }
-        groups.append(2, contact);
+        contact.addPhoneNumber("023183283");
+        contact.setGoogleAccount("test");
+        contactList.append(nrOfContacts++, contact);
+
+        contact = new Contact("Irina Tomescu");
+        contact.addPhoneNumber("023183283");
+        contact.addPhoneNumber("0735213882");
+        contact.setYahooAccount("test");
+        contactList.append(nrOfContacts++, contact);
+
     }
 
 }
