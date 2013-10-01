@@ -1,2 +1,9 @@
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Intellij
 .idea/
-Contacts2.0.iml
+*.iml
+*.iws
