@@ -29,22 +29,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Contacts2.0.iml" afterPath="" />
     </list>
     <ignored path="Contacts2.0.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380610513923" ignored="false" />
+    <file path="/Dummy.txt" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380610671042" ignored="false" />
     <file path="/a.xml" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380192909861" ignored="false" />
     <file path="/fragment.java" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380380357489" ignored="false" />
     <file path="/MyActivity.java" changelist="c85e8eb1-8913-40d0-b9e9-3dc2f660b261" time="1380185246482" ignored="false" />
@@ -573,7 +566,11 @@
       <created>1380610516051</created>
       <updated>1380610516051</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Deleted again .idea">
+      <created>1380610677565</created>
+      <updated>1380610677565</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -648,7 +645,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Deleted .idea" />
+    <option name="LAST_COMMIT_MESSAGE" value="Deleted again .idea" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -665,6 +662,7 @@
     <MESSAGE value="ListView and ExpadableListView Example Added" />
     <MESSAGE value="Added Icon images for facebook,yahoo and google" />
     <MESSAGE value="Deleted .idea" />
+    <MESSAGE value="Deleted again .idea" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
