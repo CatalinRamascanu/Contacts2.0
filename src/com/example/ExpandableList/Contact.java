@@ -48,7 +48,9 @@ public class Contact {
     public String getPhoneNumber(int index){
         return phoneList.get(index);
     }
-
+    public int getSizeOfPhoneList(){
+        return sizeOfPhoneList;
+    }
     public void setFacebookAccount(String facebookAccount){
         this.facebookAccount = facebookAccount;
     }

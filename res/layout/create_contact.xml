@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/scrollView"
+        android:fillViewport="true">
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                >
+            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="0dp"
+                          android:background="@drawable/border"
+                          android:id="@+id/linearLayout" android:layout_weight=".10">
+                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent"
+                              android:layout_height="0dp" android:id="@+id/linearLayout2"
+                              android:layout_marginTop="3dp" android:layout_weight=".20">
+                    <ImageView android:layout_width="0dp" android:layout_height="fill_parent"
+                               android:id="@+id/imageView3" android:layout_gravity="center" android:layout_weight=".20"
+                               android:src="@drawable/google_icon"/>
+                    <TextView android:layout_width="0dp" android:layout_height="fill_parent"
+                              android:text="Setup Google Account" android:id="@+id/textView2"
+                              android:layout_gravity="center" android:layout_weight=".80" android:singleLine="false"/>
+                </LinearLayout>
+                <EditText android:layout_width="fill_parent" android:layout_height="0dp" android:text="New EditText"
+                          android:id="@+id/editText3" android:layout_weight=".40"/>
+                <EditText android:layout_width="fill_parent" android:layout_height="0dp" android:text="New EditText"
+                          android:id="@+id/editText4" android:layout_weight=".40"/>
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="0dp"
+                          android:layout_weight=".20" android:background="@drawable/border"
+                          android:id="@+id/linearLayout1">
+                <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+                              android:layout_height="0dp" android:layout_weight=".20" android:layout_marginTop="3dp">
+                    <ImageView android:layout_width="0dp" android:layout_height="fill_parent"
+                               android:id="@+id/imageView2" android:layout_gravity="center" android:layout_weight=".20"
+                               android:src="@drawable/facebook_icon"/>
+                    <TextView android:layout_width="0dp" android:layout_height="fill_parent"
+                              android:text="Setup Facebook Account" android:id="@+id/textView1"
+                              android:layout_gravity="center" android:layout_weight=".80"/>
+                </LinearLayout>
+                <EditText android:layout_width="fill_parent" android:layout_height="0dp" android:text="New EditText"
+                          android:id="@+id/editText1" android:layout_weight=".40"/>
+                <EditText android:layout_width="fill_parent" android:layout_height="0dp" android:text="New EditText"
+                          android:id="@+id/editText2" android:layout_weight=".40"/>
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="0dp"
+                          android:layout_weight=".20" android:background="@drawable/border"
+                          android:id="@+id/linearLayout3">
+                <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+                              android:layout_height="0dp" android:layout_weight=".20" android:id="@+id/linearLayout4"
+                              android:layout_marginTop="3dp">
+                    <ImageView android:layout_width="0dp" android:layout_height="fill_parent"
+                               android:id="@+id/imageView4" android:layout_gravity="center" android:layout_weight=".20"
+                               android:src="@drawable/yahoo_icon"/>
+                    <TextView android:layout_width="0dp" android:layout_height="fill_parent"
+                              android:text="Setup Yahoo Account" android:id="@+id/textView3"
+                              android:layout_gravity="center" android:layout_weight=".80"/>
+                </LinearLayout>
+                <EditText android:layout_width="fill_parent" android:layout_height="0dp" android:text="New EditText"
+                          android:id="@+id/editText5" android:layout_weight=".40"/>
+                <EditText android:layout_width="fill_parent" android:layout_height="0dp" android:text="New EditText"
+                          android:id="@+id/editText6" android:layout_weight=".40"/>
+            </LinearLayout>
+            <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+                          android:layout_height="0dp" android:layout_gravity="left|center_vertical"
+                          android:layout_weight=".20" android:background="@drawable/border"
+                          android:id="@+id/linearLayout5">
+                <ImageView android:layout_width="0dp" android:layout_height="fill_parent"
+                           android:id="@+id/profilePicture" android:layout_gravity="center" android:layout_weight=".20"
+                           android:src="@drawable/emptry_contact_icon" android:layout_margin="5dp"
+                           android:clickable="true" android:cropToPadding="false"/>
+                <EditText android:layout_width="0dp" android:layout_height="wrap_content" android:text="Name"
+                          android:id="@+id/nameInput" android:layout_weight=".80"
+                          android:layout_gravity="center_vertical"/>
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="0dp"
+                          android:layout_weight=".20" android:background="@drawable/border"
+                          android:id="@+id/linearLayout6">
+                <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+                              android:layout_height="40dp" android:layout_marginTop="3dp" android:layout_weight=".10">
+                    <ImageView android:layout_width="0dp" android:layout_height="fill_parent"
+                               android:id="@+id/imageView" android:layout_gravity="center_vertical"
+                               android:src="@drawable/phone_book" android:layout_weight=".20"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="Phonelist"
+                              android:id="@+id/textView" android:textSize="15dp" android:layout_weight=".60"
+                              android:layout_gravity="center_vertical"/>
+                    <ImageButton android:layout_width="0dp" android:layout_height="wrap_content"
+                                 android:id="@+id/imageButton1" android:layout_weight=".15"
+                                 android:scaleType="fitCenter" android:baselineAlignBottom="false"
+                                 android:cropToPadding="false" android:layout_gravity="center_vertical"
+                                 android:layout_marginLeft="5dp" android:layout_marginTop="2dp"
+                                 android:layout_marginRight="5dp" android:src="@drawable/add_icon"/>
+                </LinearLayout>
+                <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          android:text="Disable Operator Detectation" android:id="@+id/checkBox" android:checked="false"
+                          android:enabled="true" android:layout_gravity="center_horizontal"
+                          android:layout_weight=".20"/>
+                <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+                              android:layout_height="wrap_content" android:layout_marginBottom="3dp"
+                              android:layout_weight=".60">
+                    <ImageView android:layout_width="0dp" android:layout_height="fill_parent"
+                               android:id="@+id/imageView1" android:layout_gravity="center" android:layout_weight=".20"
+                               android:src="@drawable/vodafone_icon" android:layout_margin="5dp"/>
+                    <EditText android:layout_width="0dp" android:layout_height="wrap_content"
+                              android:text="Phone Number" android:id="@+id/editText"
+                              android:layout_gravity="center_vertical" android:layout_weight=".60"
+                              android:layout_marginTop="5dp"/>
+                    <ImageButton android:layout_width="0dp" android:layout_height="fill_parent"
+                                 android:id="@+id/imageButton" android:layout_gravity="center_vertical"
+                                 android:layout_weight=".20" android:layout_margin="5dp"
+                                 android:src="@drawable/delete_icon" android:scaleType="fitCenter"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

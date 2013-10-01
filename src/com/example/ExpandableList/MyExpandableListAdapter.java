@@ -98,17 +98,20 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-
+        Contact contact = (Contact) getGroup(groupPosition);
         if (childPosition == 0){
             convertView = phoneView;
             Spinner spinner = (Spinner) phoneView.findViewById(R.id.number_spinner);
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity.getBaseContext() , R.array.planets_array ,android.R.layout.simple_spinner_item);
+            ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(listView.getContext(), android.R.layout.simple_spinner_item);;
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
+            for (int i = 0; i < contact.getSizeOfPhoneList(); i++){
+                adapter.add(contact.getPhoneNumber(i));
+            }
             return convertView;
         }
         if (childPosition > 0){
-            Contact contact = (Contact) getGroup(groupPosition);
+
             if (contact.hasFacebookAccount()){
                 convertView = facebookView;
                 return convertView;
