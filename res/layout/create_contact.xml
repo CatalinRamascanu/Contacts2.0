@@ -22,17 +22,17 @@
                     android:layout_height="wrap_content" android:layout_weight=".70"
                     android:layout_marginTop="15dp">
                 <EditText android:layout_width="fill_parent" android:layout_height="40dp" android:text="First Name"
-                          android:id="@+id/editText4"
+                          android:id="@+id/firstName"
                         />
                 <EditText android:layout_width="fill_parent" android:layout_height="40dp" android:text="Middle Name"
-                          android:id="@+id/editText5" android:visibility="visible"/>
+                          android:id="@+id/middleName" android:visibility="visible"/>
                 <EditText android:layout_width="fill_parent" android:layout_height="40dp" android:text="Last Name"
-                          android:id="@+id/editText6" android:visibility="visible"/>
+                          android:id="@+id/lastName" android:visibility="visible"/>
             </LinearLayout>
             <ImageButton
                     android:layout_width="0dp"
                     android:layout_height="30dp"
-                    android:id="@+id/imageButton2" android:layout_gravity="center|top"
+                    android:id="@+id/extendName" android:layout_gravity="center|top"
                     android:src="@drawable/arrow_down_icon" android:scaleType="fitCenter" android:layout_weight=".10"
                     android:layout_marginTop="20dp"/>
         </LinearLayout>
