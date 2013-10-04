@@ -21,26 +21,26 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" android:layout_weight=".70"
                     android:layout_marginTop="15dp">
-                <EditText android:layout_width="fill_parent" android:layout_height="40dp" android:text="First Name"
+                <EditText android:layout_width="fill_parent" android:layout_height="40dp" android:text="Name"
                           android:id="@+id/firstName"
                         />
                 <EditText android:layout_width="fill_parent" android:layout_height="40dp" android:text="Middle Name"
-                          android:id="@+id/middleName" android:visibility="visible"/>
+                          android:id="@+id/middleName" android:visibility="gone"/>
                 <EditText android:layout_width="fill_parent" android:layout_height="40dp" android:text="Last Name"
-                          android:id="@+id/lastName" android:visibility="visible"/>
+                          android:id="@+id/lastName" android:visibility="gone"/>
             </LinearLayout>
             <ImageButton
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:id="@+id/extendName" android:layout_gravity="center|top"
-                    android:src="@drawable/arrow_down_icon" android:scaleType="fitCenter" android:layout_weight=".10"
-                    android:layout_marginTop="20dp"/>
+                    android:src="@drawable/arrow_down_icon" android:scaleType="fitCenter" android:layout_weight=".15"
+                    android:layout_marginTop="12dp"/>
         </LinearLayout>
-        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="130dp"
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
                       android:background="@drawable/border"
-                      android:id="@+id/linearLayout">
+                      android:id="@+id/phoneListLayout">
             <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
-                          android:layout_height="0dp" android:layout_marginTop="3dp" android:layout_weight=".30">
+                          android:layout_height="40dp" android:layout_marginTop="3dp" android:layout_weight="0">
                 <ImageView android:layout_width="0dp" android:layout_height="fill_parent" android:id="@+id/imageView"
                            android:layout_gravity="center_vertical" android:src="@drawable/phone_book"
                            android:layout_weight=".20"/>
@@ -49,29 +49,15 @@
                           android:textStyle="bold" android:layout_gravity="center_vertical"
                           android:gravity="center_horizontal"/>
                 <ImageButton android:layout_width="0dp" android:layout_height="wrap_content"
-                             android:id="@+id/imageButton1" android:layout_weight=".15" android:scaleType="fitCenter"
+                             android:id="@+id/addPhoneNumber" android:layout_weight=".15" android:scaleType="fitCenter"
                              android:baselineAlignBottom="false" android:cropToPadding="false"
                              android:layout_gravity="center_vertical" android:layout_marginLeft="5dp"
                              android:layout_marginTop="2dp" android:layout_marginRight="5dp"
-                             android:src="@drawable/add_icon"/>
+                             android:src="@drawable/add_icon" android:focusableInTouchMode="false"/>
             </LinearLayout>
-            <CheckBox android:layout_width="wrap_content" android:layout_height="0dp"
+            <CheckBox android:layout_width="wrap_content" android:layout_height="35dp"
                       android:text="Disable Operator Detectation" android:id="@+id/checkBox" android:checked="false"
-                      android:enabled="true" android:layout_gravity="center_horizontal" android:layout_weight=".30"/>
-            <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
-                          android:layout_height="0dp" android:layout_marginBottom="3dp"
-                          android:layout_weight=".40">
-                <ImageView android:layout_width="0dp" android:layout_height="fill_parent" android:id="@+id/imageView1"
-                           android:layout_gravity="center" android:layout_weight=".20"
-                           android:src="@drawable/vodafone_icon" android:layout_margin="5dp"/>
-                <EditText android:layout_width="0dp" android:layout_height="wrap_content" android:text="Phone Number"
-                          android:id="@+id/editText" android:layout_gravity="center_vertical"
-                          android:layout_weight=".60" android:layout_marginTop="5dp"/>
-                <ImageButton android:layout_width="0dp" android:layout_height="fill_parent"
-                             android:id="@+id/imageButton" android:layout_gravity="center_vertical"
-                             android:layout_weight=".20" android:layout_margin="5dp" android:src="@drawable/delete_icon"
-                             android:scaleType="fitCenter"/>
-            </LinearLayout>
+                      android:enabled="true" android:layout_gravity="center_horizontal"/>
         </LinearLayout>
         <LinearLayout
                 android:orientation="vertical"

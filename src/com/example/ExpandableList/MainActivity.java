@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
         ExpandableListView listView = (ExpandableListView) findViewById(R.id.listView);
         final MyExpandableListAdapter adapter = new MyExpandableListAdapter(this,listView, contactList);
         listView.setAdapter(adapter);
-        EditText inputSearch = (EditText) findViewById(R.id.editText);
+        EditText inputSearch = (EditText) findViewById(R.id.searchBox);
         inputSearch.addTextChangedListener(new TextWatcher() {
 
             @Override
