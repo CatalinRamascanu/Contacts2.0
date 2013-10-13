@@ -7,6 +7,7 @@ package com.example.ExpandableList;
  * Time: 12:36 PM
  * To change this template use File | Settings | File Templates.
  */
+
 import android.widget.*;
 import android.app.Activity;
 import android.util.SparseArray;
@@ -124,15 +125,8 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
                 convertView = yahooView;
                 return convertView;
             }
-
         }
-//        convertView.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(activity, children,
-//                        Toast.LENGTH_SHORT).show();
-//            }
-//        });
+
         return convertView;
     }
 
@@ -177,9 +171,11 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.contact_element, null);
         }
-        Contact contact = (Contact) getGroup(groupPosition);
+        Contact contact = (Contact) groups.get(groupPosition);
         TextView name = (TextView) convertView.findViewById(R.id.contact_name);
-        name.setText(contact.getName());
+        if (name != null && contact.getName() != null){
+            name.setText(contact.getName());
+        }
         return convertView;
     }
 

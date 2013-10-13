@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="50dp"
+              android:layout_marginBottom="3dp" android:id="@+id/linearLayout" android:focusableInTouchMode="false"
+              xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_width="0dp"
+               android:layout_height="fill_parent"
+               android:id="@+id/operatorLogo"
+               android:layout_gravity="center"
+               android:layout_weight=".20"
+               android:src="@drawable/phone_logo"
+               android:layout_margin="5dp"
+               android:focusableInTouchMode="false"/>
+    <EditText android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:id="@+id/phoneNumber"
+              android:layout_gravity="center_vertical"
+              android:layout_weight=".60"
+              android:inputType="number"
+              android:layout_marginTop="5dp" android:hint="Phone Number"/>
+    <ImageButton android:layout_width="0dp"
+                 android:layout_height="fill_parent"
+                 android:id="@+id/deleteButton"
+                 android:layout_gravity="center_vertical"
+                 android:layout_weight=".20"
+                 android:layout_margin="5dp"
+                 android:src="@drawable/delete_icon"
+                 android:scaleType="fitCenter"
+                 android:focusableInTouchMode="false"/>
+</LinearLayout>

@@ -9,6 +9,9 @@ package com.example.ExpandableList;
  */
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -16,29 +19,77 @@ import android.text.TextWatcher;
 import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 
 public class MainActivity extends Activity {
     // More efficient than HashMap for mapping integers to objects
-    SparseArray<Contact> contactList = new SparseArray<Contact>();
-
+    private SparseArray<Contact> contactList;
+    private MyExpandableListAdapter adapter;
+    private ActivityProfile activityProfile;
+    private ContactManager contactManager;
+    private Activity thisActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        thisActivity = this;
+        contactManager = new ContactManager(this);
+        contactList = new SparseArray<Contact>();
+        startActivitySetup();
+    }
+    private void startActivitySetup(){
+        setContentView(R.layout.setup_app);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Before you can use Contacts 2.0, you need to setup your social accounts.")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+        Dialog infoDialog = builder.create();
+        infoDialog.show();
+        Button saveButton = (Button) findViewById(R.id.save_setup);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activityProfile = new ActivityProfile();
+
+                activityProfile.setGoogleAccount(((EditText) findViewById(R.id.g_acc_input)).getText().toString());
+                activityProfile.setGooglePassword(((EditText) findViewById(R.id.g_pass_input)).getText().toString());
+
+                activityProfile.setFacebookAccount(((EditText) findViewById(R.id.f_acc_input)).getText().toString());
+                activityProfile.setFacebookPassword(((EditText) findViewById(R.id.f_pass_input)).getText().toString());
+
+                activityProfile.setYahooAccount(((EditText) findViewById(R.id.y_acc_input)).getText().toString());
+                activityProfile.setYahooPassword(((EditText) findViewById(R.id.y_pass_input)).getText().toString());
+
+                contactManager.readContacts();
+                setContentView(R.layout.activity_main);
+                ExpandableListView listView = (ExpandableListView) findViewById(R.id.listView);
+                adapter = new MyExpandableListAdapter(thisActivity,listView, contactManager.getListOfContacts());
+                listView.setAdapter(adapter);
+            }
+        });
+    }
+    private void startNormalActivity(){
         createData();
+        ContactManager manager = new ContactManager(this);
+        manager.readContacts();
         ExpandableListView listView = (ExpandableListView) findViewById(R.id.listView);
-        final MyExpandableListAdapter adapter = new MyExpandableListAdapter(this,listView, contactList);
+        adapter = new MyExpandableListAdapter(this,listView, contactList);
         listView.setAdapter(adapter);
+        initListeners();
+    }
+    private void initListeners(){
         EditText inputSearch = (EditText) findViewById(R.id.searchBox);
         inputSearch.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                 // When user changed the Text
-               adapter.filterData(cs.toString());
+                adapter.filterData(cs.toString());
             }
 
             @Override
@@ -54,6 +105,7 @@ public class MainActivity extends Activity {
             }
         });
 
+
         ImageButton createContact = (ImageButton) findViewById(R.id.addContact);
         createContact.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,10 +114,7 @@ public class MainActivity extends Activity {
                 MainActivity.this.startActivity(myIntent);
             }
         });
-
-
     }
-
     public void createData() {
         int nrOfContacts = 0;
         Contact contact;

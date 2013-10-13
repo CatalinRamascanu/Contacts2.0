@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save Setup"
+            android:id="@+id/save_setup" android:layout_gravity="center_horizontal"/>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent"
+                  android:layout_height="100dp" android:orientation="horizontal" android:id="@+id/linearLayout">
+        <ImageView android:id="@+id/google_logo" android:layout_width="50dp" android:layout_height="40dp"
+                   android:layout_alignParentBottom="false" android:layout_alignParentTop="true"
+                   android:contentDescription="TODO" android:src="@drawable/google_icon"/>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+            <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:id="@+id/g_acc_input" android:hint="Google Account" android:layout_weight=".50"/>
+            <EditText android:layout_width="fill_parent" android:layout_height="0dp"
+                      android:id="@+id/g_pass_input" android:hint="Google Password" android:layout_weight=".50"
+                      android:inputType="textPassword"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent"
+                  android:layout_height="100dp" android:orientation="horizontal" android:id="@+id/linearLayout1">
+        <ImageView android:id="@+id/facebook_logo" android:layout_width="50dp" android:layout_height="40dp"
+                   android:layout_alignParentBottom="false" android:layout_alignParentTop="true"
+                   android:contentDescription="TODO" android:src="@drawable/facebook_icon"/>
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent"
+                      android:layout_height="fill_parent">
+            <EditText android:layout_width="fill_parent" android:layout_height="0dp" android:id="@+id/f_acc_input"
+                      android:hint="Facebook Account" android:layout_weight=".50"/>
+            <EditText android:layout_width="fill_parent" android:layout_height="0dp" android:id="@+id/f_pass_input"
+                      android:hint="Facebook Password" android:layout_weight=".50" android:inputType="textPassword"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent"
+                  android:layout_height="100dp" android:orientation="horizontal" android:id="@+id/linearLayout2">
+        <ImageView android:id="@+id/yahoo_logo" android:layout_width="50dp" android:layout_height="40dp"
+                   android:layout_alignParentBottom="false" android:layout_alignParentTop="true"
+                   android:src="@drawable/yahoo_icon" android:clickable="false"/>
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent"
+                      android:layout_height="fill_parent">
+            <EditText android:layout_width="fill_parent" android:layout_height="0dp" android:id="@+id/y_acc_input"
+                      android:hint="Yahoo Account" android:layout_weight=".50"/>
+            <EditText android:layout_width="fill_parent" android:layout_height="0dp" android:id="@+id/y_pass_input"
+                      android:hint="Yahoo Password" android:layout_weight=".50" android:inputType="textPassword"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
