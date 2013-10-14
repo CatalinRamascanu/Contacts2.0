@@ -124,4 +124,7 @@ public class Contact {
         }
         return nr;
     }
+    public String toString(){
+        return name;
+    }
 }

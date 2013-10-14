@@ -1,6 +1,7 @@
 package com.example.ExpandableList;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -11,6 +12,7 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.util.SparseArray;
+import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -25,16 +27,46 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 
-public class ContactManager {
+public class ContactManager{
     private SparseArray<Contact> listOfContacts;
     private Activity activity;
-
-    public ContactManager(Activity act){
+    private boolean isReading;
+    private ExpandableListView listView;
+    public ContactManager(Activity act, ExpandableListView listView) {
         listOfContacts = new SparseArray<Contact>();
+        this.listView = listView;
         activity = act;
+        isReading = false;
     }
 
-    public void readContacts(){
+    public boolean isReading(){
+        return isReading;
+    }
+
+    public void readContacts() throws InterruptedException {
+        isReading = true;
+        final ProgressDialog mDialog = new ProgressDialog(activity);
+        mDialog.setMessage("Loading Contacts...");
+        mDialog.setCancelable(false);
+        mDialog.show();
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                readContactsFromPhone();
+                isReading = false;
+
+            }
+        });
+        t.start();
+        t.join();
+        MyExpandableListAdapter adapter = new MyExpandableListAdapter(activity,listView, listOfContacts);
+        listView.setAdapter(adapter);
+        mDialog.dismiss();
+
+    }
+
+    private void readContactsFromPhone(){
+        int contactsSize = 0;
         ContentResolver cr = activity.getContentResolver();
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,null, null, null, null);
         SparseArray<Contact> contacts = new SparseArray<Contact>();
@@ -100,7 +132,7 @@ public class ContactManager {
                     }
 
                     //Add to contactList
-                    contacts.put(Integer.parseInt(id),contact);
+                    contacts.put(contactsSize++,contact);
                 }
 
 

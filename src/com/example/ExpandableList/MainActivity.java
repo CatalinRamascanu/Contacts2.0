@@ -11,6 +11,7 @@ package com.example.ExpandableList;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +25,8 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 
+import java.util.concurrent.CountDownLatch;
+
 public class MainActivity extends Activity {
     // More efficient than HashMap for mapping integers to objects
     private SparseArray<Contact> contactList;
@@ -36,7 +39,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         thisActivity = this;
-        contactManager = new ContactManager(this);
         contactList = new SparseArray<Contact>();
         startActivitySetup();
     }
@@ -56,6 +58,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 activityProfile = new ActivityProfile();
 
+
                 activityProfile.setGoogleAccount(((EditText) findViewById(R.id.g_acc_input)).getText().toString());
                 activityProfile.setGooglePassword(((EditText) findViewById(R.id.g_pass_input)).getText().toString());
 
@@ -65,18 +68,20 @@ public class MainActivity extends Activity {
                 activityProfile.setYahooAccount(((EditText) findViewById(R.id.y_acc_input)).getText().toString());
                 activityProfile.setYahooPassword(((EditText) findViewById(R.id.y_pass_input)).getText().toString());
 
-                contactManager.readContacts();
                 setContentView(R.layout.activity_main);
-                ExpandableListView listView = (ExpandableListView) findViewById(R.id.listView);
-                adapter = new MyExpandableListAdapter(thisActivity,listView, contactManager.getListOfContacts());
-                listView.setAdapter(adapter);
+                contactManager = new ContactManager(thisActivity,(ExpandableListView) findViewById(R.id.listView));
+                try {
+                    contactManager.readContacts();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
             }
         });
     }
     private void startNormalActivity(){
         createData();
-        ContactManager manager = new ContactManager(this);
-        manager.readContacts();
+//        ContactManager manager = new ContactManager(this);
+//        manager.readContacts();
         ExpandableListView listView = (ExpandableListView) findViewById(R.id.listView);
         adapter = new MyExpandableListAdapter(this,listView, contactList);
         listView.setAdapter(adapter);

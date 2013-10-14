@@ -171,7 +171,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.contact_element, null);
         }
-        Contact contact = (Contact) groups.get(groupPosition);
+        Contact contact = groups.get(groupPosition);
         TextView name = (TextView) convertView.findViewById(R.id.contact_name);
         if (name != null && contact.getName() != null){
             name.setText(contact.getName());
