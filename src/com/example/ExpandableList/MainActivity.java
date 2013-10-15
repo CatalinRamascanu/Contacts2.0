@@ -15,6 +15,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.SparseArray;
@@ -46,10 +48,10 @@ public class MainActivity extends Activity {
         setContentView(R.layout.setup_app);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Before you can use Contacts 2.0, you need to setup your social accounts.")
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                });
+               .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                   }
+               });
         Dialog infoDialog = builder.create();
         infoDialog.show();
         Button saveButton = (Button) findViewById(R.id.save_setup);
@@ -57,7 +59,6 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 activityProfile = new ActivityProfile();
-
 
                 activityProfile.setGoogleAccount(((EditText) findViewById(R.id.g_acc_input)).getText().toString());
                 activityProfile.setGooglePassword(((EditText) findViewById(R.id.g_pass_input)).getText().toString());
@@ -68,8 +69,25 @@ public class MainActivity extends Activity {
                 activityProfile.setYahooAccount(((EditText) findViewById(R.id.y_acc_input)).getText().toString());
                 activityProfile.setYahooPassword(((EditText) findViewById(R.id.y_pass_input)).getText().toString());
 
+                final ProgressDialog mDialog = new ProgressDialog(thisActivity);
+                mDialog.setMessage("Loading Contacts...");
+                mDialog.setCancelable(false);
+                mDialog.show();
                 setContentView(R.layout.activity_main);
-                contactManager = new ContactManager(thisActivity,(ExpandableListView) findViewById(R.id.listView));
+                final ExpandableListView listView = (ExpandableListView) findViewById(R.id.listView);
+
+                final Handler handler = new Handler(){
+                    @Override
+                    public void handleMessage(Message msg) {
+                        if (msg.what == 0){
+                            MyExpandableListAdapter adapter = new MyExpandableListAdapter(thisActivity,listView, contactManager.getListOfContacts());
+                            listView.setAdapter(adapter);
+                            mDialog.dismiss();
+                        }
+                        super.handleMessage(msg);
+                    }
+                };
+                contactManager = new ContactManager(thisActivity,handler);
                 try {
                     contactManager.readContacts();
                 } catch (InterruptedException e) {

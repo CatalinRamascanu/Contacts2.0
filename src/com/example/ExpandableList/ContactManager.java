@@ -9,6 +9,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.util.SparseArray;
@@ -30,38 +32,25 @@ import java.util.ArrayList;
 public class ContactManager{
     private SparseArray<Contact> listOfContacts;
     private Activity activity;
-    private boolean isReading;
-    private ExpandableListView listView;
-    public ContactManager(Activity act, ExpandableListView listView) {
+    private Handler handler;
+    public ContactManager(Activity act, Handler handler) {
         listOfContacts = new SparseArray<Contact>();
-        this.listView = listView;
+        this.handler = handler;
         activity = act;
-        isReading = false;
-    }
-
-    public boolean isReading(){
-        return isReading;
     }
 
     public void readContacts() throws InterruptedException {
-        isReading = true;
-        final ProgressDialog mDialog = new ProgressDialog(activity);
-        mDialog.setMessage("Loading Contacts...");
-        mDialog.setCancelable(false);
-        mDialog.show();
-        Thread t = new Thread(new Runnable() {
+
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 readContactsFromPhone();
-                isReading = false;
-
+                Message msg = new Message();
+                msg.what = 0;
+                handler.sendMessage(msg);
             }
-        });
-        t.start();
-        t.join();
-        MyExpandableListAdapter adapter = new MyExpandableListAdapter(activity,listView, listOfContacts);
-        listView.setAdapter(adapter);
-        mDialog.dismiss();
+        }).start();
+
 
     }
 

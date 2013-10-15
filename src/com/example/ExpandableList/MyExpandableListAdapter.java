@@ -22,18 +22,41 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     private SparseArray<Contact> groups;
     private int lastExpandedGroupPosition;
     private ExpandableListView listView;
-    public LayoutInflater inflater;
-    public Activity activity;
-
+    private LayoutInflater inflater;
+    private Activity activity;
+    private boolean editableChilds;
+    private View editableSocialAccount, editablePhoneList;
     public MyExpandableListAdapter(Activity act,ExpandableListView listView ,SparseArray<Contact> groups) {
         activity = act;
         this.listView = listView;
         this.groups = groups;
         originalGroups = groups;
         inflater = act.getLayoutInflater();
+        editableChilds = false;
         loadViews();
         
     }
+
+    public void activateEditableChilds(){
+        editableChilds = true;
+
+        editablePhoneList = inflater.inflate(R.layout.contact_detail_phone,null);
+
+        ImageButton deleteButton = ((ImageButton) editablePhoneList.findViewById(R.id.mail_icon));
+        deleteButton.setImageResource(R.drawable.delete_icon);
+        deleteButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Spinner numberSpinner = (Spinner) editablePhoneList.findViewById(R.id.number_spinner);
+                SpinnerAdapter adapter = numberSpinner.getAdapter();
+
+            }
+        });
+        ((ImageButton) editablePhoneList.findViewById(R.id.chat_icon)).setImageResource(R.drawable.add_icon);
+        editableSocialAccount = inflater.inflate(R.layout.contact_detail_social_editable,null);
+
+    }
+
     private void loadViews(){
         TextView status;
         ImageView logo,statusIcon;
@@ -111,6 +134,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
             }
             return convertView;
         }
+
         if (childPosition > 0){
 
             if (contact.hasFacebookAccount()){
