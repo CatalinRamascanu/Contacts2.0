@@ -1,4 +1,4 @@
-package com.example.ExpandableList;
+package com.ContactsTwoPointZero.Activities;
 
 /**
  * Created with IntelliJ IDEA.

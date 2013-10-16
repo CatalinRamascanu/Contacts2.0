@@ -1,4 +1,4 @@
-package com.example.ExpandableList;
+package com.ContactsTwoPointZero.Contacts;
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,11 +9,6 @@ package com.example.ExpandableList;
  */
 import android.graphics.Bitmap;
 import android.util.SparseArray;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 
 public class Contact {
 

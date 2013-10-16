@@ -1,4 +1,4 @@
-package com.example.ExpandableList;
+package com.ContactsTwoPointZero.Activities;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,19 +20,21 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.SparseArray;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
-
-import java.util.concurrent.CountDownLatch;
+import com.ContactsTwoPointZero.Connections.Google.GTalkConnection;
+import com.ContactsTwoPointZero.Contacts.Contact;
+import com.ContactsTwoPointZero.Contacts.ContactListAdapter;
+import com.ContactsTwoPointZero.Contacts.ContactManager;
+import com.example.ExpandableList.R;
 
 public class MainActivity extends Activity {
     // More efficient than HashMap for mapping integers to objects
     private SparseArray<Contact> contactList;
-    private MyExpandableListAdapter adapter;
+    private ContactListAdapter adapter;
     private ActivityProfile activityProfile;
     private ContactManager contactManager;
     private Activity thisActivity;
@@ -43,6 +45,16 @@ public class MainActivity extends Activity {
         thisActivity = this;
         contactList = new SparseArray<Contact>();
         startActivitySetup();
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    new GTalkConnection("","").tryConnection();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
     private void startActivitySetup(){
         setContentView(R.layout.setup_app);
@@ -80,7 +92,7 @@ public class MainActivity extends Activity {
                     @Override
                     public void handleMessage(Message msg) {
                         if (msg.what == 0){
-                            MyExpandableListAdapter adapter = new MyExpandableListAdapter(thisActivity,listView, contactManager.getListOfContacts());
+                            ContactListAdapter adapter = new ContactListAdapter(thisActivity,listView, contactManager.getListOfContacts());
                             listView.setAdapter(adapter);
                             mDialog.dismiss();
                         }
@@ -101,7 +113,7 @@ public class MainActivity extends Activity {
 //        ContactManager manager = new ContactManager(this);
 //        manager.readContacts();
         ExpandableListView listView = (ExpandableListView) findViewById(R.id.listView);
-        adapter = new MyExpandableListAdapter(this,listView, contactList);
+        adapter = new ContactListAdapter(this,listView, contactList);
         listView.setAdapter(adapter);
         initListeners();
     }
@@ -133,7 +145,7 @@ public class MainActivity extends Activity {
         createContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this, createContactActivity.class);
+                Intent myIntent = new Intent(MainActivity.this, CreateContactActivity.class);
                 MainActivity.this.startActivity(myIntent);
             }
         });

@@ -1,4 +1,4 @@
-package com.example.ExpandableList;
+package com.ContactsTwoPointZero.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,9 +14,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
-
-import java.util.HashMap;
-import java.util.LinkedList;
+import com.example.ExpandableList.R;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,7 +23,7 @@ import java.util.LinkedList;
  * Time: 10:58 AM
  * To change this template use File | Settings | File Templates.
  */
-public class createContactActivity extends Activity {
+public class CreateContactActivity extends Activity {
     private LayoutInflater inflater;
     private View activityView;
     private ImageButton extendName, addPhoneNumber;

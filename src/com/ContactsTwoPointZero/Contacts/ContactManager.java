@@ -1,20 +1,16 @@
-package com.example.ExpandableList;
+package com.ContactsTwoPointZero.Contacts;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.ContactsContract;
-import android.util.Log;
 import android.util.SparseArray;
-import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import java.io.IOException;

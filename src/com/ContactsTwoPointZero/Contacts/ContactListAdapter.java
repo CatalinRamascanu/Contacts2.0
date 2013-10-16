@@ -1,4 +1,4 @@
-package com.example.ExpandableList;
+package com.ContactsTwoPointZero.Contacts;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,8 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import com.example.ExpandableList.R;
 
-public class MyExpandableListAdapter extends BaseExpandableListAdapter {
+public class ContactListAdapter extends BaseExpandableListAdapter {
     private View phoneView , googleView, facebookView, yahooView;
     private final SparseArray<Contact> originalGroups;
     private SparseArray<Contact> groups;
@@ -26,7 +27,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     private Activity activity;
     private boolean editableChilds;
     private View editableSocialAccount, editablePhoneList;
-    public MyExpandableListAdapter(Activity act,ExpandableListView listView ,SparseArray<Contact> groups) {
+    public ContactListAdapter(Activity act, ExpandableListView listView, SparseArray<Contact> groups) {
         activity = act;
         this.listView = listView;
         this.groups = groups;
