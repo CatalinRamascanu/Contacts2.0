@@ -27,6 +27,7 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
     private Activity activity;
     private boolean editableChilds;
     private View editableSocialAccount, editablePhoneList;
+    private View[][] socialViews;
     public ContactListAdapter(Activity act, ExpandableListView listView, SparseArray<Contact> groups) {
         activity = act;
         this.listView = listView;
@@ -54,7 +55,7 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
             }
         });
         ((ImageButton) editablePhoneList.findViewById(R.id.chat_icon)).setImageResource(R.drawable.add_icon);
-        editableSocialAccount = inflater.inflate(R.layout.contact_detail_social_editable,null);
+        editableSocialAccount = inflater.inflate(R.layout.editable_contact_list,null);
 
     }
 
@@ -109,6 +110,23 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
 
         mailButton = (ImageButton) yahooView.findViewById(R.id.mail_icon);
         mailButton.setImageResource(R.drawable.yahoo_mail_icon);
+
+        Contact contact;
+        socialViews = new View[groups.size()][3];
+
+        for (int i = 0; i < groups.size(); i++){
+            contact = groups.get(i);
+            int viewCount = 0;
+            if (contact.hasFacebookAccount()){
+                socialViews[i][viewCount++] = facebookView;
+            }
+            if (contact.hasGoogleAccount()){
+                socialViews[i][viewCount++] = googleView;
+            }
+            if (contact.hasYahooAccount()){
+                socialViews[i][viewCount++] = yahooView;
+            }
+        }
     }
     @Override
     public Object getChild(int groupPosition, int childPosition) {
@@ -124,6 +142,7 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
         Contact contact = (Contact) getGroup(groupPosition);
+
         if (childPosition == 0){
             convertView = phoneView;
             Spinner spinner = (Spinner) phoneView.findViewById(R.id.number_spinner);
@@ -137,19 +156,7 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
         }
 
         if (childPosition > 0){
-
-            if (contact.hasFacebookAccount()){
-                convertView = facebookView;
-                return convertView;
-            }
-            if (contact.hasGoogleAccount()){
-                convertView = googleView;
-                return convertView;
-            }
-            if (contact.hasYahooAccount()){
-                convertView = yahooView;
-                return convertView;
-            }
+            return socialViews[groupPosition][childPosition - 1];
         }
 
         return convertView;
@@ -157,7 +164,7 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return groups.get(groupPosition).getNumberOfAccounts();
+        return groups.get(groupPosition).getNumberOfAccounts() + 1;
     }
 
     @Override
@@ -198,9 +205,7 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
         }
         Contact contact = groups.get(groupPosition);
         TextView name = (TextView) convertView.findViewById(R.id.contact_name);
-        if (name != null && contact.getName() != null){
-            name.setText(contact.getName());
-        }
+        name.setText(contact.getName());
         return convertView;
     }
 

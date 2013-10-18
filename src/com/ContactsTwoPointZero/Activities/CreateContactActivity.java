@@ -1,10 +1,14 @@
 package com.ContactsTwoPointZero.Activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -14,7 +18,12 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
+import com.ContactsTwoPointZero.Contacts.Contact;
+import com.ContactsTwoPointZero.TestPack.SerialBitmap;
 import com.example.ExpandableList.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,19 +34,56 @@ import com.example.ExpandableList.R;
  */
 public class CreateContactActivity extends Activity {
     private LayoutInflater inflater;
-    private View activityView;
+    private Dialog infoDialog;
     private ImageButton extendName, addPhoneNumber;
     private int sBeforeChangeLength = 0;
     private boolean isNameExtended, operatorDetectActive;
     private SparseArray<View> logoOperators;
-    protected void onCreate(Bundle savedInstanceState){
+    private Contact givenContact,savedContact;
+    private ArrayList<String> phoneNumberInputData;
+    public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_contact);
         inflater = this.getLayoutInflater();
-        activityView = inflater.inflate(R.layout.create_contact, null);
         logoOperators = new SparseArray<View>();
+        phoneNumberInputData = new ArrayList<String>();
         initExtendNameFunction();
         initPhoneList();
+        initProfilePhotoListener();
+        initOperatorDetect();
+        initSaveListener();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null){
+            givenContact = (Contact) extras.getSerializable("givenContact");
+            addDataOfContact(givenContact);
+        }
+    }
+
+    private void addDataOfContact(Contact contact){
+        ((EditText) findViewById(R.id.firstName)).setText(contact.getName());
+        if (contact.hasProfilePicture()) {
+            ((ImageView) findViewById(R.id.profilePicture)).setImageBitmap(contact.getProfilePicture());
+        }
+
+        for (int i = 0; i < contact.getSizeOfPhoneList(); i++){
+            addPhoneNumberLayout(contact.getPhoneNumber(i));
+        }
+
+        if (contact.hasFacebookAccount()){
+            ((EditText) findViewById(R.id.f_contact_account)).setText(contact.getFacebookAccount());
+        }
+
+        if (contact.hasGoogleAccount()){
+            ((EditText) findViewById(R.id.g_contact_account)).setText(contact.getGoogleAccount());
+        }
+
+        if (contact.hasYahooAccount()){
+            ((EditText) findViewById(R.id.y_contact_account)).setText(contact.getYahooAccount());
+        }
+
+    }
+
+    private void initProfilePhotoListener(){
         ImageView profile = ((ImageView) findViewById(R.id.profilePicture));
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +91,6 @@ public class CreateContactActivity extends Activity {
                 getPictureIntent();
             }
         });
-        initOperatorDetect();
     }
     private void initExtendNameFunction(){
         isNameExtended = false;
@@ -73,16 +118,17 @@ public class CreateContactActivity extends Activity {
 
     private void initPhoneList(){
         operatorDetectActive = true;
-        addPhoneNumberLayout();
+        addPhoneNumberLayout(null);
         addPhoneNumber = (ImageButton) findViewById(R.id.addPhoneNumber);
         addPhoneNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addPhoneNumberLayout();
+                addPhoneNumberLayout(null);
             }
         });
     }
-    private void addPhoneNumberLayout(){
+
+    private void addPhoneNumberLayout(String phoneNumber){
         final LinearLayout phoneList = (LinearLayout) findViewById(R.id.phoneListLayout);
         final View addPhoneNumberLayout = getLayoutInflater().inflate(R.layout.phone_number_layout,null);
 
@@ -95,6 +141,11 @@ public class CreateContactActivity extends Activity {
         });
 
         logoOperators.append(logoOperators.size(), addPhoneNumberLayout.findViewById(R.id.operatorLogo));
+
+        if (phoneNumber != null){
+            ((EditText) addPhoneNumberLayout.findViewById(R.id.phoneNumber)).setText(phoneNumber);
+            performOperatorDetect(phoneNumber, ((ImageView) addPhoneNumberLayout.findViewById(R.id.operatorLogo)));
+        }
 
         final EditText numberInput = (EditText) addPhoneNumberLayout.findViewById(R.id.phoneNumber);
         numberInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -195,5 +246,77 @@ public class CreateContactActivity extends Activity {
                 .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
+    }
+
+    private void initSaveListener(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("At least a name and a phone number must be added.")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+        infoDialog = builder.create();
+
+        ((Button) findViewById(R.id.save_contact_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String firstName,middleName,lastName;
+                firstName = ((EditText) findViewById(R.id.firstName)).getText().toString();
+                middleName = ((EditText) findViewById(R.id.middleName)).getText().toString();
+                lastName = ((EditText) findViewById(R.id.middleName)).getText().toString();
+
+                if (firstName.length() > 0){
+                    savedContact = new Contact();
+                    savedContact.setFirstName(firstName);
+
+                    if (middleName.length() > 0){
+                        savedContact.setMiddleName(middleName);
+                    }
+                    if (lastName.length() > 0){
+                        savedContact.setMiddleName(lastName);
+                    }
+
+                    ImageView profilePictureView = (ImageView) findViewById(R.id.profilePicture);
+                    savedContact.setProfilePicture(new SerialBitmap(((BitmapDrawable)profilePictureView.getDrawable()).getBitmap()));
+
+                    LinearLayout layout = (LinearLayout) findViewById(R.id.phoneListLayout);
+                    String phoneNumber;
+                    boolean aNumberHasBeenAdded = false;
+                    for (int i = 0; i < layout.getChildCount(); i++) {
+                        View view = layout.getChildAt(i);
+                        Class c = view.getClass();
+                        if (c == EditText.class) {
+                            phoneNumber = ((EditText) view).getText().toString();
+                            if (phoneNumber.length() > 0){
+                                savedContact.addPhoneNumber(phoneNumber);
+                                aNumberHasBeenAdded = true;
+                            }
+
+                        }
+                    }
+                    if (!aNumberHasBeenAdded){
+                        infoDialog.show();
+                        return;
+                    }
+                    String googleAccount = ((EditText) findViewById(R.id.g_contact_account)).getText().toString();
+                    String facebookAccount = ((EditText) findViewById(R.id.f_contact_account)).getText().toString();
+                    String yahooAccount = ((EditText) findViewById(R.id.y_contact_account)).getText().toString();
+
+                    if (googleAccount.length() > 0){
+                        savedContact.setGoogleAccount(googleAccount);
+                    }
+                    if (facebookAccount.length() > 0){
+                        savedContact.setFacebookAccount(facebookAccount);
+                    }
+                    if (yahooAccount.length() > 0){
+                        savedContact.setYahooAccount(yahooAccount);
+                    }
+                }
+                else{
+                    infoDialog.show();
+                }
+            }
+        });
     }
 }

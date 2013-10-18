@@ -40,7 +40,34 @@ public class ContactManager{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                readContactsFromPhone();
+//                readContactsFromPhone();
+                Contact contact;
+                int nrOfContacts = 0;
+                contact = new Contact("Gheorghe Ion ");
+                contact.addPhoneNumber("0735425123");
+                contact.addPhoneNumber("0215425123");
+                contact.addPhoneNumber("075552584");
+                contact.setFacebookAccount("test");
+                listOfContacts.put(nrOfContacts++, contact);
+
+                contact = new Contact("George Popescu");
+                contact.addPhoneNumber("0761235123");
+                contact.setFacebookAccount("test");
+                contact.setYahooAccount("test");
+                contact.setGoogleAccount("test");
+                listOfContacts.put(nrOfContacts++, contact);
+
+                contact = new Contact("Alexandra Poenaru");
+                contact.addPhoneNumber("023183283");
+                contact.setGoogleAccount("test");
+                listOfContacts.put(nrOfContacts++, contact);
+
+                contact = new Contact("Irina Tomescu");
+                contact.addPhoneNumber("023183283");
+                contact.addPhoneNumber("0735213882");
+                contact.setYahooAccount("test");
+                listOfContacts.put(nrOfContacts++, contact);
+
                 Message msg = new Message();
                 msg.what = 0;
                 handler.sendMessage(msg);
@@ -129,6 +156,14 @@ public class ContactManager{
 
     public SparseArray<Contact> getListOfContacts(){
         return listOfContacts;
+    }
+
+    public ArrayList<String> getNamesOfContacts(){
+        ArrayList<String> list = new ArrayList<String>();
+        for (int i = 0; i < listOfContacts.size(); i++){
+            list.add(listOfContacts.get(i).getName());
+        }
+        return  list;
     }
 
     private void addContactToPhone(Contact contact){

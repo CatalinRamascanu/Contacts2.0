@@ -8,52 +8,111 @@ package com.ContactsTwoPointZero.Contacts;
  * To change this template use File | Settings | File Templates.
  */
 import android.graphics.Bitmap;
-import android.util.SparseArray;
+import com.ContactsTwoPointZero.TestPack.SerialBitmap;
 
-public class Contact {
+import java.io.Serializable;
+import java.util.HashMap;
 
-    private String name;
-    private Bitmap  profilePicture;
-    private SparseArray<String> phoneList;
+public class Contact implements Serializable {
+
+    private static final long serialVersionUID = 46543445;
+    private String firstName,middleName,lastName;
+    private SerialBitmap profilePicture;
+    private HashMap<Integer,String> phoneList;
     private int sizeOfPhoneList;
 
-    private SparseArray<String> emailList;
+    private HashMap<Integer,String> emailList;
     private int sizeOfEmailList;
 
     private String facebookAccount, facebookPassword;
     private String googleAccount, googlePassword;
     private String yahooAccount, yahooPassword;
 
-    public Contact(String name) {
-        this.name = name;
-        phoneList = new SparseArray<String>();
-        emailList = new SparseArray<String>();
+    public Contact() {
+        phoneList = new HashMap<Integer,String>();
+        emailList = new HashMap<Integer,String>();
         sizeOfPhoneList = 0;
         sizeOfEmailList = 0;
     }
 
+    public Contact(String name) {
+        this.firstName = name;
+        phoneList = new HashMap<Integer,String>();
+        emailList = new HashMap<Integer,String>();
+        sizeOfPhoneList = 0;
+        sizeOfEmailList = 0;
+
+    }
+
     public void addProfilePicture(Bitmap picture){
-        profilePicture = picture;
+        profilePicture = new SerialBitmap(picture);
+    }
+
+    public String getFacebookAccount() {
+        return facebookAccount;
+    }
+
+    public String getFacebookPassword() {
+        return facebookPassword;
+    }
+
+    public String getGoogleAccount() {
+        return googleAccount;
+    }
+
+    public String getGooglePassword() {
+        return googlePassword;
+    }
+
+    public String getYahooAccount() {
+        return yahooAccount;
+    }
+
+    public String getYahooPassword() {
+        return yahooPassword;
+    }
+
+    public int getSizeOfEmailList() {
+        return sizeOfEmailList;
+    }
+
+    public HashMap<Integer,String>getEmailList() {
+        return emailList;
+    }
+
+    public boolean hasProfilePicture(){
+        if (profilePicture != null){
+            return true;
+        }
+        return false;
+    }
+
+    public Bitmap getProfilePicture(){
+        return profilePicture.getBitmap();
     }
 
     public void addPhoneNumber(String phoneNumber) {
-        phoneList.append(sizeOfPhoneList++, phoneNumber);
+        phoneList.put(sizeOfPhoneList++, phoneNumber);
     }
 
     public void addEmail(String email){
-        emailList.append(sizeOfEmailList++,email);
+        emailList.put(sizeOfEmailList++, email);
     }
 
-    public void setName(String name){
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setPhoneList(SparseArray<String> phoneList){
-        this.phoneList = phoneList;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
     }
 
     public String getName(){
-        return name;
+        return firstName + " " + middleName + " " + lastName;
     }
 
     public String getPhoneNumber(int index){
@@ -88,24 +147,25 @@ public class Contact {
 
     public boolean hasFacebookAccount(){
         if (facebookAccount != null){
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     public boolean hasGoogleAccount(){
         if (googleAccount != null){
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     public boolean hasYahooAccount(){
         if (yahooAccount != null){
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
+
     public int getNumberOfAccounts(){
         int nr = 0;
         if (hasFacebookAccount()){
@@ -119,7 +179,8 @@ public class Contact {
         }
         return nr;
     }
-    public String toString(){
-        return name;
+
+    public void setProfilePicture(SerialBitmap profilePicture) {
+        this.profilePicture = profilePicture;
     }
 }

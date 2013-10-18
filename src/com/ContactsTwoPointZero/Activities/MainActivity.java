@@ -21,15 +21,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.SparseArray;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ExpandableListView;
-import android.widget.ImageButton;
-import com.ContactsTwoPointZero.Connections.Google.GTalkConnection;
+import android.widget.*;
 import com.ContactsTwoPointZero.Contacts.Contact;
 import com.ContactsTwoPointZero.Contacts.ContactListAdapter;
 import com.ContactsTwoPointZero.Contacts.ContactManager;
+import com.ContactsTwoPointZero.Contacts.EditableContactListAdapter;
 import com.example.ExpandableList.R;
+
+import java.util.HashMap;
 
 public class MainActivity extends Activity {
     // More efficient than HashMap for mapping integers to objects
@@ -45,16 +44,16 @@ public class MainActivity extends Activity {
         thisActivity = this;
         contactList = new SparseArray<Contact>();
         startActivitySetup();
-        new Thread(new Runnable(){
-            @Override
-            public void run() {
-                try {
-                    new GTalkConnection("","").tryConnection();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+//        new Thread(new Runnable(){
+//            @Override
+//            public void run() {
+//                try {
+//                    new GTalkConnection("","").tryConnection();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
     }
     private void startActivitySetup(){
         setContentView(R.layout.setup_app);
@@ -85,20 +84,30 @@ public class MainActivity extends Activity {
                 mDialog.setMessage("Loading Contacts...");
                 mDialog.setCancelable(false);
                 mDialog.show();
-                setContentView(R.layout.activity_main);
-                final ExpandableListView listView = (ExpandableListView) findViewById(R.id.listView);
+
+                setContentView(R.layout.editable_contact_list);
+                final ListView listView = (ListView) findViewById(R.id.contactList_editable);
 
                 final Handler handler = new Handler(){
                     @Override
                     public void handleMessage(Message msg) {
                         if (msg.what == 0){
-                            ContactListAdapter adapter = new ContactListAdapter(thisActivity,listView, contactManager.getListOfContacts());
+                            EditableContactListAdapter adapter = new EditableContactListAdapter(thisActivity,contactManager);
                             listView.setAdapter(adapter);
                             mDialog.dismiss();
+                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Intent myIntent = new Intent(MainActivity.this, CreateContactActivity.class);
+                                    myIntent.putExtra("givenContact",contactManager.getListOfContacts().get(position));
+                                    MainActivity.this.startActivity(myIntent);
+                                }
+                            });
                         }
                         super.handleMessage(msg);
                     }
                 };
+
                 contactManager = new ContactManager(thisActivity,handler);
                 try {
                     contactManager.readContacts();
@@ -130,13 +139,10 @@ public class MainActivity extends Activity {
             @Override
             public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
                                           int arg3) {
-                // TODO Auto-generated method stub
-
             }
 
             @Override
             public void afterTextChanged(Editable arg0) {
-                // TODO Auto-generated method stub
             }
         });
 
@@ -181,4 +187,9 @@ public class MainActivity extends Activity {
 
     }
 
+    private void openEditContact(Contact contact){
+        setContentView(R.layout.create_contact);
+
+
+    }
 }

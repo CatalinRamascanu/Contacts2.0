@@ -4,11 +4,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/scrollView"
-        android:fillViewport="true">
+        android:fillViewport="true" android:focusableInTouchMode="true">
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent" android:focusableInTouchMode="true">
         <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content"
                       android:layout_gravity="left|center_vertical"
                       android:background="@drawable/border" android:id="@+id/linearLayout6">
@@ -76,7 +76,7 @@
                            android:layout_gravity="center" android:layout_weight=".20"
                            android:src="@drawable/google_icon" android:layout_margin="3dp"/>
                 <EditText android:layout_width="0dp" android:layout_height="fill_parent"
-                          android:id="@+id/editText1" android:layout_weight=".80" android:layout_margin="3dp"
+                          android:id="@+id/f_contact_account" android:layout_weight=".80" android:layout_margin="3dp"
                           android:layout_gravity="center_vertical" android:hint="Google Account"/>
             </LinearLayout>
             <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
@@ -86,7 +86,7 @@
                            android:layout_gravity="center" android:layout_weight=".20"
                            android:src="@drawable/facebook_icon" android:layout_margin="3dp"/>
                 <EditText android:layout_width="0dp" android:layout_height="fill_parent"
-                          android:id="@+id/editText3" android:layout_weight=".80" android:layout_margin="3dp"
+                          android:id="@+id/g_contact_account" android:layout_weight=".80" android:layout_margin="3dp"
                           android:hint="Facebook Account"/>
             </LinearLayout>
             <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
@@ -96,9 +96,14 @@
                            android:layout_gravity="center" android:layout_weight=".20"
                            android:src="@drawable/yahoo_icon" android:layout_margin="3dp"/>
                 <EditText android:layout_width="0dp" android:layout_height="fill_parent"
-                          android:id="@+id/editText2" android:layout_weight=".80" android:layout_margin="3dp"
+                          android:id="@+id/y_contact_account" android:layout_weight=".80" android:layout_margin="3dp"
                           android:hint="Yahoo Account"/>
             </LinearLayout>
         </LinearLayout>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save Contact Details"
+                android:id="@+id/save_contact_button" android:layout_gravity="right"/>
     </LinearLayout>
 </ScrollView>

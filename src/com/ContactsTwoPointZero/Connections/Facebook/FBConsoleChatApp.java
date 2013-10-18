@@ -1,8 +1,6 @@
 package com.ContactsTwoPointZero.Connections.Facebook;
- 
-import com.fb.xmppchat.helper.CustomSASLDigestMD5Mechanism;
-import com.fb.xmppchat.helper.FBMessageListener;
- 
+
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
