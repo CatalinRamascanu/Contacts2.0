@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp" android:layout_weight=".10">
+        <EditText
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:id="@+id/emailSubject" android:layout_weight=".80" android:hint="Email Subject"/>
+        <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:id="@+id/attachFileButton" android:layout_weight=".20"
+                android:src="@drawable/attach_file_icon" android:scaleType="fitCenter"/>
+    </LinearLayout>
+    <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:id="@+id/emailBody" android:layout_weight=".70" android:hint="Email Body"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="Send Email"
+            android:id="@+id/sendEmailButton" android:layout_weight=".15" android:layout_gravity="center_horizontal"/>
+</LinearLayout>

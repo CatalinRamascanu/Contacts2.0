@@ -8,6 +8,8 @@ package com.ContactsTwoPointZero.Contacts;
  * To change this template use File | Settings | File Templates.
  */
 
+import android.content.Intent;
+import android.net.Uri;
 import android.widget.*;
 import android.app.Activity;
 import android.util.SparseArray;
@@ -152,6 +154,22 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
             for (int i = 0; i < contact.getSizeOfPhoneList(); i++){
                 adapter.add(contact.getPhoneNumber(i));
             }
+
+            ImageButton callButton = (ImageButton) phoneView.findViewById(R.id.phone_call_button);
+            callButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callNumber(((Spinner) phoneView.findViewById(R.id.number_spinner)).getSelectedItem().toString());
+                }
+            });
+
+            ImageButton sendSmsButton = (ImageButton) phoneView.findViewById(R.id.phone_sms_button);
+            sendSmsButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendSmsToNumber((String) ((Spinner) phoneView.findViewById(R.id.number_spinner)).getSelectedItem());
+                }
+            });
             return convertView;
         }
 
@@ -236,5 +254,25 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
         }
 
         notifyDataSetChanged();
+    }
+
+    private void callNumber(String phoneNumber){
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:" + phoneNumber));
+        activity.startActivity(callIntent);
+    }
+
+    private void sendSmsToNumber(String phoneNumber){
+        Intent smsIntent = new Intent("android.intent.action.VIEW");
+        Uri data = Uri.parse("sms:" + phoneNumber);
+        smsIntent.setData(data);
+        activity.startActivity(smsIntent);
+    }
+
+    private void sendEmailToContact(String contactEmail){
+        Intent email = new Intent(Intent.ACTION_SEND);
+        email.putExtra(Intent.EXTRA_EMAIL, contactEmail);
+        email.setType("message/rfc822");
+        activity.startActivity(email);
     }
 }
