@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.ExpandableList.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -21,13 +22,15 @@ import java.util.List;
  */
 public class EditableContactListAdapter extends ArrayAdapter<String> {
     private final Activity activity;
-    private final SparseArray<Contact> contactList;
+    private HashMap<Integer,Contact> contactList;
     private final LayoutInflater inflater;
-    public EditableContactListAdapter(Activity activity, ContactManager contactManager) {
-        super(activity.getApplicationContext(), R.layout.editable_contact_list, contactManager.getNamesOfContacts());
+    private ArrayList<String> contactNames;
+    public EditableContactListAdapter(Activity activity, HashMap<Integer,Contact> contactList, ArrayList<String> contactNames) {
+        super(activity,R.id.contactList_editable,contactNames);
+        this.contactNames = contactNames;
         this.activity = activity;
         inflater = activity.getLayoutInflater();
-        this.contactList = contactManager.getListOfContacts();
+        this.contactList = contactList;
     }
 
     @Override
@@ -39,5 +42,21 @@ public class EditableContactListAdapter extends ArrayAdapter<String> {
         TextView name = (TextView) convertView.findViewById(R.id.contact_name);
         name.setText(contact.getName());
         return convertView;
+    }
+
+    public void updateListOfContacts(Contact contact,int position){
+        System.out.println(contact);
+        contactList.remove(position);
+        contactList.put(position, contact);
+        contactNames.remove(position);
+        contactNames.add(position,contact.getName());
+        System.out.println(contactList);
+
+        notifyDataSetChanged();
+
+    }
+
+    public Contact getContact(int position){
+        return  contactList.get(position);
     }
 }

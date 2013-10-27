@@ -112,7 +112,17 @@ public class Contact implements Serializable {
     }
 
     public String getName(){
-        return firstName + " " + middleName + " " + lastName;
+        StringBuilder name = new StringBuilder();
+        if (firstName != null){
+            name.append(firstName);
+        }
+        if (middleName != null){
+            name.append(" " + middleName);
+        }
+        if (lastName != null){
+            name.append(" " + lastName);
+        }
+        return name.toString();
     }
 
     public String getPhoneNumber(int index){
@@ -182,5 +192,25 @@ public class Contact implements Serializable {
 
     public void setProfilePicture(SerialBitmap profilePicture) {
         this.profilePicture = profilePicture;
+    }
+
+    public String toString(){
+        StringBuilder contactData = new StringBuilder();
+
+        contactData.append("First Name: " + firstName + "\n");
+        contactData.append("Middle Name: " + middleName + "\n");
+        contactData.append("Last Name: " + lastName + "\n");
+        contactData.append("Phone numbers:\n");
+
+        for (int i : phoneList.keySet()){
+            String phoneNumber = phoneList.get(i);
+            contactData.append(phoneNumber + "\n");
+        }
+
+        contactData.append("Google Account: " + googleAccount + "\n" );
+        contactData.append("Facebook Account: " + facebookAccount + "\n");
+        contactData.append("Yahoo Account: " + yahooAccount + "\n");
+
+        return contactData.toString();
     }
 }

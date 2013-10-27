@@ -20,6 +20,11 @@
         <activity android:label="@string/app_name"
                   android:name="com.ContactsTwoPointZero.Activities.CreateContactActivity"
                   android:windowSoftInputMode="stateHidden"/>
-
+        <activity android:label="@string/app_name"
+                  android:name="com.ContactsTwoPointZero.Activities.EditContactsActivity"
+                  android:windowSoftInputMode="stateHidden"/>
+        <activity android:label="@string/app_name"
+                  android:name="com.ContactsTwoPointZero.Activities.GTalkActivity"
+                  android:windowSoftInputMode="stateHidden"/>
     </application>
 </manifest>

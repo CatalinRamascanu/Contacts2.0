@@ -16,6 +16,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,20 +27,24 @@ import java.util.ArrayList;
  */
 
 public class ContactManager{
-    private SparseArray<Contact> listOfContacts;
+    private HashMap<Integer,Contact> listOfContacts;
     private Activity activity;
     private Handler handler;
+    public ContactManager(Activity act){
+        listOfContacts = new HashMap<Integer,Contact>();
+        activity = act;
+    }
     public ContactManager(Activity act, Handler handler) {
-        listOfContacts = new SparseArray<Contact>();
+        listOfContacts = new HashMap<Integer,Contact>();
         this.handler = handler;
         activity = act;
     }
 
     public void readContacts() throws InterruptedException {
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
 //                readContactsFromPhone();
                 Contact contact;
                 int nrOfContacts = 0;
@@ -47,7 +52,7 @@ public class ContactManager{
                 contact.addPhoneNumber("0735425123");
                 contact.addPhoneNumber("0215425123");
                 contact.addPhoneNumber("075552584");
-                contact.setFacebookAccount("test");
+                contact.setGoogleAccount("jdoe4033");
                 listOfContacts.put(nrOfContacts++, contact);
 
                 contact = new Contact("George Popescu");
@@ -70,9 +75,9 @@ public class ContactManager{
 
                 Message msg = new Message();
                 msg.what = 0;
-                handler.sendMessage(msg);
-            }
-        }).start();
+//                handler.sendMessage(msg);
+//            }
+//        }).start();
 
 
     }
@@ -81,7 +86,7 @@ public class ContactManager{
         int contactsSize = 0;
         ContentResolver cr = activity.getContentResolver();
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,null, null, null, null);
-        SparseArray<Contact> contacts = new SparseArray<Contact>();
+        HashMap<Integer,Contact> contacts = new HashMap<Integer,Contact>();
         Contact contact;
         if (cur.getCount() > 0) {
             while (cur.moveToNext()) {
@@ -154,7 +159,7 @@ public class ContactManager{
         listOfContacts = contacts;
     }
 
-    public SparseArray<Contact> getListOfContacts(){
+    public HashMap<Integer,Contact> getListOfContacts(){
         return listOfContacts;
     }
 
@@ -241,4 +246,8 @@ public class ContactManager{
         }
     }
 
+    public void updateContact(Contact contact,int position){
+        listOfContacts.remove(position);
+        listOfContacts.put(position,contact);
+    }
 }

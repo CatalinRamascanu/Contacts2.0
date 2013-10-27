@@ -67,7 +67,7 @@ public class GTalkConnection {
             Log.e("XMPPClient", ex.toString());
         }
 
-        Log.i("XMPPClient", "Connected!!!!!");
+        Log.i("MPPClient", "Connected successfully.");
     }
 
     public SparseArray<String> getFriendsList(){

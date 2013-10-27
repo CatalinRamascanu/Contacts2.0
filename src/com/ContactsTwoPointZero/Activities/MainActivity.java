@@ -43,18 +43,12 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         thisActivity = this;
         contactList = new SparseArray<Contact>();
-        startActivitySetup();
-//        new Thread(new Runnable(){
-//            @Override
-//            public void run() {
-//                try {
-//                    new GTalkConnection("","").tryConnection();
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
+        contactManager = new ContactManager(this);
+        startNormalActivity();
+
+
     }
+
     private void startActivitySetup(){
         setContentView(R.layout.setup_app);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -80,43 +74,19 @@ public class MainActivity extends Activity {
                 activityProfile.setYahooAccount(((EditText) findViewById(R.id.y_acc_input)).getText().toString());
                 activityProfile.setYahooPassword(((EditText) findViewById(R.id.y_pass_input)).getText().toString());
 
-                final ProgressDialog mDialog = new ProgressDialog(thisActivity);
-                mDialog.setMessage("Loading Contacts...");
-                mDialog.setCancelable(false);
-                mDialog.show();
+//                final ProgressDialog mDialog = new ProgressDialog(thisActivity);
+//                mDialog.setMessage("Loading Contacts...");
+//                mDialog.setCancelable(false);
+//                mDialog.show();
 
-                setContentView(R.layout.editable_contact_list);
-                final ListView listView = (ListView) findViewById(R.id.contactList_editable);
-
-                final Handler handler = new Handler(){
-                    @Override
-                    public void handleMessage(Message msg) {
-                        if (msg.what == 0){
-                            EditableContactListAdapter adapter = new EditableContactListAdapter(thisActivity,contactManager);
-                            listView.setAdapter(adapter);
-                            mDialog.dismiss();
-                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    Intent myIntent = new Intent(MainActivity.this, CreateContactActivity.class);
-                                    myIntent.putExtra("givenContact",contactManager.getListOfContacts().get(position));
-                                    MainActivity.this.startActivity(myIntent);
-                                }
-                            });
-                        }
-                        super.handleMessage(msg);
-                    }
-                };
-
-                contactManager = new ContactManager(thisActivity,handler);
-                try {
-                    contactManager.readContacts();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
+                Intent editContactsActivity = new Intent(thisActivity, EditContactsActivity.class);
+                editContactsActivity.putExtra("contactList", contactManager.getListOfContacts());
+                editContactsActivity.putExtra("contactNames", contactManager.getNamesOfContacts());
+                startActivity(editContactsActivity);
             }
         });
     }
+
     private void startNormalActivity(){
         createData();
 //        ContactManager manager = new ContactManager(this);
@@ -126,6 +96,7 @@ public class MainActivity extends Activity {
         listView.setAdapter(adapter);
         initListeners();
     }
+
     private void initListeners(){
         EditText inputSearch = (EditText) findViewById(R.id.searchBox);
         inputSearch.addTextChangedListener(new TextWatcher() {
@@ -164,7 +135,7 @@ public class MainActivity extends Activity {
         contact.addPhoneNumber("0735425123");
         contact.addPhoneNumber("0215425123");
         contact.addPhoneNumber("075552584");
-        contact.setFacebookAccount("test");
+        contact.setGoogleAccount("jdoe4033@gmail.com");
         contactList.append(nrOfContacts++, contact);
 
         contact = new Contact("George Popescu");

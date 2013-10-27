@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import com.ContactsTwoPointZero.Activities.GTalkActivity;
 import com.example.ExpandableList.R;
 
 public class ContactListAdapter extends BaseExpandableListAdapter {
@@ -30,6 +31,7 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
     private boolean editableChilds;
     private View editableSocialAccount, editablePhoneList;
     private View[][] socialViews;
+    private int currentSelectedContactPosition;
     public ContactListAdapter(Activity act, ExpandableListView listView, SparseArray<Contact> groups) {
         activity = act;
         this.listView = listView;
@@ -94,6 +96,12 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
 
         chatButton = (ImageButton) googleView.findViewById(R.id.chat_icon);
         chatButton.setImageResource(R.drawable.google_chat_icon);
+        chatButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startGTalkActivity();
+            }
+        });
 
         mailButton = (ImageButton) googleView.findViewById(R.id.mail_icon);
         mailButton.setImageResource(R.drawable.google_mail_icon);
@@ -121,9 +129,11 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
             int viewCount = 0;
             if (contact.hasFacebookAccount()){
                 socialViews[i][viewCount++] = facebookView;
+                System.out.println(contact.getName() + " has facebook account " + contact.getFacebookAccount());
             }
             if (contact.hasGoogleAccount()){
                 socialViews[i][viewCount++] = googleView;
+                System.out.println(contact.getName() + " has google account " + contact.getFacebookAccount());
             }
             if (contact.hasYahooAccount()){
                 socialViews[i][viewCount++] = yahooView;
@@ -144,7 +154,7 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
         Contact contact = (Contact) getGroup(groupPosition);
-
+        currentSelectedContactPosition = groupPosition;
         if (childPosition == 0){
             convertView = phoneView;
             Spinner spinner = (Spinner) phoneView.findViewById(R.id.number_spinner);
@@ -274,5 +284,12 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
         email.putExtra(Intent.EXTRA_EMAIL, contactEmail);
         email.setType("message/rfc822");
         activity.startActivity(email);
+    }
+
+    private void startGTalkActivity(){
+        Contact contact = (Contact) getGroup(currentSelectedContactPosition);
+        Intent gTalkIntent = new Intent(activity,GTalkActivity.class);
+        gTalkIntent.putExtra("googleAccount",contact.getGoogleAccount());
+        activity.startActivity(gTalkIntent);
     }
 }

@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,7 @@ public class CreateContactActivity extends Activity {
     private SparseArray<View> logoOperators;
     private Contact givenContact,savedContact;
     private ArrayList<String> phoneNumberInputData;
+
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_contact);
@@ -57,6 +59,8 @@ public class CreateContactActivity extends Activity {
             givenContact = (Contact) extras.getSerializable("givenContact");
             addDataOfContact(givenContact);
         }
+        addPhoneNumberLayout(null);
+
     }
 
     private void addDataOfContact(Contact contact){
@@ -118,7 +122,6 @@ public class CreateContactActivity extends Activity {
 
     private void initPhoneList(){
         operatorDetectActive = true;
-        addPhoneNumberLayout(null);
         addPhoneNumber = (ImageButton) findViewById(R.id.addPhoneNumber);
         addPhoneNumber.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -256,46 +259,51 @@ public class CreateContactActivity extends Activity {
                     }
                 });
         infoDialog = builder.create();
-
         ((Button) findViewById(R.id.save_contact_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String firstName,middleName,lastName;
+                String firstName, middleName, lastName;
                 firstName = ((EditText) findViewById(R.id.firstName)).getText().toString();
                 middleName = ((EditText) findViewById(R.id.middleName)).getText().toString();
-                lastName = ((EditText) findViewById(R.id.middleName)).getText().toString();
-
-                if (firstName.length() > 0){
+                lastName = ((EditText) findViewById(R.id.lastName)).getText().toString();
+                if (firstName.length() > 0) {
                     savedContact = new Contact();
                     savedContact.setFirstName(firstName);
 
-                    if (middleName.length() > 0){
+                    if (middleName.length() > 0) {
                         savedContact.setMiddleName(middleName);
                     }
-                    if (lastName.length() > 0){
+                    if (lastName.length() > 0) {
                         savedContact.setMiddleName(lastName);
                     }
 
                     ImageView profilePictureView = (ImageView) findViewById(R.id.profilePicture);
-                    savedContact.setProfilePicture(new SerialBitmap(((BitmapDrawable)profilePictureView.getDrawable()).getBitmap()));
+                    savedContact.setProfilePicture(new SerialBitmap(((BitmapDrawable) profilePictureView.getDrawable()).getBitmap()));
 
                     LinearLayout layout = (LinearLayout) findViewById(R.id.phoneListLayout);
                     String phoneNumber;
                     boolean aNumberHasBeenAdded = false;
+
                     for (int i = 0; i < layout.getChildCount(); i++) {
                         View view = layout.getChildAt(i);
                         Class c = view.getClass();
-                        if (c == EditText.class) {
-                            phoneNumber = ((EditText) view).getText().toString();
-                            if (phoneNumber.length() > 0){
-                                savedContact.addPhoneNumber(phoneNumber);
-                                aNumberHasBeenAdded = true;
+                        if (c == LinearLayout.class) {
+                            for (int j = 0; j < ((LinearLayout) view).getChildCount(); j++){
+                                View childView = ((LinearLayout) view).getChildAt(j);
+                                Class childClass = childView.getClass();
+                                if (childClass == EditText.class) {
+                                    phoneNumber = ((EditText) childView).getText().toString();
+                                    if (phoneNumber.length() > 0) {
+                                        savedContact.addPhoneNumber(phoneNumber);
+                                        aNumberHasBeenAdded = true;
+                                    }
+                                }
                             }
-
                         }
                     }
-                    if (!aNumberHasBeenAdded){
+
+                    if (!aNumberHasBeenAdded) {
                         infoDialog.show();
                         return;
                     }
@@ -303,20 +311,31 @@ public class CreateContactActivity extends Activity {
                     String facebookAccount = ((EditText) findViewById(R.id.f_contact_account)).getText().toString();
                     String yahooAccount = ((EditText) findViewById(R.id.y_contact_account)).getText().toString();
 
-                    if (googleAccount.length() > 0){
+                    if (googleAccount.length() > 0) {
                         savedContact.setGoogleAccount(googleAccount);
                     }
-                    if (facebookAccount.length() > 0){
+                    if (facebookAccount.length() > 0) {
                         savedContact.setFacebookAccount(facebookAccount);
                     }
-                    if (yahooAccount.length() > 0){
+                    if (yahooAccount.length() > 0) {
                         savedContact.setYahooAccount(yahooAccount);
                     }
-                }
-                else{
+                } else {
                     infoDialog.show();
                 }
+                Intent saveIntent = getIntent();
+                saveIntent.putExtra("savedContact", savedContact);
+                setResult(1,saveIntent);
+                finish();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed (){
+        Intent saveIntent = getIntent();
+        saveIntent.putExtra("null", "null");
+        setResult(2,saveIntent);
+        finish();
     }
 }
