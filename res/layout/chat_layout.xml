@@ -8,27 +8,42 @@
     <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:id="@+id/scrollView" android:layout_weight=".80" android:background="@drawable/border"
-            android:clickable="false">
-        <TextView
+            android:id="@+id/chat_scrollView" android:background="@drawable/border"
+            android:clickable="false" android:layout_weight=".80">
+        <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="fill_parent"
-                android:layout_height="0dp"
-                android:id="@+id/chat_body" android:layout_weight=".80" android:autoText="false"/>
+                android:layout_height="0dp" android:layout_weight=".80">
+            <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chat_body" android:autoText="false"/>
+        </LinearLayout>
     </ScrollView>
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="0dp" android:layout_weight=".20">
-        <EditText
+            android:layout_height="0dp" android:layout_weight=".20" android:background="@drawable/border">
+        <ScrollView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/chat_input" android:hint="Write message" android:layout_weight=".80"
-                android:layout_gravity="center_vertical"/>
+                android:layout_height="fill_parent"
+                android:id="@+id/scrollView" android:layout_weight=".80">
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+                <EditText
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/chat_input" android:hint="Write message"
+                        android:layout_gravity="center_vertical"/>
+            </LinearLayout>
+        </ScrollView>
         <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Send"
                 android:id="@+id/send_chat_button" android:layout_weight=".30"
-                android:layout_gravity="center_vertical"/>
+                />
     </LinearLayout>
 </LinearLayout>
