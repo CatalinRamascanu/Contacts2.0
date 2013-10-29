@@ -144,7 +144,7 @@ public class MainActivity extends Activity {
         contact = new Contact("George Popescu");
         contact.addPhoneNumber("0761235123");
         contact.setFacebookAccount("test");
-        contact.setYahooAccount("test");
+        contact.setYahooAccount("catalin.ramascanu@yahoo.com");
         contact.setGoogleAccount("test");
         contactList.append(nrOfContacts++, contact);
 

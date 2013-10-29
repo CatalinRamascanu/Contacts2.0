@@ -11,7 +11,6 @@ package com.ContactsTwoPointZero.Contacts;
 import android.content.Intent;
 import android.net.Uri;
 import android.widget.*;
-import android.app.Activity;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -112,7 +111,7 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
         mailButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                startGmailActivity();
+                startEmailActivity(AccountType.GOOGLE);
             }
         });
 
@@ -130,6 +129,12 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
 
         mailButton = (ImageButton) yahooView.findViewById(R.id.mail_icon);
         mailButton.setImageResource(R.drawable.yahoo_mail_icon);
+        mailButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startEmailActivity(AccountType.YAHOO);
+            }
+        });
 
         Contact contact;
         socialViews = new View[groups.size()][3];
@@ -303,12 +308,21 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
         activity.startActivity(gTalkIntent);
     }
 
-    private void startGmailActivity(){
+    private void startEmailActivity(AccountType accountType){
         Contact contact = (Contact) getGroup(currentSelectedContactPosition);
-        Intent gMailIntent = new Intent(activity,EmailActivity.class);
-        gMailIntent.putExtra("recipientAddress",contact.getGoogleAccount());
-        gMailIntent.putExtra("userAccount",activity.getActivityProfile().getGoogleAccount());
-        gMailIntent.putExtra("userPassword",activity.getActivityProfile().getGooglePassword());
-        activity.startActivity(gMailIntent);
+        Intent eMailIntent = new Intent(activity,EmailActivity.class);
+        if (accountType.equals(AccountType.GOOGLE)){
+            eMailIntent.putExtra("recipientAddress", contact.getGoogleAccount());
+        }
+        if (accountType.equals(AccountType.YAHOO)){
+            eMailIntent.putExtra("recipientAddress", contact.getYahooAccount());
+        }
+        eMailIntent.putExtra("userAccount", activity.getActivityProfile().getGoogleAccount());
+        eMailIntent.putExtra("userPassword", activity.getActivityProfile().getGooglePassword());
+        activity.startActivity(eMailIntent);
+    }
+
+    private enum AccountType {
+         YAHOO,GOOGLE;
     }
 }

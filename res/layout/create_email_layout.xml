@@ -3,29 +3,58 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent" android:background="@drawable/border">
 
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="0dp" android:layout_weight=".10">
+        <ImageView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:id="@+id/email_logo" android:layout_weight=".20"
+                android:scaleType="fitCenter" android:adjustViewBounds="false"
+                android:padding="5dp"/>
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:id="@+id/recipient_name" android:layout_weight=".80" android:gravity="center_vertical"/>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp" android:layout_weight=".10" android:background="@drawable/border"
+            android:baselineAligned="false">
         <EditText
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:id="@+id/emailSubject" android:layout_weight=".80" android:hint="Email Subject"/>
+                android:id="@+id/emailSubject" android:layout_weight=".80" android:hint="Email Subject"
+                android:layout_gravity="center_vertical"/>
         <ImageButton
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:id="@+id/attachFileButton" android:layout_weight=".20"
-                android:src="@drawable/attach_file_icon" android:scaleType="fitCenter"/>
+                android:src="@drawable/attach_file_icon" android:scaleType="fitCenter"
+                android:layout_gravity="center_vertical"/>
     </LinearLayout>
     <EditText
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:id="@+id/emailBody" android:layout_weight=".70" android:hint="Email Body" android:gravity="top"/>
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:text="Send Email"
-            android:id="@+id/sendEmailButton" android:layout_weight=".15" android:layout_gravity="center_horizontal"/>
+            android:id="@+id/emailBody" android:layout_weight=".60" android:hint="Email Body" android:gravity="top"
+            android:background="@drawable/border"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp" android:layout_weight=".15">
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:text="No Attachment added"
+                android:id="@+id/attachments_box" android:layout_weight=".70" android:background="@drawable/border"/>
+        <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Send Email"
+                android:id="@+id/sendEmailButton" android:layout_weight=".30" android:layout_gravity="center_vertical"/>
+    </LinearLayout>
 </LinearLayout>
