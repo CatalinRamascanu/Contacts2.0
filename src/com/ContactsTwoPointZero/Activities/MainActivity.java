@@ -44,6 +44,9 @@ public class MainActivity extends Activity {
         thisActivity = this;
         contactList = new SparseArray<Contact>();
         contactManager = new ContactManager(this);
+        activityProfile = new ActivityProfile();
+        activityProfile.setGoogleAccount("catalin.rmc@gmail.com");
+        activityProfile.setYahooAccount("ageofmight1992");
         startNormalActivity();
 
 
@@ -161,6 +164,9 @@ public class MainActivity extends Activity {
     private void openEditContact(Contact contact){
         setContentView(R.layout.create_contact);
 
+    }
 
+    public ActivityProfile getActivityProfile(){
+        return activityProfile;
     }
 }

@@ -24,9 +24,9 @@ public class Contact implements Serializable {
     private HashMap<Integer,String> emailList;
     private int sizeOfEmailList;
 
-    private String facebookAccount, facebookPassword;
-    private String googleAccount, googlePassword;
-    private String yahooAccount, yahooPassword;
+    private String facebookAccount;
+    private String googleAccount;
+    private String yahooAccount;
 
     public Contact() {
         phoneList = new HashMap<Integer,String>();
@@ -52,24 +52,19 @@ public class Contact implements Serializable {
         return facebookAccount;
     }
 
-    public String getFacebookPassword() {
-        return facebookPassword;
-    }
-
     public String getGoogleAccount() {
         return googleAccount;
-    }
-
-    public String getGooglePassword() {
-        return googlePassword;
     }
 
     public String getYahooAccount() {
         return yahooAccount;
     }
 
-    public String getYahooPassword() {
-        return yahooPassword;
+    public boolean hasAtLeastOneEmail(){
+        if (sizeOfEmailList > 0){
+            return true;
+        }
+        return false;
     }
 
     public int getSizeOfEmailList() {
@@ -135,24 +130,12 @@ public class Contact implements Serializable {
         this.facebookAccount = facebookAccount;
     }
 
-    public void setFacebookPassword(String facebookPassword){
-        this.facebookPassword = facebookPassword;
-    }
-
     public void setGoogleAccount(String googleAccount){
         this.googleAccount = googleAccount;
     }
 
-    public void setGooglePassword(String googlePassword){
-        this.googlePassword = googlePassword;
-    }
-
     public void setYahooAccount(String yahooAccount){
         this.yahooAccount = yahooAccount;
-    }
-
-    public void setYahooPassword(String yahooPassword){
-        this.yahooPassword = yahooPassword;
     }
 
     public boolean hasFacebookAccount(){

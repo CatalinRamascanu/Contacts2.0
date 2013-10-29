@@ -154,7 +154,7 @@ public class GTalkActivity extends Activity {
                     sendMessage(friendAccount, message);
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            chatBody.append("You: " + message + "\n");
+                            chatBody.append("You: " + message + "\n\n");
                             chatScrollView.fullScroll(View.FOCUS_DOWN);
                         }
                     });
@@ -205,7 +205,7 @@ public class GTalkActivity extends Activity {
                 final String  messageBody = message.getBody();
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        chatBody.append("Your Friend: " + messageBody + "\n");
+                        chatBody.append("Your Friend: " + messageBody + "\n\n");
                         chatScrollView.fullScroll(View.FOCUS_DOWN);
                     }
                 });

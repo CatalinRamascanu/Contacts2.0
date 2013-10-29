@@ -236,6 +236,7 @@ public class CreateContactActivity extends Activity {
             if (requestCode == SELECT_PICTURE) {
                 Uri selectedImageUri = data.getData();
                 selectedImagePath = getPath(selectedImageUri);
+                Log.i("XMPP",selectedImagePath);
                 Bitmap photo = BitmapFactory.decodeFile(selectedImagePath);
                 ((ImageView) findViewById(R.id.profilePicture)).setImageBitmap(photo);
             }

@@ -7,6 +7,8 @@ package com.ContactsTwoPointZero.Connections.Gmail;
  * Time: 4:54 PM
  * To change this template use File | Settings | File Templates.
  */
+import android.util.Log;
+
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -28,26 +30,28 @@ public class GmailSender extends javax.mail.Authenticator {
     private String password;
     private Session session;
 
-    static {
-        Security.addProvider(new JSSEProvider());
-    }
+//    static {
+//        Security.addProvider(new JSSEProvider());
+//    }
 
-    public GmailSender(String user, String password) {
+    public GmailSender(final String user, final String password) {
         this.user = user;
         this.password = password;
 
         Properties props = new Properties();
-        props.setProperty("mail.transport.protocol", "smtp");
-        props.setProperty("mail.host", mailhost);
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
+        props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
         props.put("mail.smtp.socketFactory.class",
                 "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.socketFactory.fallback", "false");
-        props.setProperty("mail.smtp.quitwait", "false");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
 
-        session = Session.getDefaultInstance(props, this);
+        session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("catalin.rmc@gmail.com", "ageofmight1992");
+                    }
+                });
     }
 
     protected PasswordAuthentication getPasswordAuthentication() {
@@ -58,8 +62,8 @@ public class GmailSender extends javax.mail.Authenticator {
         try{
             // Define message
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("catalin.rmc@gmail.com"));
-            message.addRecipient(Message.RecipientType.TO,new InternetAddress(sender));
+            message.setFrom(new InternetAddress(sender));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipients));
             message.setSubject(subject);
 
             // create the message part
@@ -75,18 +79,21 @@ public class GmailSender extends javax.mail.Authenticator {
             // Part two is attachment
             messageBodyPart = new MimeBodyPart();
             DataSource source =
-                    new FileDataSource(fileAttachment);
+                    new FileDataSource("/storage/sdcard0/Download/tumblr_mftomy8ARK1qbmkkbo1_500.png");
             messageBodyPart.setDataHandler(
                     new DataHandler(source));
-            messageBodyPart.setFileName(fileAttachment);
+            messageBodyPart.setFileName("Kimi!");
             multipart.addBodyPart(messageBodyPart);
 
             // Put parts in message
             message.setContent(multipart);
+            Log.i("EmailActivity","Email SENDING to " + recipients + " from " + sender);
             Transport.send(message);
-
+            Log.i("EmailActivity","Email sent to " + recipients + " from " + sender);
         }
         catch(Exception e){
+            e.printStackTrace();
+            System.out.println("NOT !!!! SEEEEENDING!!!!!!!");
             }
     }
 }

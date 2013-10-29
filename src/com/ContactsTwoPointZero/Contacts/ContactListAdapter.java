@@ -17,22 +17,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import com.ContactsTwoPointZero.Activities.EmailActivity;
 import com.ContactsTwoPointZero.Activities.GTalkActivity;
+import com.ContactsTwoPointZero.Activities.MainActivity;
 import com.example.ExpandableList.R;
 
 public class ContactListAdapter extends BaseExpandableListAdapter {
-    private View phoneView , googleView, facebookView, yahooView;
+    private View phoneView , googleView, facebookView, yahooView, emailView;
     private final SparseArray<Contact> originalGroups;
     private SparseArray<Contact> groups;
     private int lastExpandedGroupPosition;
     private ExpandableListView listView;
     private LayoutInflater inflater;
-    private Activity activity;
+    private MainActivity activity;
     private boolean editableChilds;
     private View editableSocialAccount, editablePhoneList;
     private View[][] socialViews;
     private int currentSelectedContactPosition;
-    public ContactListAdapter(Activity act, ExpandableListView listView, SparseArray<Contact> groups) {
+    public ContactListAdapter(MainActivity act, ExpandableListView listView, SparseArray<Contact> groups) {
         activity = act;
         this.listView = listView;
         this.groups = groups;
@@ -70,6 +72,8 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
 
         phoneView = inflater.inflate(R.layout.contact_detail_phone, null);
 
+        emailView = inflater.inflate(R.layout.contact_detail_phone, null);
+
         facebookView = inflater.inflate(R.layout.contact_detail_social, null);
         logo = (ImageView) facebookView.findViewById(R.id.logo_icon);
         logo.setImageResource(R.drawable.facebook_icon);
@@ -105,6 +109,12 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
 
         mailButton = (ImageButton) googleView.findViewById(R.id.mail_icon);
         mailButton.setImageResource(R.drawable.google_mail_icon);
+        mailButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startGmailActivity();
+            }
+        });
 
         yahooView = inflater.inflate(R.layout.contact_detail_social, null);
         logo = (ImageView) yahooView.findViewById(R.id.logo_icon);
@@ -289,7 +299,16 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
     private void startGTalkActivity(){
         Contact contact = (Contact) getGroup(currentSelectedContactPosition);
         Intent gTalkIntent = new Intent(activity,GTalkActivity.class);
-        gTalkIntent.putExtra("googleAccount",contact.getGoogleAccount());
+        gTalkIntent.putExtra("googleAccount", contact.getGoogleAccount());
         activity.startActivity(gTalkIntent);
+    }
+
+    private void startGmailActivity(){
+        Contact contact = (Contact) getGroup(currentSelectedContactPosition);
+        Intent gMailIntent = new Intent(activity,EmailActivity.class);
+        gMailIntent.putExtra("recipientAddress",contact.getGoogleAccount());
+        gMailIntent.putExtra("userAccount",activity.getActivityProfile().getGoogleAccount());
+        gMailIntent.putExtra("userPassword",activity.getActivityProfile().getGooglePassword());
+        activity.startActivity(gMailIntent);
     }
 }
