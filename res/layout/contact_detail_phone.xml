@@ -6,23 +6,23 @@
               android:layout_height="40dp">
 
     <ImageView
-            android:layout_width="50dp"
+            android:layout_width="0dp"
             android:layout_height="40dp"
-            android:id="@+id/phone_logo" android:layout_gravity="center" android:layout_weight=".10"
+            android:id="@+id/phone_logo" android:layout_gravity="center" android:layout_weight=".20"
             android:src="@drawable/phone_logo"/>
     <Spinner
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:id="@+id/number_spinner" android:layout_weight=".70" android:spinnerMode="dropdown"/>
+            android:id="@+id/number_spinner" android:layout_weight=".50" android:spinnerMode="dropdown"/>
     <ImageButton
-            android:layout_width="45dp"
+            android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:id="@+id/phone_call_button" android:layout_weight=".10" android:src="@drawable/phone_call_icon"
+            android:id="@+id/phone_call_button" android:layout_weight=".15" android:src="@drawable/phone_call_icon"
             android:scaleType="fitCenter"/>
     <ImageButton
-            android:layout_width="45dp"
+            android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:id="@+id/phone_sms_button" android:src="@drawable/phone_sms_icon"
             android:adjustViewBounds="false" android:baselineAlignBottom="false" android:longClickable="false"
-            android:scaleType="fitCenter" android:layout_weight=".10"/>
+            android:scaleType="fitCenter" android:layout_weight=".15"/>
 </LinearLayout>

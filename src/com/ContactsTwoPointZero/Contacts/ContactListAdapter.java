@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import com.ContactsTwoPointZero.Activities.EmailActivity;
 import com.ContactsTwoPointZero.Activities.GTalkActivity;
 import com.ContactsTwoPointZero.Activities.MainActivity;
+import com.ContactsTwoPointZero.Activities.YahooChatActivity;
 import com.example.ExpandableList.R;
 
 public class ContactListAdapter extends BaseExpandableListAdapter {
@@ -66,7 +67,7 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
 
     private void loadViews(){
         TextView status;
-        ImageView logo,statusIcon;
+        ImageView logo;
         ImageButton chatButton, mailButton;
 
         phoneView = inflater.inflate(R.layout.contact_detail_phone, null);
@@ -79,8 +80,6 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
 
         status = (TextView) facebookView.findViewById(R.id.status);
         status.setText("Online");
-        statusIcon = (ImageView) facebookView.findViewById(R.id.status_icon);
-        statusIcon.setImageResource(R.drawable.online_icon);
 
         chatButton = (ImageButton) facebookView.findViewById(R.id.chat_icon);
         chatButton.setImageResource(R.drawable.facebook_chat_icon);
@@ -92,10 +91,7 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
         logo = (ImageView) googleView.findViewById(R.id.logo_icon);
         logo.setImageResource(R.drawable.google_icon);
 
-        status = (TextView) googleView.findViewById(R.id.status);
-        status.setText("Online");
-        statusIcon = (ImageView) googleView.findViewById(R.id.status_icon);
-        statusIcon.setImageResource(R.drawable.online_icon);
+
 
         chatButton = (ImageButton) googleView.findViewById(R.id.chat_icon);
         chatButton.setImageResource(R.drawable.google_chat_icon);
@@ -121,11 +117,15 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
 
         status = (TextView) yahooView.findViewById(R.id.status);
         status.setText("Online");
-        statusIcon = (ImageView) yahooView.findViewById(R.id.status_icon);
-        statusIcon.setImageResource(R.drawable.online_icon);
 
         chatButton = (ImageButton) yahooView.findViewById(R.id.chat_icon);
         chatButton.setImageResource(R.drawable.yahoo_chat_icon);
+        chatButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startYahooChatActivity();
+            }
+        });
 
         mailButton = (ImageButton) yahooView.findViewById(R.id.mail_icon);
         mailButton.setImageResource(R.drawable.yahoo_mail_icon);
@@ -143,18 +143,28 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
             contact = groups.get(i);
             int viewCount = 0;
             if (contact.hasFacebookAccount()){
+                status = (TextView) facebookView.findViewById(R.id.status);
+                status.setText(contact.getFacebookAccount());
                 socialViews[i][viewCount++] = facebookView;
                 System.out.println(contact.getName() + " has facebook account " + contact.getFacebookAccount());
             }
             if (contact.hasGoogleAccount()){
+
+                status = (TextView) googleView.findViewById(R.id.status);
+                status.setText(contact.getGoogleAccount().split("@gmail")[0]);
                 socialViews[i][viewCount++] = googleView;
                 System.out.println(contact.getName() + " has google account " + contact.getFacebookAccount());
             }
             if (contact.hasYahooAccount()){
+                status = (TextView) yahooView.findViewById(R.id.status);
+                status.setText(contact.getYahooAccount().split("@yahoo")[0]);
                 socialViews[i][viewCount++] = yahooView;
             }
         }
     }
+
+
+
     @Override
     public Object getChild(int groupPosition, int childPosition) {
         return null;
@@ -324,5 +334,14 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
 
     private enum AccountType {
          YAHOO,GOOGLE;
+    }
+
+    private void startYahooChatActivity() {
+        Contact contact = (Contact) getGroup(currentSelectedContactPosition);
+        Intent yMessengerIntent = new Intent(activity,YahooChatActivity.class);
+        yMessengerIntent.putExtra("userAccount", activity.getActivityProfile().getYahooAccount());
+        yMessengerIntent.putExtra("userPassword", activity.getActivityProfile().getYahooPassword());
+        yMessengerIntent.putExtra("yahooAccount", contact.getYahooAccount());
+        activity.startActivity(yMessengerIntent);
     }
 }

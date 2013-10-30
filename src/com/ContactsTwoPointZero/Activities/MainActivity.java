@@ -46,7 +46,9 @@ public class MainActivity extends Activity {
         contactManager = new ContactManager(this);
         activityProfile = new ActivityProfile();
         activityProfile.setGoogleAccount("catalin.rmc@gmail.com");
-        activityProfile.setYahooAccount("ageofmight1992");
+        activityProfile.setGooglePassword("ageofmight1992");
+        activityProfile.setYahooAccount("y_smack_test@yahoo.com");
+        activityProfile.setYahooPassword("Linux1234");
         startNormalActivity();
 
 
@@ -156,7 +158,7 @@ public class MainActivity extends Activity {
         contact = new Contact("Irina Tomescu");
         contact.addPhoneNumber("023183283");
         contact.addPhoneNumber("0735213882");
-        contact.setYahooAccount("test");
+        contact.setYahooAccount("catalin.ramascanu@yahoo.ro");
         contactList.append(nrOfContacts++, contact);
 
     }

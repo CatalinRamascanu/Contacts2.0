@@ -175,19 +175,12 @@ public class GTalkActivity extends Activity {
     }
 
     private class ConnectToXmpp extends AsyncTask<Void, Void, Void> {
-
         @Override
         protected Void doInBackground(Void... params) {
             tryConnection();
             loadingDialog.dismiss();
             return null;
         }
-
-        @Override
-        protected void onPostExecute(Void result) {
-
-        }
-
     }
 
     private class MessageParrot implements PacketListener {
