@@ -35,10 +35,12 @@ import java.util.HashMap;
  */
 public class CreateContactActivity extends Activity {
     private LayoutInflater inflater;
+    private boolean editingExistingContact;
     private Dialog infoDialog;
     private ImageButton extendName, addPhoneNumber;
     private int sBeforeChangeLength = 0;
-    private boolean isNameExtended, operatorDetectActive;
+    private boolean isNameExtended;
+    private static boolean operatorDetectActive;
     private SparseArray<View> logoOperators;
     private Contact givenContact,savedContact;
     private ArrayList<String> phoneNumberInputData;
@@ -58,6 +60,7 @@ public class CreateContactActivity extends Activity {
         if (extras != null){
             givenContact = (Contact) extras.getSerializable("givenContact");
             addDataOfContact(givenContact);
+            editingExistingContact = true;
         }
         addPhoneNumberLayout(null);
 
@@ -68,6 +71,8 @@ public class CreateContactActivity extends Activity {
         if (contact.hasProfilePicture()) {
             ((ImageView) findViewById(R.id.profilePicture)).setImageBitmap(contact.getProfilePicture());
         }
+
+        ((CheckBox) findViewById(R.id.operatorDetect)).setChecked(contact.isDetectPhoneOperator());
 
         for (int i = 0; i < contact.getSizeOfPhoneList(); i++){
             addPhoneNumberLayout(contact.getPhoneNumber(i));
@@ -121,7 +126,7 @@ public class CreateContactActivity extends Activity {
     }
 
     private void initPhoneList(){
-        operatorDetectActive = true;
+        operatorDetectActive = false;
         addPhoneNumber = (ImageButton) findViewById(R.id.addPhoneNumber);
         addPhoneNumber.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,33 +200,59 @@ public class CreateContactActivity extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 operatorDetectActive = isChecked;
+                LinearLayout layout = (LinearLayout) findViewById(R.id.phoneListLayout);
+                String phoneNumber;
+                ImageView operatorLogo = null;
+                for (int i = 0; i < layout.getChildCount(); i++) {
+                    View view = layout.getChildAt(i);
+                    Class viewClass = view.getClass();
+                    if (viewClass == LinearLayout.class) {
+                        for (int j = 0; j < ((LinearLayout) view).getChildCount(); j++){
+                            View childView = ((LinearLayout) view).getChildAt(j);
+                            Class childClass = childView.getClass();
+                            if (childClass == ImageView.class){
+                                operatorLogo = (ImageView) childView;
+                            }
+                            if (childClass == EditText.class) {
+                                phoneNumber = ((EditText) childView).getText().toString();
+                                if (phoneNumber.length() > 0) {
+                                    performOperatorDetect(phoneNumber,operatorLogo);
+                                }
+                            }
+                        }
+                    }
+                }
             }
         });
     }
 
-    private void performOperatorDetect(CharSequence number, ImageView operatorLogo){
+    public static void performOperatorDetect(CharSequence number, ImageView operatorLogo){
 
         if (operatorDetectActive){
             if (number.length() > 2 && number.charAt(0) == '0'){
                 if (number.charAt(1) == '7'){
                     if (number.charAt(2) == '2' || number.charAt(2) == '3'){
                         operatorLogo.setImageResource(R.drawable.vodafone_icon);
+                        return;
                     }
                     if (number.charAt(2) == '4' || number.charAt(2) == '5'){
                         operatorLogo.setImageResource(R.drawable.orange_icon);
-
+                        return;
                     }
                     if (number.charAt(2) == '6' || number.charAt(2) == '8'){
                         operatorLogo.setImageResource(R.drawable.cosmote_icon);
+                        return;
                     }
                 }
             }
+            operatorLogo.setImageResource(R.drawable.phone_logo);
         }
         else{
             operatorLogo.setImageResource(R.drawable.phone_logo);
         }
 
     }
+
     private static final int SELECT_PICTURE = 1;
     private String selectedImagePath;
     private void getPictureIntent(){
@@ -282,14 +313,16 @@ public class CreateContactActivity extends Activity {
                     ImageView profilePictureView = (ImageView) findViewById(R.id.profilePicture);
                     savedContact.setProfilePicture(new SerialBitmap(((BitmapDrawable) profilePictureView.getDrawable()).getBitmap()));
 
+                    savedContact.setDetectPhoneOperator(((CheckBox) findViewById(R.id.operatorDetect)).isChecked());
+
                     LinearLayout layout = (LinearLayout) findViewById(R.id.phoneListLayout);
                     String phoneNumber;
                     boolean aNumberHasBeenAdded = false;
 
                     for (int i = 0; i < layout.getChildCount(); i++) {
                         View view = layout.getChildAt(i);
-                        Class c = view.getClass();
-                        if (c == LinearLayout.class) {
+                        Class viewClass = view.getClass();
+                        if (viewClass == LinearLayout.class) {
                             for (int j = 0; j < ((LinearLayout) view).getChildCount(); j++){
                                 View childView = ((LinearLayout) view).getChildAt(j);
                                 Class childClass = childView.getClass();
@@ -324,9 +357,17 @@ public class CreateContactActivity extends Activity {
                 } else {
                     infoDialog.show();
                 }
+
                 Intent saveIntent = getIntent();
-                saveIntent.putExtra("savedContact", savedContact);
-                setResult(1,saveIntent);
+                if (editingExistingContact){
+                    saveIntent.putExtra("savedExistedContact", savedContact);
+                    setResult(1,saveIntent);
+                }
+                else{
+                    saveIntent.putExtra("savedNewContact", savedContact);
+                    setResult(1,saveIntent);
+                }
+
                 finish();
             }
         });

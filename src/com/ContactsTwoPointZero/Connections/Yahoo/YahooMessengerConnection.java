@@ -2,7 +2,9 @@ package com.ContactsTwoPointZero.Connections.Yahoo;
 
 import android.app.Activity;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
+import com.ContactsTwoPointZero.Activities.YahooChatActivity;
 import org.jivesoftware.smack.Roster;
 import org.openymsg.network.*;
 import org.openymsg.network.event.SessionEvent;
@@ -26,7 +28,7 @@ public class YahooMessengerConnection implements SessionListener {
     private String password;
     private String recipient;
     private TextView chatBody;
-    private Activity activity;
+    private YahooChatActivity activity;
     private org.openymsg.roster.Roster roster;
 
     public YahooMessengerConnection(String username, String password, String recipient) {
@@ -35,10 +37,11 @@ public class YahooMessengerConnection implements SessionListener {
         this.recipient = recipient.split("@yahoo")[0];
     }
 
-    public void setChatBody(TextView chatBody, Activity activity){
+    public void setChatBody(TextView chatBody, YahooChatActivity activity){
         this.chatBody = chatBody;
         this.activity = activity;
     }
+
 
     public boolean loginToYahoo() {
         try {
@@ -101,7 +104,8 @@ public class YahooMessengerConnection implements SessionListener {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            chatBody.append("Your Friend: " + sessionEvent.getMessage() + "\n\n");
+                            chatBody.append(activity.getFriendName() + ": " + sessionEvent.getMessage() + "\n\n");
+                            activity.getChatScrollView().fullScroll(View.FOCUS_DOWN);
                         }
                     });
                 }

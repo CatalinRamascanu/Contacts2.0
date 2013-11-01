@@ -8,10 +8,7 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ScrollView;
-import android.widget.TextView;
+import android.widget.*;
 import com.ContactsTwoPointZero.Connections.Yahoo.YahooMessengerConnection;
 import com.example.ExpandableList.R;
 import org.jivesoftware.smack.*;
@@ -37,6 +34,7 @@ public class YahooChatActivity extends Activity {
     private String userAccount;
     private String userPassword;
     private YahooMessengerConnection yahooConnection;
+    private String friendName;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +46,15 @@ public class YahooChatActivity extends Activity {
         sendButton = (Button) findViewById(R.id.send_chat_button);
         Bundle extras = getIntent().getExtras();
         friendAccount = (String) extras.getSerializable("yahooAccount");
+        friendName = (String) extras.getSerializable("contactName");
         userAccount = (String) extras.getSerializable("userAccount");
         userPassword = (String) extras.getSerializable("userPassword");
         loadingDialog = new ProgressDialog(thisActivity);
         loadingDialog.setMessage("Connecting to Yahoo Messenger...");
         loadingDialog.setCancelable(false);
         loadingDialog.show();
+        ((ImageView) findViewById(R.id.chat_logo)).setImageResource(R.drawable.yahoo_chat_icon);
+        ((TextView) findViewById(R.id.recipient_name)).setText(friendName);
         new ConnectToYahoo().execute();
         initSendButtonListener();
     }
@@ -62,18 +63,28 @@ public class YahooChatActivity extends Activity {
         yahooConnection = new YahooMessengerConnection(userAccount,userPassword,friendAccount);
         yahooConnection.setChatBody(chatBody,this);
         if (yahooConnection.loginToYahoo()){
-            loadingDialog.dismiss();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    loadingDialog.dismiss();
+                }
+            });
         }else{
-            loadingDialog.dismiss();
-            AlertDialog.Builder builder = new AlertDialog.Builder(thisActivity);
-            builder.setMessage("Failed to connect to Yahoo Messenger.Please check your Internet connection")
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            thisActivity.finish();
-                        }
-                    });
-            Dialog infoDialog = builder.create();
-            infoDialog.show();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    loadingDialog.dismiss();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(thisActivity);
+                    builder.setMessage("Failed to connect to Yahoo Messenger.Please check your Internet connection")
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    thisActivity.finish();
+                                }
+                            });
+                    Dialog infoDialog = builder.create();
+                    infoDialog.show();
+                }
+            });
         }
     }
 
@@ -88,6 +99,7 @@ public class YahooChatActivity extends Activity {
                         public void run() {
                             chatInput.setText("");
                             chatBody.append("You: " + message + "\n\n");
+                            chatScrollView.fullScroll(View.FOCUS_DOWN);
                         }
                     });
                 }
@@ -113,5 +125,13 @@ public class YahooChatActivity extends Activity {
             initYahooConnection();
             return null;
         }
+    }
+
+    public String getFriendName(){
+        return friendName;
+    }
+
+    public ScrollView getChatScrollView(){
+        return chatScrollView;
     }
 }

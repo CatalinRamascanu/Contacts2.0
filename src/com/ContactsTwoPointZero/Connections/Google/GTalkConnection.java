@@ -61,7 +61,7 @@ public class GTalkConnection extends Activity {
         String port = "5222";
         String service = "gmail.com";
         String username = "catalin.rmc@gmail.com";
-        String password = "ageofmight1992";
+        String password = "";
         Log.i("XMPPClient", "Fields Initialized");
 
         // Create a connection

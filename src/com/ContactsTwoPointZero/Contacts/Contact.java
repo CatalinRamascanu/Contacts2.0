@@ -18,6 +18,7 @@ public class Contact implements Serializable {
     private static final long serialVersionUID = 46543445;
     private String firstName,middleName,lastName;
     private SerialBitmap profilePicture;
+    private boolean detectPhoneOperator;
     private HashMap<Integer,String> phoneList;
     private int sizeOfPhoneList;
 
@@ -195,5 +196,13 @@ public class Contact implements Serializable {
         contactData.append("Yahoo Account: " + yahooAccount + "\n");
 
         return contactData.toString();
+    }
+
+    public boolean isDetectPhoneOperator() {
+        return detectPhoneOperator;
+    }
+
+    public void setDetectPhoneOperator(boolean detectPhoneOperator) {
+        this.detectPhoneOperator = detectPhoneOperator;
     }
 }

@@ -19,148 +19,151 @@ import android.view.ViewGroup;
 import com.ContactsTwoPointZero.Activities.*;
 import com.example.ExpandableList.R;
 
+import java.util.ArrayList;
+
 public class ContactListAdapter extends BaseExpandableListAdapter {
-    private View phoneView , googleView, facebookView, yahooView, emailView;
     private final SparseArray<Contact> originalGroups;
+    private ArrayList<Integer> originalGroupsIndex;
     private SparseArray<Contact> groups;
+    private ArrayList<Integer> groupsIndex;
     private int lastExpandedGroupPosition;
     private ExpandableListView listView;
     private LayoutInflater inflater;
     private MainActivity activity;
     private boolean editableChilds;
     private View editableSocialAccount, editablePhoneList;
-    private View[][] socialViews;
+    private View[][] contactChildsView;
     private int currentSelectedContactPosition;
     public ContactListAdapter(MainActivity act, ExpandableListView listView, SparseArray<Contact> groups) {
         activity = act;
         this.listView = listView;
         this.groups = groups;
         originalGroups = groups;
+        groupsIndex = new ArrayList<Integer>();
+        originalGroupsIndex = new ArrayList<Integer>();
+        for (int i = 0; i < groups.size(); i++){
+            groupsIndex.add(i);
+        }
+        originalGroupsIndex = groupsIndex;
         inflater = act.getLayoutInflater();
         editableChilds = false;
         loadViews();
-        
-    }
-
-    public void activateEditableChilds(){
-        editableChilds = true;
-
-        editablePhoneList = inflater.inflate(R.layout.contact_detail_phone,null);
-
-        ImageButton deleteButton = ((ImageButton) editablePhoneList.findViewById(R.id.mail_icon));
-        deleteButton.setImageResource(R.drawable.delete_icon);
-        deleteButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Spinner numberSpinner = (Spinner) editablePhoneList.findViewById(R.id.number_spinner);
-                SpinnerAdapter adapter = numberSpinner.getAdapter();
-
-            }
-        });
-        ((ImageButton) editablePhoneList.findViewById(R.id.chat_icon)).setImageResource(R.drawable.add_icon);
-        editableSocialAccount = inflater.inflate(R.layout.editable_contact_list,null);
-
     }
 
     private void loadViews(){
         TextView status;
-        ImageView logo;
         ImageButton chatButton, mailButton;
-
-        phoneView = inflater.inflate(R.layout.contact_detail_phone, null);
-
-        emailView = inflater.inflate(R.layout.contact_detail_phone, null);
-
-        facebookView = inflater.inflate(R.layout.contact_detail_social, null);
-        logo = (ImageView) facebookView.findViewById(R.id.logo_icon);
-        logo.setImageResource(R.drawable.facebook_icon);
-
-        status = (TextView) facebookView.findViewById(R.id.status);
-        status.setText("Online");
-
-        chatButton = (ImageButton) facebookView.findViewById(R.id.chat_icon);
-        chatButton.setImageResource(R.drawable.facebook_chat_icon);
-        chatButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startFacebookChatActivity();
-            }
-        });
-        mailButton = (ImageButton) facebookView.findViewById(R.id.mail_icon);
-        mailButton.setImageResource(R.drawable.facebook_post_icon);
-
-        googleView = inflater.inflate(R.layout.contact_detail_social, null);
-        logo = (ImageView) googleView.findViewById(R.id.logo_icon);
-        logo.setImageResource(R.drawable.google_icon);
-
-
-
-        chatButton = (ImageButton) googleView.findViewById(R.id.chat_icon);
-        chatButton.setImageResource(R.drawable.google_chat_icon);
-        chatButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startGTalkActivity();
-            }
-        });
-
-        mailButton = (ImageButton) googleView.findViewById(R.id.mail_icon);
-        mailButton.setImageResource(R.drawable.google_mail_icon);
-        mailButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startEmailActivity(AccountType.GOOGLE);
-            }
-        });
-
-        yahooView = inflater.inflate(R.layout.contact_detail_social, null);
-        logo = (ImageView) yahooView.findViewById(R.id.logo_icon);
-        logo.setImageResource(R.drawable.yahoo_icon);
-
-        status = (TextView) yahooView.findViewById(R.id.status);
-        status.setText("Online");
-
-        chatButton = (ImageButton) yahooView.findViewById(R.id.chat_icon);
-        chatButton.setImageResource(R.drawable.yahoo_chat_icon);
-        chatButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startYahooChatActivity();
-            }
-        });
-
-        mailButton = (ImageButton) yahooView.findViewById(R.id.mail_icon);
-        mailButton.setImageResource(R.drawable.yahoo_mail_icon);
-        mailButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startEmailActivity(AccountType.YAHOO);
-            }
-        });
-
+        View phoneView , googleView, facebookView, yahooView;
         Contact contact;
-        socialViews = new View[groups.size()][3];
+        contactChildsView = new View[groups.size()][4];
 
         for (int i = 0; i < groups.size(); i++){
+
             contact = groups.get(i);
-            int viewCount = 0;
+            phoneView = inflater.inflate(R.layout.contact_detail_phone, null);
+            Spinner spinner = (Spinner) phoneView.findViewById(R.id.number_spinner);
+            ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(listView.getContext(), android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
+            for (int j = 0; j < contact.getSizeOfPhoneList(); j++){
+                adapter.add(contact.getPhoneNumber(j));
+            }
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    ImageView operatorLogo = (ImageView) contactChildsView[currentSelectedContactPosition][0].findViewById(R.id.phone_logo);
+                    if (groups.get(currentSelectedContactPosition).isDetectPhoneOperator()){
+                        String phoneNumber = ((Spinner) contactChildsView[currentSelectedContactPosition][0].findViewById(R.id.number_spinner)).getSelectedItem().toString();
+                        CreateContactActivity.performOperatorDetect(phoneNumber,operatorLogo);
+                    }
+                    else{
+                        operatorLogo.setImageResource(R.drawable.phone_logo);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    //To change body of implemented methods use File | Settings | File Templates.
+                }
+            });
+            ImageButton callButton = (ImageButton) phoneView.findViewById(R.id.phone_call_button);
+            final int finalI = i;
+            callButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callNumber(((Spinner) contactChildsView[finalI][0].findViewById(R.id.number_spinner)).getSelectedItem().toString());
+                }
+            });
+
+            ImageButton sendSmsButton = (ImageButton) phoneView.findViewById(R.id.phone_sms_button);
+            sendSmsButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendSmsToNumber((String) ((Spinner) contactChildsView[finalI][0].findViewById(R.id.number_spinner)).getSelectedItem());
+                }
+            });
+
+            contactChildsView[i][0] = phoneView;
+
+            int viewCount = 1;
             if (contact.hasFacebookAccount()){
+                facebookView = inflater.inflate(R.layout.facebook_view_layout, null);
+                chatButton = (ImageButton) facebookView.findViewById(R.id.chat_icon);
+                chatButton.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startFacebookChatActivity();
+                    }
+                });
                 status = (TextView) facebookView.findViewById(R.id.status);
                 status.setText(contact.getFacebookAccount());
-                socialViews[i][viewCount++] = facebookView;
-                System.out.println(contact.getName() + " has facebook account " + contact.getFacebookAccount());
+                contactChildsView[i][viewCount++] = facebookView;
+//                System.out.println(contact.getName() + " has facebook account " + contact.getFacebookAccount());
             }
             if (contact.hasGoogleAccount()){
+                googleView = inflater.inflate(R.layout.google_view_layout, null);
+                chatButton = (ImageButton) googleView.findViewById(R.id.chat_icon);
+                chatButton.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startGTalkActivity();
+                    }
+                });
+
+                mailButton = (ImageButton) googleView.findViewById(R.id.mail_icon);
+                mailButton.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startEmailActivity(AccountType.GOOGLE);
+                    }
+                });
 
                 status = (TextView) googleView.findViewById(R.id.status);
                 status.setText(contact.getGoogleAccount().split("@gmail")[0]);
-                socialViews[i][viewCount++] = googleView;
-                System.out.println(contact.getName() + " has google account " + contact.getFacebookAccount());
+                contactChildsView[i][viewCount++] = googleView;
+//                System.out.println(contact.getName() + " has google account " + contact.getGoogleAccount());
             }
             if (contact.hasYahooAccount()){
+                yahooView = inflater.inflate(R.layout.yahoo_view_layout, null);
+                chatButton = (ImageButton) yahooView.findViewById(R.id.chat_icon);
+                chatButton.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startYahooChatActivity();
+                    }
+                });
+
+                mailButton = (ImageButton) yahooView.findViewById(R.id.mail_icon);
+                mailButton.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startEmailActivity(AccountType.YAHOO);
+                    }
+                });
                 status = (TextView) yahooView.findViewById(R.id.status);
                 status.setText(contact.getYahooAccount().split("@yahoo")[0]);
-                socialViews[i][viewCount++] = yahooView;
+                contactChildsView[i][viewCount++] = yahooView;
+//                System.out.println(contact.getName() + " has yahoo account " + contact.getYahooAccount());
             }
         }
     }
@@ -180,40 +183,14 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        Contact contact = (Contact) getGroup(groupPosition);
+        int realGroupPosition = originalGroupsIndex.get(groupsIndex.get(groupPosition));
         currentSelectedContactPosition = groupPosition;
         if (childPosition == 0){
-            convertView = phoneView;
-            Spinner spinner = (Spinner) phoneView.findViewById(R.id.number_spinner);
-            ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(listView.getContext(), android.R.layout.simple_spinner_item);;
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(adapter);
-            for (int i = 0; i < contact.getSizeOfPhoneList(); i++){
-                adapter.add(contact.getPhoneNumber(i));
-            }
-
-            ImageButton callButton = (ImageButton) phoneView.findViewById(R.id.phone_call_button);
-            callButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    callNumber(((Spinner) phoneView.findViewById(R.id.number_spinner)).getSelectedItem().toString());
-                }
-            });
-
-            ImageButton sendSmsButton = (ImageButton) phoneView.findViewById(R.id.phone_sms_button);
-            sendSmsButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sendSmsToNumber((String) ((Spinner) phoneView.findViewById(R.id.number_spinner)).getSelectedItem());
-                }
-            });
-            return convertView;
+            return contactChildsView[realGroupPosition][0];
         }
-
         if (childPosition > 0){
-            return socialViews[groupPosition][childPosition - 1];
+            return contactChildsView[realGroupPosition][childPosition];
         }
-
         return convertView;
     }
 
@@ -261,6 +238,13 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
         Contact contact = groups.get(groupPosition);
         TextView name = (TextView) convertView.findViewById(R.id.contact_name);
         name.setText(contact.getName());
+        ImageView profilePicture = (ImageView) convertView.findViewById(R.id.contact_photo);
+        if (contact.hasProfilePicture()){
+            profilePicture.setImageBitmap(contact.getProfilePicture());
+        }
+        else{
+            profilePicture.setImageResource(R.drawable.contact_photo);
+        }
         return convertView;
     }
 
@@ -276,18 +260,22 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
 
     public void filterData(String query){
         SparseArray<Contact> newList = new SparseArray<Contact>();
+        ArrayList<Integer> newListIndex = new ArrayList<Integer>();
         query = query.toLowerCase();
         if (query.isEmpty()){
-           groups = originalGroups;
+            groups = originalGroups;
+            groupsIndex = originalGroupsIndex;
         }
         else{
             int j = 0;
             for (int i = 0; i < originalGroups.size(); i++){
                 if (originalGroups.get(i).getName().toLowerCase().contains(query)){
                     newList.put(j++,originalGroups.get(i));
+                    newListIndex.add(i);
                 }
             }
             groups = newList;
+            groupsIndex = newListIndex;
         }
 
         notifyDataSetChanged();
@@ -317,6 +305,9 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
         Contact contact = (Contact) getGroup(currentSelectedContactPosition);
         Intent gTalkIntent = new Intent(activity,GTalkActivity.class);
         gTalkIntent.putExtra("googleAccount", contact.getGoogleAccount());
+        gTalkIntent.putExtra("contactName",contact.getName());
+        gTalkIntent.putExtra("userAccount", activity.getActivityProfile().getGoogleAccount());
+        gTalkIntent.putExtra("userPassword", activity.getActivityProfile().getGooglePassword());
         activity.startActivity(gTalkIntent);
     }
 
@@ -344,6 +335,7 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
         yMessengerIntent.putExtra("userAccount", activity.getActivityProfile().getYahooAccount());
         yMessengerIntent.putExtra("userPassword", activity.getActivityProfile().getYahooPassword());
         yMessengerIntent.putExtra("yahooAccount", contact.getYahooAccount());
+        yMessengerIntent.putExtra("contactName",contact.getName());
         activity.startActivity(yMessengerIntent);
     }
 
@@ -356,5 +348,27 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
         facebookChatIntent.putExtra("facebookAccount", contact.getFacebookAccount());
         facebookChatIntent.putExtra("contactName",contact.getName());
         activity.startActivity(facebookChatIntent);
+    }
+
+    public Contact getCurrentSelectedContact(int currentContactIndex){
+        return originalGroups.get(originalGroupsIndex.get(groupsIndex.get(currentContactIndex)));
+    }
+
+    public void updateContact(Contact contact, int contactPosition){
+        int realContactPosition = originalGroupsIndex.get(groupsIndex.get(contactPosition));
+        originalGroups.remove(realContactPosition);
+        originalGroups.put(realContactPosition, contact);
+        groups = originalGroups;
+        loadViews();
+        notifyDataSetChanged();
+    }
+
+    public void addContact(Contact contact){
+        originalGroups.put(originalGroups.size(), contact);
+        originalGroupsIndex.add(originalGroupsIndex.size());
+        groups = originalGroups;
+        groupsIndex = originalGroupsIndex;
+        loadViews();
+        notifyDataSetChanged();
     }
 }

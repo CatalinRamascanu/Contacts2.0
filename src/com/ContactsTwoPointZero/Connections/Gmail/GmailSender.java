@@ -38,7 +38,7 @@ public class GmailSender extends javax.mail.Authenticator {
         session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("bot.smack21@gmail.com", "caine2123");
+                        return new PasswordAuthentication("bot.smack21@gmail.com", "");
                     }
                 });
     }

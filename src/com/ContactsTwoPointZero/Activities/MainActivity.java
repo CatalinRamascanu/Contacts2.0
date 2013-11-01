@@ -39,6 +39,8 @@ public class MainActivity extends Activity {
     private ActivityProfile activityProfile;
     private ContactManager contactManager;
     private Activity thisActivity;
+    private ExpandableListView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +56,6 @@ public class MainActivity extends Activity {
         activityProfile.setFacebookAccount("100006895481717");
         activityProfile.setFacebookPassword("Linux1234");
         startNormalActivity();
-        new ConnectToXmpp().execute();
 
     }
 
@@ -100,13 +101,24 @@ public class MainActivity extends Activity {
         createData();
 //        ContactManager manager = new ContactManager(this);
 //        manager.readContacts();
-        ExpandableListView listView = (ExpandableListView) findViewById(R.id.listView);
+        listView = (ExpandableListView) findViewById(R.id.listView);
         adapter = new ContactListAdapter(this,listView, contactList);
         listView.setAdapter(adapter);
         initListeners();
     }
 
     private void initListeners(){
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent editContactIntent = new Intent(thisActivity, CreateContactActivity.class);
+                editContactIntent.putExtra("givenContact", adapter.getCurrentSelectedContact(position));
+                startActivityForResult(editContactIntent,position);
+                return true;
+            }
+        });
+
         EditText inputSearch = (EditText) findViewById(R.id.searchBox);
         inputSearch.addTextChangedListener(new TextWatcher() {
 
@@ -132,9 +144,11 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(MainActivity.this, CreateContactActivity.class);
-                MainActivity.this.startActivity(myIntent);
+                MainActivity.this.startActivityForResult(myIntent,2);
             }
         });
+
+
     }
     public void createData() {
         int nrOfContacts = 0;
@@ -151,7 +165,7 @@ public class MainActivity extends Activity {
         contact.addPhoneNumber("0761235123");
         contact.setFacebookAccount("catalin.ramascanu");
         contact.setYahooAccount("catalin.ramascanu@yahoo.com");
-        contact.setGoogleAccount("test");
+        contact.setGoogleAccount("bot.smack21@gmail.com");
         contactList.append(nrOfContacts++, contact);
 
         contact = new Contact("Alexandra Poenaru");
@@ -162,6 +176,7 @@ public class MainActivity extends Activity {
         contact = new Contact("Irina Tomescu");
         contact.addPhoneNumber("023183283");
         contact.addPhoneNumber("0735213882");
+        contact.setGoogleAccount("catalin.rmc@gmail.com");
         contact.setYahooAccount("catalin.ramascanu@yahoo.ro");
         contactList.append(nrOfContacts++, contact);
 
@@ -176,54 +191,17 @@ public class MainActivity extends Activity {
         return activityProfile;
     }
 
-    public void connect() throws XMPPException {
-
-        ConnectionConfiguration config = new ConnectionConfiguration("chat.facebook.com", 5222);
-        config.setSASLAuthenticationEnabled(true);
-        config.setSecurityMode(ConnectionConfiguration.SecurityMode.required);
-        config.setRosterLoadedAtLogin(true);
-        config.setTruststorePath("/system/etc/security/cacerts.bks");
-        config.setTruststorePassword("changeit");
-        config.setTruststoreType("bks");
-        config.setSendPresence(false);
-        try {
-            SSLContext sc = SSLContext.getInstance("TLS");
-            sc.init(null, MemorizingTrustManager.getInstanceList(this), new java.security.SecureRandom());
-            config.setCustomSSLContext(sc);
-        } catch (GeneralSecurityException e) {
-            Log.w("TAG", "Unable to use MemorizingTrustManager", e);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        if (data.getExtras().containsKey("savedExistedContact") && data != null){
+            Contact savedContact = (Contact) data.getExtras().getSerializable("savedExistedContact");
+            adapter.updateContact(savedContact, requestCode);
         }
-        XMPPConnection xmpp = new XMPPConnection(config);
-        try {
-            xmpp.connect();
-            xmpp.login("100006895481717", "Linux1234"); // Here you have to used only facebookusername from facebookusername@chat.facebook.com
-            Roster roster = xmpp.getRoster();
-            Collection<RosterEntry> entries = roster.getEntries();
-            System.out.println("Connected!");
-            System.out.println("\n\n" + entries.size() + " buddy(ies):");
-            // shows first time onliners---->
-            String temp[] = new String[50];
-            int i = 0;
-            ChatManager chat = xmpp.getChatManager();
-            for (RosterEntry entry : entries) {
-                String user = entry.getUser();
-                Log.i("TAG", user + "name : " + entry.getName() + " " + entry.getType());
-            }
-        } catch (XMPPException e) {
-            xmpp.disconnect();
-            e.printStackTrace();
-        }
-    }
-
-    private class ConnectToXmpp extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                connect();
-            } catch (XMPPException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
-            return null;
+        if (data.getExtras().containsKey("savedNewContact") && data != null){
+            Contact savedContact = (Contact) data.getExtras().getSerializable("savedNewContact");
+            System.out.println("adding " + savedContact);
+            adapter.addContact(savedContact);
         }
     }
 }

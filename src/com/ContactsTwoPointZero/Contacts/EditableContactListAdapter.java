@@ -51,7 +51,6 @@ public class EditableContactListAdapter extends ArrayAdapter<String> {
         contactNames.remove(position);
         contactNames.add(position,contact.getName());
         System.out.println(contactList);
-
         notifyDataSetChanged();
 
     }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent"
+              android:layout_height="wrap_content" android:orientation="horizontal" android:id="@+id/linearLayout">
+    <ImageView android:id="@+id/logo_icon" android:layout_width="0dp" android:layout_height="40dp"
+               android:layout_alignParentBottom="false" android:layout_alignParentTop="true"
+               android:contentDescription="TODO" android:layout_weight=".20" android:src="@drawable/yahoo_icon"/>
+    <LinearLayout android:layout_width="0dp" android:layout_height="fill_parent"
+                  android:layout_toRightOf="@+id/logo_icon" android:layout_alignParentStart="false"
+                  android:layout_alignParentEnd="false" android:layout_toLeftOf="@+id/chat_icon"
+                  android:layout_weight=".50">
+        <TextView android:id="@+id/status" android:layout_width="fill_parent" android:layout_height="fill_parent"
+                  android:ellipsize="marquee" android:singleLine="true" android:textSize="20sp"
+                  android:layout_toRightOf="@+id/logo_icon" android:gravity="center" android:text="Online"/>
+    </LinearLayout>
+    <ImageButton android:layout_width="0dp" android:layout_height="fill_parent" android:id="@+id/chat_icon"
+                 android:layout_gravity="center" android:layout_weight=".15" android:scaleType="fitCenter"
+                 android:src="@drawable/yahoo_chat_icon"/>
+    <ImageButton android:layout_width="0dp" android:layout_height="fill_parent" android:id="@+id/mail_icon"
+                 android:layout_weight=".15" android:scaleType="fitCenter" android:layout_gravity="center_vertical"
+                 android:src="@drawable/yahoo_mail_icon"/>
+</LinearLayout>

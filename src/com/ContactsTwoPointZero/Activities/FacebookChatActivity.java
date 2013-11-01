@@ -40,6 +40,7 @@ import java.security.GeneralSecurityException;
  * This is a TestCLass for GTalkActivity
  */
 public class FacebookChatActivity extends Activity {
+    private final String activityTag = "FacebookChatActivity";
     private TextView chatBody;
     private EditText chatInput;
     private Button sendButton;
@@ -48,12 +49,12 @@ public class FacebookChatActivity extends Activity {
     private ChatManager chatManager;
     private String userAccount,userPassword;
     private String friendAccount;
-    private Roster connectionRoster;
     private Chat chat;
     private ScrollView chatScrollView;
     private String friendAccountID;
     private ProgressDialog loadingDialog;
     private String friendName;
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,27 +93,27 @@ public class FacebookChatActivity extends Activity {
             sc.init(null, MemorizingTrustManager.getInstanceList(this), new java.security.SecureRandom());
             config.setCustomSSLContext(sc);
         } catch (GeneralSecurityException e) {
-            Log.w("XMPPClient", "Unable to use MemorizingTrustManager", e);
-            Log.e("XMPPClient",e.toString());
+            Log.w(activityTag, "Unable to use MemorizingTrustManager", e);
+            Log.e(activityTag,e.toString());
             return false;
         }
         xmppConnection = new XMPPConnection(config);
         Log.i("XMPPClient", "Connection Initialized");
 
         try {
-            Log.i("XMPPClient", "Connecting..");
+            Log.i(activityTag, "Connecting..");
             xmppConnection.connect();
-            Log.i("XMPPClient", "[SettingsDialog] Connected to " + xmppConnection.getHost());
+            Log.i(activityTag, "[SettingsDialog] Connected to " + xmppConnection.getHost());
         } catch (XMPPException ex) {
-            Log.e("XMPPClient", "[SettingsDialog] Failed to connect to " + xmppConnection.getHost());
-            Log.e("XMPPClient", ex.toString());
+            Log.e(activityTag, "[SettingsDialog] Failed to connect to " + xmppConnection.getHost());
+            Log.e(activityTag, ex.toString());
             return false;
         }
 
         try {
-            Log.i("XMPPClient", "Logging in..");
+            Log.i(activityTag, "Logging in..");
             xmppConnection.login(userAccount, userPassword);
-            Log.i("XMPPClient", "Logged in as " + xmppConnection.getUser());
+            Log.i(activityTag, "Logged in as " + xmppConnection.getUser());
 
             // Set the status to available
             Presence presence = new Presence(Presence.Type.available);
@@ -123,15 +124,12 @@ public class FacebookChatActivity extends Activity {
 
             xmppConnection.addPacketListener(new MessageParrot(), null);
 
-            // Get connection Roster
-            connectionRoster = xmppConnection.getRoster();
-
         } catch (XMPPException ex) {
-            Log.e("XMPPClient", "[SettingsDialog] Failed to log in as " + userAccount + " and " + userPassword);
-            Log.e("XMPPClient", ex.toString());
+            Log.e(activityTag, "[SettingsDialog] Failed to log in as " + userAccount + " and " + userPassword);
+            Log.e(activityTag, ex.toString());
             return false;
         }
-        Log.i("XMPPClient", "Connected successfully.");
+        Log.i(activityTag, "Connected successfully.");
         return true;
     }
 
@@ -143,7 +141,7 @@ public class FacebookChatActivity extends Activity {
                 }
             });
         }
-        Log.i("XMPPClient", "Sending " + message);
+        Log.i(activityTag, "Sending " + message);
         chat.sendMessage(message);
     }
 
@@ -222,7 +220,7 @@ public class FacebookChatActivity extends Activity {
             Message message = (Message) packet;
             if(message.getBody() != null && message.getFrom().contains(friendAccountID + "@chat.facebook.com")) {
                 String fromName = StringUtils.parseBareAddress(message.getFrom());
-                Log.i("XMPPClient", "Message from " + fromName + "\n" + message.getBody() + "\n");
+                Log.i(activityTag, "Message from " + fromName + "\n" + message.getBody() + "\n");
                 final String  messageBody = message.getBody();
                 runOnUiThread(new Runnable() {
                     public void run() {
@@ -249,13 +247,13 @@ public class FacebookChatActivity extends Activity {
             }
             rd.close();
         } catch (Exception e) {
-            Log.i("XMPPClient", "Error at getting ID for " + friendAccount);
-            Log.e("XMPPClient", e.toString());
+            Log.i(activityTag, "Error at getting ID for " + friendAccount);
+            Log.e(activityTag, e.toString());
             return false;
         }
-        Log.i("XMPPClient", "Get Method result: " + result + "\n");
+        Log.i(activityTag, "Get Method result: " + result + "\n");
         friendAccountID = result.split(",")[0].split(":")[1].replace("\"","");
-        Log.i("XMPPClient", "The ID for " + friendAccount + " is " + friendAccountID + "\n");
+        Log.i(activityTag, "The ID for " + friendAccount + " is " + friendAccountID + "\n");
         return true;
     }
 
