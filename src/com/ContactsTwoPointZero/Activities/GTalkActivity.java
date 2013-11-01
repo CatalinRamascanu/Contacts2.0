@@ -43,30 +43,31 @@ public class GTalkActivity extends Activity {
     private ProgressDialog loadingDialog;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SmackAndroid.init(getApplicationContext());
         thisActivity = this;
         setContentView(R.layout.chat_layout);
         loadingDialog = new ProgressDialog(thisActivity);
         loadingDialog.setMessage("Connecting to Google Talk...");
         loadingDialog.setCancelable(false);
-        loadingDialog.show();
+
         chatScrollView = (ScrollView) findViewById(R.id.chat_scrollView);
         chatBody = (TextView) findViewById(R.id.chat_body);
         chatInput = (EditText) findViewById(R.id.chat_input);
         sendButton = (Button) findViewById(R.id.send_chat_button);
         Bundle extras = getIntent().getExtras();
         friendAccount = (String) extras.getSerializable("googleAccount");
+//        loadingDialog.show();
         new ConnectToXmpp().execute();
         addSendButtonListener();
 
     }
 
     private void tryConnection(){
+
         String host = "talk.google.com";
         String port = "5222";
         String service = "gmail.com";
         String username = "catalin.rmc@gmail.com";
-        String password = "ageofmight1992";
+        String password = "fusroda2123";
         Log.i("XMPPClient", "Fields Initialized");
 
         // Create a connection

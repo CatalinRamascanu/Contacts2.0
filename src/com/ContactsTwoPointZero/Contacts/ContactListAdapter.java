@@ -16,10 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import com.ContactsTwoPointZero.Activities.EmailActivity;
-import com.ContactsTwoPointZero.Activities.GTalkActivity;
-import com.ContactsTwoPointZero.Activities.MainActivity;
-import com.ContactsTwoPointZero.Activities.YahooChatActivity;
+import com.ContactsTwoPointZero.Activities.*;
 import com.example.ExpandableList.R;
 
 public class ContactListAdapter extends BaseExpandableListAdapter {
@@ -83,7 +80,12 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
 
         chatButton = (ImageButton) facebookView.findViewById(R.id.chat_icon);
         chatButton.setImageResource(R.drawable.facebook_chat_icon);
-
+        chatButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startFacebookChatActivity();
+            }
+        });
         mailButton = (ImageButton) facebookView.findViewById(R.id.mail_icon);
         mailButton.setImageResource(R.drawable.facebook_post_icon);
 
@@ -343,5 +345,16 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
         yMessengerIntent.putExtra("userPassword", activity.getActivityProfile().getYahooPassword());
         yMessengerIntent.putExtra("yahooAccount", contact.getYahooAccount());
         activity.startActivity(yMessengerIntent);
+    }
+
+    private void startFacebookChatActivity() {
+        Contact contact = (Contact) getGroup(currentSelectedContactPosition);
+        Intent facebookChatIntent = new Intent(activity,FacebookChatActivity.class);
+        facebookChatIntent.putExtra("userAccount", activity.getActivityProfile().getFacebookAccount());
+        System.out.println("PASSWORD:" + activity.getActivityProfile().getFacebookPassword());
+        facebookChatIntent.putExtra("userPassword", activity.getActivityProfile().getFacebookPassword());
+        facebookChatIntent.putExtra("facebookAccount", contact.getFacebookAccount());
+        facebookChatIntent.putExtra("contactName",contact.getName());
+        activity.startActivity(facebookChatIntent);
     }
 }

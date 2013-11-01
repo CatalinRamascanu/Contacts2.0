@@ -43,7 +43,6 @@ public class GTalkConnection extends Activity {
     private ScrollView chatScrollView;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SmackAndroid.init(getApplicationContext());
         thisActivity = this;
         setContentView(R.layout.chat_layout);
         chatScrollView = (ScrollView) findViewById(R.id.chat_scrollView);

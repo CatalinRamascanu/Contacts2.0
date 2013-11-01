@@ -15,7 +15,6 @@ import android.widget.*;
 import com.ContactsTwoPointZero.Connections.Gmail.GmailSender;
 import com.ContactsTwoPointZero.TestPack.FileDialog;
 import com.example.ExpandableList.R;
-import org.jivesoftware.smack.SmackAndroid;
 
 import java.io.File;
 
@@ -44,7 +43,6 @@ public class EmailActivity extends Activity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SmackAndroid.init(getApplicationContext());
         thisActivity = this;
         loadingDialog = new ProgressDialog(thisActivity);
         loadingDialog.setMessage("Sending Email...");
@@ -63,7 +61,6 @@ public class EmailActivity extends Activity {
             ((ImageView) findViewById(R.id.email_logo)).setImageResource(R.drawable.google_mail_icon);
         }else{
             ((ImageView) findViewById(R.id.email_logo)).setImageResource(R.drawable.yahoo_mail_icon);
-
         }
         ((TextView) findViewById(R.id.recipient_name)).setText(recipientAddress);
         gmailSender = new GmailSender(userAccount,userPassword);
@@ -89,6 +86,7 @@ public class EmailActivity extends Activity {
                 fileDialog.addFileListener(new FileDialog.FileSelectedListener() {
                     public void fileSelected(File file) {
                         gmailSender.addAttachement(file.getName(),file.getPath());
+                        System.out.println(file.getPath());
                         attachmentBox.setText("");
                         attachmentBox.setText("Attached the following file : \n" + file.getName());
                     }

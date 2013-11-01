@@ -11,24 +11,26 @@ package com.ContactsTwoPointZero.Activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.*;
 import com.ContactsTwoPointZero.Contacts.Contact;
 import com.ContactsTwoPointZero.Contacts.ContactListAdapter;
 import com.ContactsTwoPointZero.Contacts.ContactManager;
-import com.ContactsTwoPointZero.Contacts.EditableContactListAdapter;
+import com.ContactsTwoPointZero.Connections.Facebook.MemorizingTrustManager;
 import com.example.ExpandableList.R;
+import org.jivesoftware.smack.*;
 
-import java.util.HashMap;
+import javax.net.ssl.SSLContext;
+import java.security.GeneralSecurityException;
+import java.util.Collection;
 
 public class MainActivity extends Activity {
     // More efficient than HashMap for mapping integers to objects
@@ -45,12 +47,14 @@ public class MainActivity extends Activity {
         contactList = new SparseArray<Contact>();
         contactManager = new ContactManager(this);
         activityProfile = new ActivityProfile();
-        activityProfile.setGoogleAccount("catalin.rmc@gmail.com");
-        activityProfile.setGooglePassword("ageofmight1992");
+        activityProfile.setGoogleAccount("bot.smack21@gmail.com");
+        activityProfile.setGooglePassword("Linux1234");
         activityProfile.setYahooAccount("y_smack_test@yahoo.com");
         activityProfile.setYahooPassword("Linux1234");
+        activityProfile.setFacebookAccount("100006895481717");
+        activityProfile.setFacebookPassword("Linux1234");
         startNormalActivity();
-
+        new ConnectToXmpp().execute();
 
     }
 
@@ -145,7 +149,7 @@ public class MainActivity extends Activity {
 
         contact = new Contact("George Popescu");
         contact.addPhoneNumber("0761235123");
-        contact.setFacebookAccount("test");
+        contact.setFacebookAccount("catalin.ramascanu");
         contact.setYahooAccount("catalin.ramascanu@yahoo.com");
         contact.setGoogleAccount("test");
         contactList.append(nrOfContacts++, contact);
@@ -170,5 +174,56 @@ public class MainActivity extends Activity {
 
     public ActivityProfile getActivityProfile(){
         return activityProfile;
+    }
+
+    public void connect() throws XMPPException {
+
+        ConnectionConfiguration config = new ConnectionConfiguration("chat.facebook.com", 5222);
+        config.setSASLAuthenticationEnabled(true);
+        config.setSecurityMode(ConnectionConfiguration.SecurityMode.required);
+        config.setRosterLoadedAtLogin(true);
+        config.setTruststorePath("/system/etc/security/cacerts.bks");
+        config.setTruststorePassword("changeit");
+        config.setTruststoreType("bks");
+        config.setSendPresence(false);
+        try {
+            SSLContext sc = SSLContext.getInstance("TLS");
+            sc.init(null, MemorizingTrustManager.getInstanceList(this), new java.security.SecureRandom());
+            config.setCustomSSLContext(sc);
+        } catch (GeneralSecurityException e) {
+            Log.w("TAG", "Unable to use MemorizingTrustManager", e);
+        }
+        XMPPConnection xmpp = new XMPPConnection(config);
+        try {
+            xmpp.connect();
+            xmpp.login("100006895481717", "Linux1234"); // Here you have to used only facebookusername from facebookusername@chat.facebook.com
+            Roster roster = xmpp.getRoster();
+            Collection<RosterEntry> entries = roster.getEntries();
+            System.out.println("Connected!");
+            System.out.println("\n\n" + entries.size() + " buddy(ies):");
+            // shows first time onliners---->
+            String temp[] = new String[50];
+            int i = 0;
+            ChatManager chat = xmpp.getChatManager();
+            for (RosterEntry entry : entries) {
+                String user = entry.getUser();
+                Log.i("TAG", user + "name : " + entry.getName() + " " + entry.getType());
+            }
+        } catch (XMPPException e) {
+            xmpp.disconnect();
+            e.printStackTrace();
+        }
+    }
+
+    private class ConnectToXmpp extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                connect();
+            } catch (XMPPException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+            return null;
+        }
     }
 }
