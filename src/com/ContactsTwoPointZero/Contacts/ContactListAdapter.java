@@ -71,9 +71,11 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    ImageView operatorLogo = (ImageView) contactChildsView[currentSelectedContactPosition][0].findViewById(R.id.phone_logo);
-                    if (groups.get(currentSelectedContactPosition).isDetectPhoneOperator()){
-                        String phoneNumber = ((Spinner) contactChildsView[currentSelectedContactPosition][0].findViewById(R.id.number_spinner)).getSelectedItem().toString();
+                    int realCurrSelectContPos = originalGroupsIndex.get(groupsIndex.get(currentSelectedContactPosition));
+//                    System.out.println("Current is " + currentSelectedContactPosition + " and real is " + realCurrSelectContPos);
+                    ImageView operatorLogo = (ImageView) contactChildsView[realCurrSelectContPos][0].findViewById(R.id.phone_logo);
+                    if (originalGroups.get(realCurrSelectContPos).isDetectPhoneOperator()){
+                        String phoneNumber = ((Spinner) contactChildsView[realCurrSelectContPos][0].findViewById(R.id.number_spinner)).getSelectedItem().toString();
                         CreateContactActivity.performOperatorDetect(phoneNumber,operatorLogo);
                     }
                     else{
