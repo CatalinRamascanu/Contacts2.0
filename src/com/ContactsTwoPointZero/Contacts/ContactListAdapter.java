@@ -8,6 +8,9 @@ package com.ContactsTwoPointZero.Contacts;
  * To change this template use File | Settings | File Templates.
  */
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.widget.*;
@@ -56,7 +59,7 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
         View phoneView , googleView, facebookView, yahooView;
         Contact contact;
         contactChildsView = new View[groups.size()][4];
-
+        //System.out.println("HERE GROUPS: " + groups);
         for (int i = 0; i < groups.size(); i++){
 
             contact = groups.get(i);
@@ -65,6 +68,7 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
             ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(listView.getContext(), android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
+            System.out.println(contact);
             for (int j = 0; j < contact.getSizeOfPhoneList(); j++){
                 adapter.add(contact.getPhoneNumber(j));
             }
@@ -74,9 +78,12 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
                     int realCurrSelectContPos = originalGroupsIndex.get(groupsIndex.get(currentSelectedContactPosition));
 //                    System.out.println("Current is " + currentSelectedContactPosition + " and real is " + realCurrSelectContPos);
                     ImageView operatorLogo = (ImageView) contactChildsView[realCurrSelectContPos][0].findViewById(R.id.phone_logo);
+
+                    System.out.println(originalGroups.get(realCurrSelectContPos).getName() + " has phone Detect: " + originalGroups.get(realCurrSelectContPos).isDetectPhoneOperator());
                     if (originalGroups.get(realCurrSelectContPos).isDetectPhoneOperator()){
                         String phoneNumber = ((Spinner) contactChildsView[realCurrSelectContPos][0].findViewById(R.id.number_spinner)).getSelectedItem().toString();
-                        CreateContactActivity.performOperatorDetect(phoneNumber,operatorLogo);
+                        System.out.println("Performing phone Detect on " + phoneNumber);
+                        phoneViewOperatorDetect(phoneNumber,operatorLogo);
                     }
                     else{
                         operatorLogo.setImageResource(R.drawable.phone_logo);
@@ -136,7 +143,7 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
                 mailButton.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startEmailActivity(AccountType.GOOGLE);
+                        startEmailChooseDialog(AccountType.GOOGLE);
                     }
                 });
 
@@ -159,7 +166,7 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
                 mailButton.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startEmailActivity(AccountType.YAHOO);
+                        startEmailChooseDialog(AccountType.YAHOO);
                     }
                 });
                 status = (TextView) yahooView.findViewById(R.id.status);
@@ -170,6 +177,33 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
         }
     }
 
+    void phoneViewOperatorDetect(CharSequence number, ImageView operatorLogo){
+        if (number.length() >= 10 && number.charAt(0) == '0'){
+            if (number.charAt(1) == '7'){
+                if (number.charAt(2) == '2' || number.charAt(2) == '3'){
+                    operatorLogo.setImageResource(R.drawable.vodafone_icon);
+                    return;
+                }
+                if (number.charAt(2) == '4' || number.charAt(2) == '5'){
+                    operatorLogo.setImageResource(R.drawable.orange_icon);
+                    return;
+                }
+                if (number.charAt(2) == '6' || number.charAt(2) == '8'){
+                    operatorLogo.setImageResource(R.drawable.cosmote_icon);
+                    return;
+                }
+            }
+            if (number.charAt(1) == '3'){
+                operatorLogo.setImageResource(R.drawable.rcs_rds_icon);
+                return;
+            }
+            if (number.charAt(1) == '2'){
+                operatorLogo.setImageResource(R.drawable.romtelecom_icon);
+                return;
+            }
+        }
+        operatorLogo.setImageResource(R.drawable.phone_logo);
+    }
 
 
     @Override
@@ -296,6 +330,33 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
         activity.startActivity(smsIntent);
     }
 
+    private void startEmailChooseDialog(final AccountType accountType){
+        Contact contact = (Contact) getGroup(currentSelectedContactPosition);
+        String recipient = "";
+        if (accountType.equals(AccountType.GOOGLE)){
+            recipient= contact.getGoogleAccount();
+        }
+        if (accountType.equals(AccountType.YAHOO)){
+            recipient = contact.getYahooAccount();
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        final String finalRecipient = recipient;
+        builder.setMessage("What email client do you want to use?")
+                .setNegativeButton("Internal Client", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        startEmailActivity(accountType);
+                    }
+                })
+                .setPositiveButton("External Client", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        sendEmailToContact(finalRecipient);
+                    }
+                });
+
+        Dialog infoDialog = builder.create();
+        infoDialog.show();
+    }
+
     private void sendEmailToContact(String contactEmail){
         Intent email = new Intent(Intent.ACTION_SEND);
         email.putExtra(Intent.EXTRA_EMAIL, contactEmail);
@@ -353,6 +414,7 @@ public class ContactListAdapter extends BaseExpandableListAdapter {
     }
 
     public Contact getCurrentSelectedContact(int currentContactIndex){
+        System.out.println(groupsIndex);
         return originalGroups.get(originalGroupsIndex.get(groupsIndex.get(currentContactIndex)));
     }
 

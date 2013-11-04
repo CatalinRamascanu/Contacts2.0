@@ -12,6 +12,8 @@ import android.os.Message;
 import android.provider.ContactsContract;
 import android.util.SparseArray;
 import android.widget.Toast;
+import com.ContactsTwoPointZero.TestPack.SerialBitmap;
+import com.example.ExpandableList.R;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,66 +29,25 @@ import java.util.HashMap;
  */
 
 public class ContactManager{
-    private HashMap<Integer,Contact> listOfContacts;
+    private SparseArray<Contact> listOfContacts;
     private Activity activity;
     private Handler handler;
+    private int nrOfContacts;
+
     public ContactManager(Activity act){
-        listOfContacts = new HashMap<Integer,Contact>();
+        listOfContacts = new SparseArray<Contact>();
         activity = act;
-    }
-    public ContactManager(Activity act, Handler handler) {
-        listOfContacts = new HashMap<Integer,Contact>();
-        this.handler = handler;
-        activity = act;
+        nrOfContacts = 0;
     }
 
-    public void readContacts() throws InterruptedException {
-
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                readContactsFromPhone();
-                Contact contact;
-                int nrOfContacts = 0;
-                contact = new Contact("Gheorghe Ion ");
-                contact.addPhoneNumber("0735425123");
-                contact.addPhoneNumber("0215425123");
-                contact.addPhoneNumber("075552584");
-                contact.setGoogleAccount("jdoe4033");
-                listOfContacts.put(nrOfContacts++, contact);
-
-                contact = new Contact("George Popescu");
-                contact.addPhoneNumber("0761235123");
-                contact.setFacebookAccount("test");
-                contact.setYahooAccount("catalin.ramascanu@yahoo.com");
-                contact.setGoogleAccount("test");
-                listOfContacts.put(nrOfContacts++, contact);
-
-                contact = new Contact("Alexandra Poenaru");
-                contact.addPhoneNumber("023183283");
-                contact.setGoogleAccount("test");
-                listOfContacts.put(nrOfContacts++, contact);
-
-                contact = new Contact("Irina Tomescu");
-                contact.addPhoneNumber("023183283");
-                contact.addPhoneNumber("0735213882");
-                contact.setYahooAccount("test");
-                listOfContacts.put(nrOfContacts++, contact);
-
-                Message msg = new Message();
-                msg.what = 0;
-//                handler.sendMessage(msg);
-//            }
-//        }).start();
-
-
+    public void addContact(Contact contact){
+        listOfContacts.put(nrOfContacts++,contact);
     }
 
-    private void readContactsFromPhone(){
-        int contactsSize = 0;
+    public void readContactsFromPhone(){
         ContentResolver cr = activity.getContentResolver();
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,null, null, null, null);
-        HashMap<Integer,Contact> contacts = new HashMap<Integer,Contact>();
+        SparseArray<Contact> contacts = new SparseArray<Contact>();
         Contact contact;
         if (cur.getCount() > 0) {
             while (cur.moveToNext()) {
@@ -149,17 +110,48 @@ public class ContactManager{
                     }
 
                     //Add to contactList
-                    contacts.put(contactsSize++,contact);
+                    listOfContacts.put(nrOfContacts++,contact);
                 }
-
-
             }
         }
-
-        listOfContacts = contacts;
     }
 
-    public HashMap<Integer,Contact> getListOfContacts(){
+    public void createTestContactsData() {
+        Contact contact;
+
+        contact = new Contact("Gheorghe Ion ");
+        contact.setProfilePicture(new SerialBitmap(BitmapFactory.decodeResource(activity.getResources(),R.drawable.test_profile_picture_male)));
+        contact.addPhoneNumber("0735 425 123");
+        contact.addPhoneNumber("0215 425 123");
+        contact.addPhoneNumber("0755 525 842");
+        contact.setYahooAccount("smack_test_yah@yahoo.com");
+        listOfContacts.put(nrOfContacts++, contact);
+
+        contact = new Contact("George Popescu");
+        contact.setProfilePicture(new SerialBitmap(BitmapFactory.decodeResource(activity.getResources(),R.drawable.test_profile_picture_male2)));
+        contact.addPhoneNumber("0761 235 123");
+        contact.setFacebookAccount("derek.popescu.1");
+        contact.setYahooAccount("smack_test_yah@yahoo.com");
+        contact.setGoogleAccount("jdoe4033@gmail.com");
+        listOfContacts.put(nrOfContacts++, contact);
+
+        contact = new Contact("Alexandra Poenaru");
+        contact.setProfilePicture(new SerialBitmap(BitmapFactory.decodeResource(activity.getResources(),R.drawable.test_profile_picture_female)));
+        contact.addPhoneNumber("0331 832 831");
+        contact.setFacebookAccount("derek.popescu.1");
+        listOfContacts.put(nrOfContacts++, contact);
+
+        contact = new Contact("Irina Tomescu");
+        contact.setProfilePicture(new SerialBitmap(BitmapFactory.decodeResource(activity.getResources(),R.drawable.test_profile_picture_female2)));
+        contact.addPhoneNumber("0231 832 832");
+        contact.addPhoneNumber("0785 213 882");
+        contact.setGoogleAccount("jdoe4033@gmail.com");
+        contact.setYahooAccount("smack_test_yah@yahoo.com");
+        listOfContacts.put(nrOfContacts++, contact);
+
+    }
+
+    public SparseArray<Contact> getListOfContacts(){
         return listOfContacts;
     }
 

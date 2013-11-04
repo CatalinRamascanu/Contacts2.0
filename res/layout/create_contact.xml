@@ -14,7 +14,7 @@
                       android:background="@drawable/border" android:id="@+id/linearLayout6">
             <ImageView android:layout_width="0dp" android:layout_height="60dp" android:id="@+id/profilePicture"
                        android:layout_gravity="center|top" android:layout_weight=".20"
-                       android:src="@drawable/emptry_contact_icon" android:layout_margin="5dp" android:clickable="true"
+                       android:src="@drawable/contact_photo" android:layout_margin="5dp" android:clickable="true"
                        android:cropToPadding="false" android:background="@drawable/border" android:scaleType="fitXY"
                        android:padding="5dp"/>
             <LinearLayout
@@ -57,8 +57,8 @@
                              android:src="@drawable/add_icon" android:focusableInTouchMode="false"/>
             </LinearLayout>
             <CheckBox android:layout_width="wrap_content" android:layout_height="35dp"
-                      android:text="Disable Operator Detectation" android:id="@+id/operatorDetect" android:checked="false"
-                      android:enabled="true" android:layout_gravity="center_horizontal"/>
+                      android:text="Enable Operator Detectation" android:id="@+id/operatorDetect" android:checked="false"
+                      android:enabled="true" android:layout_gravity="center_horizontal" android:singleLine="false"/>
         </LinearLayout>
         <LinearLayout
                 android:orientation="vertical"

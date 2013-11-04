@@ -13,24 +13,16 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.*;
 import com.ContactsTwoPointZero.Contacts.Contact;
 import com.ContactsTwoPointZero.Contacts.ContactListAdapter;
 import com.ContactsTwoPointZero.Contacts.ContactManager;
-import com.ContactsTwoPointZero.Connections.Facebook.MemorizingTrustManager;
 import com.example.ExpandableList.R;
-import org.jivesoftware.smack.*;
-
-import javax.net.ssl.SSLContext;
-import java.security.GeneralSecurityException;
-import java.util.Collection;
 
 public class MainActivity extends Activity {
     // More efficient than HashMap for mapping integers to objects
@@ -38,7 +30,7 @@ public class MainActivity extends Activity {
     private ContactListAdapter adapter;
     private ActivityProfile activityProfile;
     private ContactManager contactManager;
-    private Activity thisActivity;
+    private MainActivity thisActivity;
     private ExpandableListView listView;
 
     @Override
@@ -46,21 +38,15 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         thisActivity = this;
-        contactList = new SparseArray<Contact>();
         contactManager = new ContactManager(this);
         activityProfile = new ActivityProfile();
-        activityProfile.setGoogleAccount("bot.smack21@gmail.com");
-        activityProfile.setGooglePassword("Linux1234");
-        activityProfile.setYahooAccount("y_smack_test@yahoo.com");
-        activityProfile.setYahooPassword("Linux1234");
-        activityProfile.setFacebookAccount("100006895481717");
-        activityProfile.setFacebookPassword("Linux1234");
-        startNormalActivity();
+        startActivitySetup();
 
     }
 
     private void startActivitySetup(){
         setContentView(R.layout.setup_app);
+        loadTestDataActivityProfile();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Before you can use Contacts 2.0, you need to setup your social accounts.")
                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -69,38 +55,39 @@ public class MainActivity extends Activity {
                });
         Dialog infoDialog = builder.create();
         infoDialog.show();
-        Button saveButton = (Button) findViewById(R.id.save_setup);
-        saveButton.setOnClickListener(new View.OnClickListener() {
+
+        Button loadPhoneContacts = (Button) findViewById(R.id.phone_contacts);
+        loadPhoneContacts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activityProfile = new ActivityProfile();
+                saveActivityProfileData();
+                contactManager.createTestContactsData();
+                contactManager.readContactsFromPhone();
+                setContentView(R.layout.activity_main);
+                listView = (ExpandableListView) findViewById(R.id.listView);
+                adapter = new ContactListAdapter(thisActivity, listView, contactManager.getListOfContacts());
+                listView.setAdapter(adapter);
+                initListeners();
+            }
+        });
 
-                activityProfile.setGoogleAccount(((EditText) findViewById(R.id.g_acc_input)).getText().toString());
-                activityProfile.setGooglePassword(((EditText) findViewById(R.id.g_pass_input)).getText().toString());
-
-                activityProfile.setFacebookAccount(((EditText) findViewById(R.id.f_acc_input)).getText().toString());
-                activityProfile.setFacebookPassword(((EditText) findViewById(R.id.f_pass_input)).getText().toString());
-
-                activityProfile.setYahooAccount(((EditText) findViewById(R.id.y_acc_input)).getText().toString());
-                activityProfile.setYahooPassword(((EditText) findViewById(R.id.y_pass_input)).getText().toString());
-
-//                final ProgressDialog mDialog = new ProgressDialog(thisActivity);
-//                mDialog.setMessage("Loading Contacts...");
-//                mDialog.setCancelable(false);
-//                mDialog.show();
-
-                Intent editContactsActivity = new Intent(thisActivity, EditContactsActivity.class);
-                editContactsActivity.putExtra("contactList", contactManager.getListOfContacts());
-                editContactsActivity.putExtra("contactNames", contactManager.getNamesOfContacts());
-                startActivity(editContactsActivity);
+        Button loadTestContacts = (Button) findViewById(R.id.test_contacts);
+        loadTestContacts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveActivityProfileData();
+                contactManager.createTestContactsData();
+                setContentView(R.layout.activity_main);
+                listView = (ExpandableListView) findViewById(R.id.listView);
+                adapter = new ContactListAdapter(thisActivity, listView, contactManager.getListOfContacts());
+                listView.setAdapter(adapter);
+                initListeners();
             }
         });
     }
 
     private void startNormalActivity(){
-        createData();
-//        ContactManager manager = new ContactManager(this);
-//        manager.readContacts();
+        contactManager.createTestContactsData();
         listView = (ExpandableListView) findViewById(R.id.listView);
         adapter = new ContactListAdapter(this,listView, contactList);
         listView.setAdapter(adapter);
@@ -150,42 +137,37 @@ public class MainActivity extends Activity {
 
 
     }
-    public void createData() {
-        int nrOfContacts = 0;
-        Contact contact;
 
-        contact = new Contact("Gheorghe Ion ");
-        contact.addPhoneNumber("0735425123");
-        contact.addPhoneNumber("0215425123");
-        contact.addPhoneNumber("075552584");
-        contact.setGoogleAccount("jdoe4033@gmail.com");
-        contactList.append(nrOfContacts++, contact);
+    private void saveActivityProfileData(){
+        activityProfile.setGoogleAccount(((EditText) findViewById(R.id.g_acc_input)).getText().toString());
+        activityProfile.setGooglePassword(((EditText) findViewById(R.id.g_pass_input)).getText().toString());
 
-        contact = new Contact("George Popescu");
-        contact.addPhoneNumber("0761235123");
-        contact.setFacebookAccount("catalin.ramascanu");
-        contact.setYahooAccount("catalin.ramascanu@yahoo.com");
-        contact.setGoogleAccount("bot.smack21@gmail.com");
-        contactList.append(nrOfContacts++, contact);
+        activityProfile.setFacebookAccount(((EditText) findViewById(R.id.f_acc_input)).getText().toString());
+        activityProfile.setFacebookPassword(((EditText) findViewById(R.id.f_pass_input)).getText().toString());
 
-        contact = new Contact("Alexandra Poenaru");
-        contact.addPhoneNumber("023183283");
-        contact.setGoogleAccount("test");
-        contactList.append(nrOfContacts++, contact);
-
-        contact = new Contact("Irina Tomescu");
-        contact.addPhoneNumber("023183283");
-        contact.addPhoneNumber("0735213882");
-        contact.setGoogleAccount("catalin.rmc@gmail.com");
-        contact.setYahooAccount("catalin.ramascanu@yahoo.ro");
-        contactList.append(nrOfContacts++, contact);
-
+        activityProfile.setYahooAccount(((EditText) findViewById(R.id.y_acc_input)).getText().toString());
+        activityProfile.setYahooPassword(((EditText) findViewById(R.id.y_pass_input)).getText().toString());
     }
 
-    private void openEditContact(Contact contact){
-        setContentView(R.layout.create_contact);
+    private void loadTestDataActivityProfile(){
+        ((TextView) findViewById(R.id.g_acc_input)).setText("bot.smack21@gmail.com");
+        ((TextView) findViewById(R.id.g_pass_input)).setText("Linux1234");
 
+        ((TextView) findViewById(R.id.y_acc_input)).setText("y_smack_test@yahoo.com");
+        ((TextView) findViewById(R.id.y_pass_input)).setText("Linux1234");
+
+        ((TextView) findViewById(R.id.f_acc_input)).setText("smack.test");
+        ((TextView) findViewById(R.id.f_pass_input)).setText("Linux1234");
+
+//        activityProfile.setGoogleAccount("bot.smack21@gmail.com");
+//        activityProfile.setGooglePassword("Linux1234");
+//        activityProfile.setYahooAccount("y_smack_test@yahoo.com");
+//        activityProfile.setYahooPassword("Linux1234");
+//        activityProfile.setFacebookAccount("100006895481717");
+//        activityProfile.setFacebookPassword("Linux1234");
     }
+
+
 
     public ActivityProfile getActivityProfile(){
         return activityProfile;
@@ -198,6 +180,7 @@ public class MainActivity extends Activity {
             Contact savedContact = (Contact) data.getExtras().getSerializable("savedExistedContact");
             adapter.updateContact(savedContact, requestCode);
         }
+
         if (data.getExtras().containsKey("savedNewContact") && data != null){
             Contact savedContact = (Contact) data.getExtras().getSerializable("savedNewContact");
             System.out.println("adding " + savedContact);

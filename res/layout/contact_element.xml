@@ -3,17 +3,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="fill_parent"
-              android:layout_height="60dp">
+              android:layout_height="80dp">
 
     <TextView
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:id="@+id/contact_name" android:layout_weight=".80" android:gravity="center_vertical"
-            android:textStyle="bold" android:singleLine="false" android:layout_gravity="right"/>
+            android:textStyle="bold" android:singleLine="false" android:layout_gravity="center_vertical|right"/>
     <ImageView
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="75dp"
             android:id="@+id/contact_photo" android:layout_weight=".20"
-            android:cropToPadding="false" android:adjustViewBounds="false" android:src="@drawable/contact_photo2"
-            android:scaleType="fitXY" android:padding="5dp"/>
+            android:cropToPadding="false" android:adjustViewBounds="false" android:src="@drawable/contact_photo"
+            android:scaleType="fitXY" android:padding="5dp" android:layout_gravity="center_vertical"/>
 </LinearLayout>

@@ -10,17 +10,18 @@
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="50dp" android:background="#0000A0" android:baselineAligned="false">
+            android:layout_height="50dp" android:background="#0000A0" android:baselineAligned="false"
+            android:layout_gravity="center_vertical">
         <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:id="@+id/searchBox" android:layout_weight=".50"
-                android:hint="Search" android:autoText="true"/>
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/searchBox" android:layout_weight=".80"
+                android:hint="Search" android:autoText="true" android:layout_gravity="center_vertical"/>
         <ImageButton
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:id="@+id/addContact" android:layout_weight=".20" android:src="@drawable/add_contact_icon"
-                android:scaleType="fitCenter"/>
+                android:scaleType="fitCenter" android:layout_gravity="center_vertical"/>
     </LinearLayout>
     <ExpandableListView
             android:id="@+id/listView"

@@ -5,11 +5,18 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save Setup"
-            android:id="@+id/save_setup" android:layout_gravity="center_horizontal"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp" android:gravity="center_horizontal">
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Test Contacts"
+                android:id="@+id/test_contacts" android:layout_marginRight="10dp"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phone Contacts"
+                android:id="@+id/phone_contacts" android:layout_marginLeft="10dp"/>
+    </LinearLayout>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent"
                   android:layout_height="100dp" android:orientation="horizontal" android:id="@+id/linearLayout">
         <ImageView android:id="@+id/google_logo" android:layout_width="50dp" android:layout_height="40dp"

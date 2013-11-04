@@ -229,9 +229,10 @@ public class CreateContactActivity extends Activity {
     public static void performOperatorDetect(CharSequence number, ImageView operatorLogo){
 
         if (operatorDetectActive){
-            if (number.length() > 2 && number.charAt(0) == '0'){
+            if (number.length() >= 10 && number.charAt(0) == '0'){
                 if (number.charAt(1) == '7'){
                     if (number.charAt(2) == '2' || number.charAt(2) == '3'){
+                        System.out.println(number + " IS VODAFONE NUMBER!");
                         operatorLogo.setImageResource(R.drawable.vodafone_icon);
                         return;
                     }
@@ -243,6 +244,14 @@ public class CreateContactActivity extends Activity {
                         operatorLogo.setImageResource(R.drawable.cosmote_icon);
                         return;
                     }
+                }
+                if (number.charAt(1) == '3'){
+                    operatorLogo.setImageResource(R.drawable.rcs_rds_icon);
+                    return;
+                }
+                if (number.charAt(1) == '2'){
+                    operatorLogo.setImageResource(R.drawable.romtelecom_icon);
+                    return;
                 }
             }
             operatorLogo.setImageResource(R.drawable.phone_logo);
