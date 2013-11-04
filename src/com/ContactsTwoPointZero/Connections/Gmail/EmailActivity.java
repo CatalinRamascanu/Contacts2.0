@@ -1,19 +1,15 @@
-package com.ContactsTwoPointZero.Activities;
+package com.ContactsTwoPointZero.Connections.Gmail;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.widget.*;
-import com.ContactsTwoPointZero.Connections.Gmail.GmailSender;
-import com.ContactsTwoPointZero.TestPack.FileDialog;
 import com.example.ExpandableList.R;
 
 import java.io.File;
@@ -59,7 +55,8 @@ public class EmailActivity extends Activity {
         attachmentBox = (TextView) findViewById(R.id.attachments_box);
         if (recipientAddress.contains("gmail")){
             ((ImageView) findViewById(R.id.email_logo)).setImageResource(R.drawable.google_mail_icon);
-        }else{
+        }
+        else{
             ((ImageView) findViewById(R.id.email_logo)).setImageResource(R.drawable.yahoo_mail_icon);
         }
         ((TextView) findViewById(R.id.recipient_name)).setText(recipientAddress);
@@ -96,9 +93,7 @@ public class EmailActivity extends Activity {
         });
     }
 
-
     private class SendEmail extends AsyncTask<Void, Void, Void> {
-
         @Override
         protected Void doInBackground(Void... params) {
             try {
@@ -148,12 +143,5 @@ public class EmailActivity extends Activity {
             }
             return null;
         }
-
-        @Override
-        protected void onPostExecute(Void result) {
-
-        }
-
     }
-
 }

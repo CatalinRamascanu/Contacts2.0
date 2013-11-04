@@ -1,18 +1,13 @@
 package com.ContactsTwoPointZero.Connections.Yahoo;
 
-import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import com.ContactsTwoPointZero.Activities.YahooChatActivity;
-import org.jivesoftware.smack.Roster;
 import org.openymsg.network.*;
 import org.openymsg.network.event.SessionEvent;
 import org.openymsg.network.event.SessionListener;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Scanner;
 
 /**
  * Created with IntelliJ IDEA.
@@ -83,17 +78,7 @@ public class YahooMessengerConnection implements SessionListener {
         }
     }
 
-    public boolean sendBuzz(){
-        try {
-            session.sendBuzz(recipient);
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
+    //Listener for Incoming Messages
     @Override
     public void dispatch(FireEvent fireEvent) {
         ServiceType type = fireEvent.getType();

@@ -1,4 +1,4 @@
-package com.ContactsTwoPointZero.Activities;
+package com.ContactsTwoPointZero.Connections.Google;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -34,7 +34,6 @@ public class GTalkActivity extends Activity {
     private GTalkActivity thisActivity;
     private XMPPConnection xmppConnection;
     private ChatManager chatManager;
-    private Chat chat;
     private String friendAccount;
     private Roster connectionRoster;
     private ScrollView chatScrollView;
@@ -61,7 +60,7 @@ public class GTalkActivity extends Activity {
         friendName = (String) extras.getSerializable("contactName");
         ((ImageView) findViewById(R.id.chat_logo)).setImageResource(R.drawable.google_chat_icon);
         ((TextView) findViewById(R.id.recipient_name)).setText(friendName);
-        new ConnectToXmpp().execute();
+        new ConnectToGtalk().execute();
         addSendButtonListener();
     }
 
@@ -105,7 +104,7 @@ public class GTalkActivity extends Activity {
 
             xmppConnection.sendPacket(presence);
 
-            // Get Chat manager and adding listener for incoming packets
+            // Get Chat manager and Adding listener for incoming packets
             chatManager = xmppConnection.getChatManager();
 
             PacketFilter filter = new MessageTypeFilter(Message.Type.chat);
@@ -124,7 +123,7 @@ public class GTalkActivity extends Activity {
         return true;
     }
 
-    private void sendMessage(String toFriend,String message) throws XMPPException {
+    private void sendMessage(String message) throws XMPPException {
         if (!connectionRoster.contains(friendAccount)){
             Log.i(activityTag, "Account " + friendAccount + " does not exist in roster. Sending invite;");
             connectionRoster.createEntry(friendAccount, null, null);
@@ -140,7 +139,7 @@ public class GTalkActivity extends Activity {
             public void onClick(View v) {
                 final String message = chatInput.getText().toString();
                 try {
-                    sendMessage(friendAccount, message);
+                    sendMessage(message);
                     runOnUiThread(new Runnable() {
                         public void run() {
                             chatInput.setText("");
@@ -164,7 +163,8 @@ public class GTalkActivity extends Activity {
         });
     }
 
-    private class ConnectToXmpp extends AsyncTask<Void, Void, Void> {
+    //Asynchronous class for connecting phase
+    private class ConnectToGtalk extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
             thisActivity.runOnUiThread(new Runnable() {
@@ -204,7 +204,7 @@ public class GTalkActivity extends Activity {
             return null;
         }
     }
-
+    //Listener for Incoming messages
     private class MessageParrot implements PacketListener {
         public void processPacket(Packet packet) {
             Message message = (Message) packet;
@@ -222,6 +222,7 @@ public class GTalkActivity extends Activity {
         }
     };
 
+    //On Exit, close connection
     @Override
     public void onBackPressed (){
         xmppConnection.disconnect();

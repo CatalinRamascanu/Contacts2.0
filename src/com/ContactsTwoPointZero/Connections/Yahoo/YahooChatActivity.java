@@ -1,4 +1,4 @@
-package com.ContactsTwoPointZero.Activities;
+package com.ContactsTwoPointZero.Connections.Yahoo;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,10 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
-import com.ContactsTwoPointZero.Connections.Yahoo.YahooMessengerConnection;
 import com.example.ExpandableList.R;
-import org.jivesoftware.smack.*;
-import org.openymsg.network.Session;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,11 +23,9 @@ public class YahooChatActivity extends Activity {
     private EditText chatInput;
     private Button sendButton;
     private YahooChatActivity thisActivity;
-    private Chat chat;
     private String friendAccount;
     private ProgressDialog loadingDialog;
     private ScrollView chatScrollView;
-    private Session yahooSession;
     private String userAccount;
     private String userPassword;
     private YahooMessengerConnection yahooConnection;
@@ -119,6 +114,7 @@ public class YahooChatActivity extends Activity {
         });
     }
 
+    //Asynchronous class for connecting phase
     private class ConnectToYahoo extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
@@ -127,11 +123,19 @@ public class YahooChatActivity extends Activity {
         }
     }
 
+    //Required for YahooMessengerConnection
     public String getFriendName(){
         return friendName;
     }
 
     public ScrollView getChatScrollView(){
         return chatScrollView;
+    }
+
+    //Close Connection on Exit
+    @Override
+    public void onBackPressed (){
+        yahooConnection.logout();
+        finish();
     }
 }

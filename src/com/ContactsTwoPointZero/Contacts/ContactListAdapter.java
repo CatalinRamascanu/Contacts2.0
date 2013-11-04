@@ -20,6 +20,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import com.ContactsTwoPointZero.Activities.*;
+import com.ContactsTwoPointZero.Connections.Facebook.FacebookChatActivity;
+import com.ContactsTwoPointZero.Connections.Gmail.EmailActivity;
+import com.ContactsTwoPointZero.Connections.Google.GTalkActivity;
+import com.ContactsTwoPointZero.Connections.Yahoo.YahooChatActivity;
 import com.example.ExpandableList.R;
 
 import java.util.ArrayList;

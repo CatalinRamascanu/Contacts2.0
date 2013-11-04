@@ -1,4 +1,4 @@
-package com.ContactsTwoPointZero.TestPack;
+package com.ContactsTwoPointZero.Connections.Gmail;
 
 import android.app.Activity;
 import android.app.AlertDialog;

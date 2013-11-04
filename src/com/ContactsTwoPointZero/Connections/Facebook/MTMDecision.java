@@ -22,6 +22,7 @@
  * THE SOFTWARE.
  */
 package com.ContactsTwoPointZero.Connections.Facebook;
+/*Class required for Facebook Connectivity*/
 
 class MTMDecision {
 	public final static int DECISION_INVALID	= 0;

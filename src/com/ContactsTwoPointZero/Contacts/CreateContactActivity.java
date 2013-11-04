@@ -1,4 +1,4 @@
-package com.ContactsTwoPointZero.Activities;
+package com.ContactsTwoPointZero.Contacts;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -20,11 +20,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
 import com.ContactsTwoPointZero.Contacts.Contact;
-import com.ContactsTwoPointZero.TestPack.SerialBitmap;
+import com.ContactsTwoPointZero.Contacts.SerialBitmap;
 import com.example.ExpandableList.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -51,8 +50,8 @@ public class CreateContactActivity extends Activity {
         inflater = this.getLayoutInflater();
         logoOperators = new SparseArray<View>();
         phoneNumberInputData = new ArrayList<String>();
-        initExtendNameFunction();
-        initPhoneList();
+        initExtendNameListener();
+        initPhoneListListener();
         initProfilePhotoListener();
         initOperatorDetect();
         initSaveListener();
@@ -66,6 +65,7 @@ public class CreateContactActivity extends Activity {
 
     }
 
+    //If Extras received,  put Data in Activity.
     private void addDataOfContact(Contact contact){
         ((EditText) findViewById(R.id.firstName)).setText(contact.getName());
         if (contact.hasProfilePicture()) {
@@ -92,6 +92,7 @@ public class CreateContactActivity extends Activity {
 
     }
 
+    //Listeners functions
     private void initProfilePhotoListener(){
         ImageView profile = ((ImageView) findViewById(R.id.profilePicture));
         profile.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +102,8 @@ public class CreateContactActivity extends Activity {
             }
         });
     }
-    private void initExtendNameFunction(){
+
+    private void initExtendNameListener(){
         isNameExtended = false;
         extendName = (ImageButton) findViewById(R.id.extendName);
         extendName.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +127,7 @@ public class CreateContactActivity extends Activity {
         });
     }
 
-    private void initPhoneList(){
+    private void initPhoneListListener(){
         operatorDetectActive = false;
         addPhoneNumber = (ImageButton) findViewById(R.id.addPhoneNumber);
         addPhoneNumber.setOnClickListener(new View.OnClickListener() {
@@ -134,162 +136,6 @@ public class CreateContactActivity extends Activity {
                 addPhoneNumberLayout(null);
             }
         });
-    }
-
-    private void addPhoneNumberLayout(String phoneNumber){
-        final LinearLayout phoneList = (LinearLayout) findViewById(R.id.phoneListLayout);
-        final View addPhoneNumberLayout = getLayoutInflater().inflate(R.layout.phone_number_layout,null);
-
-        ImageButton deleteView = (ImageButton)  addPhoneNumberLayout.findViewById(R.id.deleteButton);
-        deleteView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                phoneList.removeView(addPhoneNumberLayout);
-            }
-        });
-
-        logoOperators.append(logoOperators.size(), addPhoneNumberLayout.findViewById(R.id.operatorLogo));
-
-        if (phoneNumber != null){
-            ((EditText) addPhoneNumberLayout.findViewById(R.id.phoneNumber)).setText(phoneNumber);
-            performOperatorDetect(phoneNumber, ((ImageView) addPhoneNumberLayout.findViewById(R.id.operatorLogo)));
-        }
-
-        final EditText numberInput = (EditText) addPhoneNumberLayout.findViewById(R.id.phoneNumber);
-        numberInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (numberInput.isFocused()){
-                    numberInput.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            if (s.length() > sBeforeChangeLength && s.length() > 2){
-                                if (s.charAt(0) == '0'){
-                                    if (s.charAt(1) == '0'){
-                                        if (start == 3 || start == 7 || start == 11){
-                                            numberInput.setText(s + " ");
-                                        }
-                                    }
-                                    else{
-                                        if (start == 3 || start == 7){
-                                            numberInput.setText(s + " ");
-                                            numberInput.setSelection(numberInput.length());
-                                        }
-                                    }
-                                }
-                            }
-                            sBeforeChangeLength = s.length();
-                            performOperatorDetect(s, ((ImageView) addPhoneNumberLayout.findViewById(R.id.operatorLogo)));
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {}
-                    });
-                }
-
-            }
-        });
-        phoneList.addView(addPhoneNumberLayout);
-    }
-
-    private void initOperatorDetect(){
-        ((CheckBox) findViewById(R.id.operatorDetect)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                operatorDetectActive = isChecked;
-                LinearLayout layout = (LinearLayout) findViewById(R.id.phoneListLayout);
-                String phoneNumber;
-                ImageView operatorLogo = null;
-                for (int i = 0; i < layout.getChildCount(); i++) {
-                    View view = layout.getChildAt(i);
-                    Class viewClass = view.getClass();
-                    if (viewClass == LinearLayout.class) {
-                        for (int j = 0; j < ((LinearLayout) view).getChildCount(); j++){
-                            View childView = ((LinearLayout) view).getChildAt(j);
-                            Class childClass = childView.getClass();
-                            if (childClass == ImageView.class){
-                                operatorLogo = (ImageView) childView;
-                            }
-                            if (childClass == EditText.class) {
-                                phoneNumber = ((EditText) childView).getText().toString();
-                                if (phoneNumber.length() > 0) {
-                                    performOperatorDetect(phoneNumber,operatorLogo);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    public static void performOperatorDetect(CharSequence number, ImageView operatorLogo){
-
-        if (operatorDetectActive){
-            if (number.length() >= 10 && number.charAt(0) == '0'){
-                if (number.charAt(1) == '7'){
-                    if (number.charAt(2) == '2' || number.charAt(2) == '3'){
-                        System.out.println(number + " IS VODAFONE NUMBER!");
-                        operatorLogo.setImageResource(R.drawable.vodafone_icon);
-                        return;
-                    }
-                    if (number.charAt(2) == '4' || number.charAt(2) == '5'){
-                        operatorLogo.setImageResource(R.drawable.orange_icon);
-                        return;
-                    }
-                    if (number.charAt(2) == '6' || number.charAt(2) == '8'){
-                        operatorLogo.setImageResource(R.drawable.cosmote_icon);
-                        return;
-                    }
-                }
-                if (number.charAt(1) == '3'){
-                    operatorLogo.setImageResource(R.drawable.rcs_rds_icon);
-                    return;
-                }
-                if (number.charAt(1) == '2'){
-                    operatorLogo.setImageResource(R.drawable.romtelecom_icon);
-                    return;
-                }
-            }
-            operatorLogo.setImageResource(R.drawable.phone_logo);
-        }
-        else{
-            operatorLogo.setImageResource(R.drawable.phone_logo);
-        }
-
-    }
-
-    private static final int SELECT_PICTURE = 1;
-    private String selectedImagePath;
-    private void getPictureIntent(){
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent,"Select Picture"), SELECT_PICTURE);
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            if (requestCode == SELECT_PICTURE) {
-                Uri selectedImageUri = data.getData();
-                selectedImagePath = getPath(selectedImageUri);
-                Log.i("XMPP",selectedImagePath);
-                Bitmap photo = BitmapFactory.decodeFile(selectedImagePath);
-                ((ImageView) findViewById(R.id.profilePicture)).setImageBitmap(photo);
-            }
-        }
-    }
-
-    private String getPath(Uri uri) {
-        String[] projection = { MediaStore.Images.Media.DATA };
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        int column_index = cursor
-                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
     }
 
     private void initSaveListener(){
@@ -303,7 +149,6 @@ public class CreateContactActivity extends Activity {
         ((Button) findViewById(R.id.save_contact_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String firstName, middleName, lastName;
                 firstName = ((EditText) findViewById(R.id.firstName)).getText().toString();
                 middleName = ((EditText) findViewById(R.id.middleName)).getText().toString();
@@ -366,7 +211,6 @@ public class CreateContactActivity extends Activity {
                 } else {
                     infoDialog.show();
                 }
-
                 Intent saveIntent = getIntent();
                 if (editingExistingContact){
                     saveIntent.putExtra("savedExistedContact", savedContact);
@@ -376,12 +220,170 @@ public class CreateContactActivity extends Activity {
                     saveIntent.putExtra("savedNewContact", savedContact);
                     setResult(1,saveIntent);
                 }
-
                 finish();
             }
         });
     }
 
+    //Add Phone Layout to Activity
+    private void addPhoneNumberLayout(String phoneNumber){
+        final LinearLayout phoneList = (LinearLayout) findViewById(R.id.phoneListLayout);
+        final View addPhoneNumberLayout = getLayoutInflater().inflate(R.layout.phone_number_layout,null);
+
+        ImageButton deleteView = (ImageButton)  addPhoneNumberLayout.findViewById(R.id.deleteButton);
+        deleteView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                phoneList.removeView(addPhoneNumberLayout);
+            }
+        });
+
+        logoOperators.append(logoOperators.size(), addPhoneNumberLayout.findViewById(R.id.operatorLogo));
+
+        if (phoneNumber != null){
+            ((EditText) addPhoneNumberLayout.findViewById(R.id.phoneNumber)).setText(phoneNumber);
+            performOperatorDetect(phoneNumber, ((ImageView) addPhoneNumberLayout.findViewById(R.id.operatorLogo)));
+        }
+
+        final EditText numberInput = (EditText) addPhoneNumberLayout.findViewById(R.id.phoneNumber);
+        numberInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (numberInput.isFocused()){
+                    numberInput.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            if (s.length() > sBeforeChangeLength && s.length() > 2){
+                                if (s.charAt(0) == '0'){
+                                    if (s.charAt(1) == '0'){
+                                        if (start == 3 || start == 7 || start == 11){
+                                            numberInput.setText(s + " ");
+                                        }
+                                    }
+                                    else{
+                                        if (start == 3 || start == 7){
+                                            numberInput.setText(s + " ");
+                                            numberInput.setSelection(numberInput.length());
+                                        }
+                                    }
+                                }
+                            }
+                            sBeforeChangeLength = s.length();
+                            performOperatorDetect(s, ((ImageView) addPhoneNumberLayout.findViewById(R.id.operatorLogo)));
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {}
+                    });
+                }
+
+            }
+        });
+        phoneList.addView(addPhoneNumberLayout);
+    }
+
+    //Operator Detectation Functions
+    private void initOperatorDetect(){
+        ((CheckBox) findViewById(R.id.operatorDetect)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                operatorDetectActive = isChecked;
+                LinearLayout layout = (LinearLayout) findViewById(R.id.phoneListLayout);
+                String phoneNumber;
+                ImageView operatorLogo = null;
+                for (int i = 0; i < layout.getChildCount(); i++) {
+                    View view = layout.getChildAt(i);
+                    Class viewClass = view.getClass();
+                    if (viewClass == LinearLayout.class) {
+                        for (int j = 0; j < ((LinearLayout) view).getChildCount(); j++){
+                            View childView = ((LinearLayout) view).getChildAt(j);
+                            Class childClass = childView.getClass();
+                            if (childClass == ImageView.class){
+                                operatorLogo = (ImageView) childView;
+                            }
+                            if (childClass == EditText.class) {
+                                phoneNumber = ((EditText) childView).getText().toString();
+                                if (phoneNumber.length() > 0) {
+                                    performOperatorDetect(phoneNumber,operatorLogo);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    public static void performOperatorDetect(CharSequence number, ImageView operatorLogo){
+        if (operatorDetectActive){
+            if (number.length() >= 10 && number.charAt(0) == '0'){
+                if (number.charAt(1) == '7'){
+                    if (number.charAt(2) == '2' || number.charAt(2) == '3'){
+                        System.out.println(number + " IS VODAFONE NUMBER!");
+                        operatorLogo.setImageResource(R.drawable.vodafone_icon);
+                        return;
+                    }
+                    if (number.charAt(2) == '4' || number.charAt(2) == '5'){
+                        operatorLogo.setImageResource(R.drawable.orange_icon);
+                        return;
+                    }
+                    if (number.charAt(2) == '6' || number.charAt(2) == '8'){
+                        operatorLogo.setImageResource(R.drawable.cosmote_icon);
+                        return;
+                    }
+                }
+                if (number.charAt(1) == '3'){
+                    operatorLogo.setImageResource(R.drawable.rcs_rds_icon);
+                    return;
+                }
+                if (number.charAt(1) == '2'){
+                    operatorLogo.setImageResource(R.drawable.romtelecom_icon);
+                    return;
+                }
+            }
+            operatorLogo.setImageResource(R.drawable.phone_logo);
+        }
+        else{
+            operatorLogo.setImageResource(R.drawable.phone_logo);
+        }
+
+    }
+
+    // Get Profile Picture from Phone functions
+    private static final int SELECT_PICTURE = 1;
+    private String selectedImagePath;
+    private void getPictureIntent(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,"Select Picture"), SELECT_PICTURE);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_PICTURE) {
+                Uri selectedImageUri = data.getData();
+                selectedImagePath = getPath(selectedImageUri);
+                Log.i("XMPP",selectedImagePath);
+                Bitmap photo = BitmapFactory.decodeFile(selectedImagePath);
+                ((ImageView) findViewById(R.id.profilePicture)).setImageBitmap(photo);
+            }
+        }
+    }
+
+    private String getPath(Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+    // On Exit , do not send Extra with data.
     @Override
     public void onBackPressed (){
         Intent saveIntent = getIntent();

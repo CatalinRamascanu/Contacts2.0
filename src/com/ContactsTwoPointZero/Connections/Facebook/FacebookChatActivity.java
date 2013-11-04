@@ -1,4 +1,4 @@
-package com.ContactsTwoPointZero.Activities;
+package com.ContactsTwoPointZero.Connections.Facebook;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,20 +10,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
-import com.ContactsTwoPointZero.Connections.Facebook.MemorizingTrustManager;
 import com.example.ExpandableList.R;
 import org.jivesoftware.smack.*;
-import org.jivesoftware.smack.filter.MessageTypeFilter;
-import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.util.StringUtils;
-import org.jivesoftware.smackx.ServiceDiscoveryManager;
-import org.jivesoftware.smackx.filetransfer.FileTransfer;
-import org.jivesoftware.smackx.filetransfer.FileTransferManager;
-import org.jivesoftware.smackx.filetransfer.FileTransferNegotiator;
-import org.jivesoftware.smackx.filetransfer.OutgoingFileTransfer;
 
 import javax.net.ssl.SSLContext;
 import java.io.*;
@@ -37,7 +29,6 @@ import java.security.GeneralSecurityException;
  * Date: 26.10.2013
  * Time: 10:52
  * To change this template use File | Settings | File Templates.
- * This is a TestCLass for GTalkActivity
  */
 public class FacebookChatActivity extends Activity {
     private final String activityTag = "FacebookChatActivity";
@@ -74,63 +65,8 @@ public class FacebookChatActivity extends Activity {
         userPassword = (String) extras.getSerializable("userPassword");
         ((ImageView) findViewById(R.id.chat_logo)).setImageResource(R.drawable.facebook_chat_icon);
         ((TextView) findViewById(R.id.recipient_name)).setText(friendName);
-        new ConnectToXmpp().execute();
+        new ConnectToFacebook().execute();
         addSendButtonListener();
-    }
-
-    private boolean tryConnection(){
-        ConnectionConfiguration config = new ConnectionConfiguration("chat.facebook.com", 5222);
-        config.setSASLAuthenticationEnabled(true);
-        config.setSecurityMode(ConnectionConfiguration.SecurityMode.required);
-        config.setRosterLoadedAtLogin(true);
-        config.setTruststorePath("/system/etc/security/cacerts.bks");
-        config.setTruststorePassword("changeit");
-        config.setTruststoreType("bks");
-        config.setSendPresence(false);
-
-        try {
-            SSLContext sc = SSLContext.getInstance("TLS");
-            sc.init(null, MemorizingTrustManager.getInstanceList(this), new java.security.SecureRandom());
-            config.setCustomSSLContext(sc);
-        } catch (GeneralSecurityException e) {
-            Log.w(activityTag, "Unable to use MemorizingTrustManager", e);
-            Log.e(activityTag,e.toString());
-            return false;
-        }
-        xmppConnection = new XMPPConnection(config);
-        Log.i("XMPPClient", "Connection Initialized");
-
-        try {
-            Log.i(activityTag, "Connecting..");
-            xmppConnection.connect();
-            Log.i(activityTag, "[SettingsDialog] Connected to " + xmppConnection.getHost());
-        } catch (XMPPException ex) {
-            Log.e(activityTag, "[SettingsDialog] Failed to connect to " + xmppConnection.getHost());
-            Log.e(activityTag, ex.toString());
-            return false;
-        }
-
-        try {
-            Log.i(activityTag, "Logging in..");
-            xmppConnection.login(userAccount, userPassword);
-            Log.i(activityTag, "Logged in as " + xmppConnection.getUser());
-
-            // Set the status to available
-            Presence presence = new Presence(Presence.Type.available);
-            xmppConnection.sendPacket(presence);
-
-            // Get Chat manager and adding listener for incoming Chats
-            chatManager = xmppConnection.getChatManager();
-
-            xmppConnection.addPacketListener(new MessageParrot(), null);
-
-        } catch (XMPPException ex) {
-            Log.e(activityTag, "[SettingsDialog] Failed to log in as " + userAccount + " and " + userPassword);
-            Log.e(activityTag, ex.toString());
-            return false;
-        }
-        Log.i(activityTag, "Connected successfully.");
-        return true;
     }
 
     private void sendMessage(String message) throws XMPPException {
@@ -176,7 +112,8 @@ public class FacebookChatActivity extends Activity {
         });
     }
 
-    private class ConnectToXmpp extends AsyncTask<Void, Void, Void> {
+    //Asynchronous class for connecting phase
+    private class ConnectToFacebook extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
             thisActivity.runOnUiThread(new Runnable() {
@@ -215,6 +152,64 @@ public class FacebookChatActivity extends Activity {
         }
     }
 
+
+    private boolean tryConnection(){
+        // Create a connection
+        ConnectionConfiguration config = new ConnectionConfiguration("chat.facebook.com", 5222);
+        config.setSASLAuthenticationEnabled(true);
+        config.setSecurityMode(ConnectionConfiguration.SecurityMode.required);
+        config.setRosterLoadedAtLogin(true);
+        config.setTruststorePath("/system/etc/security/cacerts.bks");
+        config.setTruststorePassword("changeit");
+        config.setTruststoreType("bks");
+        config.setSendPresence(false);
+        try {
+            SSLContext sc = SSLContext.getInstance("TLS");
+            sc.init(null, MemorizingTrustManager.getInstanceList(this), new java.security.SecureRandom());
+            config.setCustomSSLContext(sc);
+        } catch (GeneralSecurityException e) {
+            Log.w(activityTag, "Unable to use MemorizingTrustManager", e);
+            Log.e(activityTag,e.toString());
+            return false;
+        }
+        xmppConnection = new XMPPConnection(config);
+        Log.i("XMPPClient", "Connection Initialized");
+
+        try {
+            Log.i(activityTag, "Connecting..");
+            xmppConnection.connect();
+            Log.i(activityTag, "[SettingsDialog] Connected to " + xmppConnection.getHost());
+        } catch (XMPPException ex) {
+            Log.e(activityTag, "[SettingsDialog] Failed to connect to " + xmppConnection.getHost());
+            Log.e(activityTag, ex.toString());
+            return false;
+        }
+
+        try {
+            Log.i(activityTag, "Logging in..");
+            xmppConnection.login(userAccount, userPassword);
+            Log.i(activityTag, "Logged in as " + xmppConnection.getUser());
+
+            // Set the status to available
+            Presence presence = new Presence(Presence.Type.available);
+            xmppConnection.sendPacket(presence);
+
+            // Get Chat manager and adding listener for incoming Chats
+            chatManager = xmppConnection.getChatManager();
+
+            xmppConnection.addPacketListener(new MessageParrot(), null);
+
+        } catch (XMPPException ex) {
+            Log.e(activityTag, "[SettingsDialog] Failed to log in as " + userAccount + " and " + userPassword);
+            Log.e(activityTag, ex.toString());
+            return false;
+        }
+        Log.i(activityTag, "Connected successfully.");
+        return true;
+    }
+
+
+    //Listener for Incoming messages
     private class MessageParrot implements PacketListener {
         public void processPacket(Packet packet) {
             Message message = (Message) packet;
@@ -232,6 +227,7 @@ public class FacebookChatActivity extends Activity {
         }
     };
 
+    //We need to get the Facebook ID of the username with who we are trying to chat.
     private boolean getIdByUsername(){
         HttpURLConnection conn;
         BufferedReader rd;
@@ -257,6 +253,7 @@ public class FacebookChatActivity extends Activity {
         return true;
     }
 
+    //Close Connection on Exit
     @Override
     public void onBackPressed (){
         xmppConnection.disconnect();

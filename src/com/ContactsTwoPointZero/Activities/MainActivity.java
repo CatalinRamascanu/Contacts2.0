@@ -16,17 +16,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.SparseArray;
 import android.view.View;
 import android.widget.*;
 import com.ContactsTwoPointZero.Contacts.Contact;
 import com.ContactsTwoPointZero.Contacts.ContactListAdapter;
 import com.ContactsTwoPointZero.Contacts.ContactManager;
+import com.ContactsTwoPointZero.Contacts.CreateContactActivity;
 import com.example.ExpandableList.R;
 
 public class MainActivity extends Activity {
-    // More efficient than HashMap for mapping integers to objects
-    private SparseArray<Contact> contactList;
+
     private ContactListAdapter adapter;
     private ActivityProfile activityProfile;
     private ContactManager contactManager;
@@ -63,11 +62,7 @@ public class MainActivity extends Activity {
                 saveActivityProfileData();
                 contactManager.createTestContactsData();
                 contactManager.readContactsFromPhone();
-                setContentView(R.layout.activity_main);
-                listView = (ExpandableListView) findViewById(R.id.listView);
-                adapter = new ContactListAdapter(thisActivity, listView, contactManager.getListOfContacts());
-                listView.setAdapter(adapter);
-                initListeners();
+                startNormalActivity();
             }
         });
 
@@ -77,25 +72,21 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 saveActivityProfileData();
                 contactManager.createTestContactsData();
-                setContentView(R.layout.activity_main);
-                listView = (ExpandableListView) findViewById(R.id.listView);
-                adapter = new ContactListAdapter(thisActivity, listView, contactManager.getListOfContacts());
-                listView.setAdapter(adapter);
-                initListeners();
+                startNormalActivity();
             }
         });
     }
 
     private void startNormalActivity(){
-        contactManager.createTestContactsData();
+        setContentView(R.layout.activity_main);
         listView = (ExpandableListView) findViewById(R.id.listView);
-        adapter = new ContactListAdapter(this,listView, contactList);
+        adapter = new ContactListAdapter(this,listView, contactManager.getListOfContacts());
         listView.setAdapter(adapter);
         initListeners();
     }
 
+    //Listeners initialization
     private void initListeners(){
-
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -138,6 +129,7 @@ public class MainActivity extends Activity {
 
     }
 
+    //Save Setup Data in Activity Profile
     private void saveActivityProfileData(){
         activityProfile.setGoogleAccount(((EditText) findViewById(R.id.g_acc_input)).getText().toString());
         activityProfile.setGooglePassword(((EditText) findViewById(R.id.g_pass_input)).getText().toString());
@@ -149,6 +141,7 @@ public class MainActivity extends Activity {
         activityProfile.setYahooPassword(((EditText) findViewById(R.id.y_pass_input)).getText().toString());
     }
 
+    //Loading Test Data in Setup Activity Inputs
     private void loadTestDataActivityProfile(){
         ((TextView) findViewById(R.id.g_acc_input)).setText("bot.smack21@gmail.com");
         ((TextView) findViewById(R.id.g_pass_input)).setText("Linux1234");
@@ -158,21 +151,14 @@ public class MainActivity extends Activity {
 
         ((TextView) findViewById(R.id.f_acc_input)).setText("smack.test");
         ((TextView) findViewById(R.id.f_pass_input)).setText("Linux1234");
-
-//        activityProfile.setGoogleAccount("bot.smack21@gmail.com");
-//        activityProfile.setGooglePassword("Linux1234");
-//        activityProfile.setYahooAccount("y_smack_test@yahoo.com");
-//        activityProfile.setYahooPassword("Linux1234");
-//        activityProfile.setFacebookAccount("100006895481717");
-//        activityProfile.setFacebookPassword("Linux1234");
     }
 
-
-
+    //Required when connecting to services
     public ActivityProfile getActivityProfile(){
         return activityProfile;
     }
 
+    //In case , new contact added or contact updated.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);

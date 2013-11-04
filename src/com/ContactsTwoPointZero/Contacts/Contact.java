@@ -8,7 +8,6 @@ package com.ContactsTwoPointZero.Contacts;
  * To change this template use File | Settings | File Templates.
  */
 import android.graphics.Bitmap;
-import com.ContactsTwoPointZero.TestPack.SerialBitmap;
 
 import java.io.Serializable;
 import java.util.HashMap;

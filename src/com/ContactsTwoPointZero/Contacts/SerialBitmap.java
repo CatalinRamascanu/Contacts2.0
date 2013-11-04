@@ -1,4 +1,4 @@
-package com.ContactsTwoPointZero.TestPack;
+package com.ContactsTwoPointZero.Contacts;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
