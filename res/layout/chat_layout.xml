@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent" android:background="@drawable/border">
 
     <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="0dp"
                   android:layout_weight=".10" android:id="@+id/linearLayout">
@@ -35,16 +35,16 @@
         <ScrollView
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:id="@+id/scrollView" android:layout_weight=".80">
+                android:id="@+id/scrollView" android:layout_weight=".80" android:layout_gravity="center_vertical">
             <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
+                    android:layout_height="fill_parent" android:gravity="center_vertical|fill_vertical">
                 <EditText
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/chat_input" android:hint="Write message"
-                        android:layout_gravity="center_vertical"/>
+                        android:layout_gravity="center_vertical" android:layout_marginTop="10dp"/>
             </LinearLayout>
         </ScrollView>
         <Button
@@ -52,6 +52,6 @@
                 android:layout_height="wrap_content"
                 android:text="Send"
                 android:id="@+id/send_chat_button" android:layout_weight=".30"
-                android:layout_gravity="center_vertical"/>
+                android:layout_marginTop="5dp"/>
     </LinearLayout>
 </LinearLayout>

@@ -33,6 +33,7 @@ public class Contact implements Serializable {
         emailList = new HashMap<Integer,String>();
         sizeOfPhoneList = 0;
         sizeOfEmailList = 0;
+        detectPhoneOperator = true;
     }
 
     public Contact(String name) {
@@ -41,7 +42,7 @@ public class Contact implements Serializable {
         emailList = new HashMap<Integer,String>();
         sizeOfPhoneList = 0;
         sizeOfEmailList = 0;
-
+        detectPhoneOperator = true;
     }
 
     public void addProfilePicture(Bitmap picture){
