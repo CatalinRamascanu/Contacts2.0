@@ -1,5 +1,3 @@
-[Application under development]
-
 Contacts2.0
 ===========
 
